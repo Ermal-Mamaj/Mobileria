@@ -155,14 +155,14 @@ chats/     the design conversation transcript — reference material, not part o
 - **Products belong to a category** and can optionally be flagged `featured_home`,
   which is what populates the Home page's "New Designs" carousel — no separate content
   model for that carousel.
-- **Auth** is a signed JWT in an httpOnly cookie (`mamaj_admin`), checked by a
+- **Auth** is a signed JWT in an httpOnly cookie (`bellacasa_admin`), checked by a
   `requireAdmin` middleware on every mutating route. Public `GET` routes need no auth.
 - **Images** are uploaded via `multer` to `server/uploads/`, served statically at
   `/uploads/...`, and only their URL is stored in SQLite — so back up
   `server/data.sqlite` *and* `server/uploads/` together if you ever move hosts.
 - **No photos ship by default.** Every image slot renders a soft branded placeholder
   until the admin uploads something — this was a deliberate choice so nothing looks
-  like a stock photo that isn't actually MAMAJ's work.
+  like a stock photo that isn't actually Bella Casa's work.
 
 ## Environment variables
 

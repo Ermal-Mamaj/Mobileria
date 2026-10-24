@@ -34,7 +34,7 @@ export default function CollectionDetailSection() {
     return (
       <div className="admin-panel">
         <p className="prod-empty-state">
-          Ky koleksion nuk ekziston më. <Link to="/mamaj-cms/collections" className="admin-inline-link">Kthehu te Koleksionet</Link>.
+          Ky koleksion nuk ekziston më. <Link to="/bellacasa-cms/collections" className="admin-inline-link">Kthehu te Koleksionet</Link>.
         </p>
       </div>
     );
@@ -44,7 +44,7 @@ export default function CollectionDetailSection() {
 
   return (
     <div className="admin-panel">
-      <button type="button" className="col-back-link" onClick={() => navigate('/mamaj-cms/collections')}>
+      <button type="button" className="col-back-link" onClick={() => navigate('/bellacasa-cms/collections')}>
         ‹ Koleksionet
       </button>
 

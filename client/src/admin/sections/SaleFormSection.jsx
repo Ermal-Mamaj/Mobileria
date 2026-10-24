@@ -220,7 +220,7 @@ export default function SaleFormSection() {
       };
       const saved = editing ? await api.put(`/sales/${id}`, body) : await api.post('/sales', body);
       setIsDirty(false);
-      navigate(`/mamaj-cms/sales/${saved.id}`);
+      navigate(`/bellacasa-cms/sales/${saved.id}`);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -240,7 +240,7 @@ export default function SaleFormSection() {
       if (!leave) return;
       setIsDirty(false);
     }
-    navigate(editing ? `/mamaj-cms/sales/${id}` : '/mamaj-cms/sales');
+    navigate(editing ? `/bellacasa-cms/sales/${id}` : '/bellacasa-cms/sales');
   }
 
   if (loading || !products) {

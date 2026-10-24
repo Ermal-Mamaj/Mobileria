@@ -1,7 +1,7 @@
 // One-off script: fills in placeholder photos ONLY where a category or
 // content record currently has no photo set — never overwrites a real
 // uploaded photo. Meant purely for showing the client a fully-populated
-// site before real MAMAJ photography is ready.
+// site before real Bella Casa photography is ready.
 //
 // Every photo here is from Unsplash under the Unsplash License, which is
 // free for commercial use with NO attribution required - so nothing

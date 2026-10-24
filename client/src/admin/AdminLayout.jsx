@@ -4,12 +4,12 @@ import { useUnsavedChanges } from './UnsavedChangesContext.jsx';
 import { useConfirm } from './useConfirm.jsx';
 
 const TABS = [
-  { to: '/mamaj-cms', label: 'Paneli', icon: '📊', end: true },
-  { to: '/mamaj-cms/collections', label: 'Koleksionet', icon: '🗂️' },
-  { to: '/mamaj-cms/sales', label: 'Shitjet', icon: '🧾' },
-  { to: '/mamaj-cms/pages', label: 'Përmbajtja e Faqeve', icon: '📄' },
-  { to: '/mamaj-cms/messages', label: 'Mesazhet', icon: '📬' },
-  { to: '/mamaj-cms/settings', label: 'Cilësimet', icon: '⚙️' },
+  { to: '/bellacasa-cms', label: 'Paneli', icon: '📊', end: true },
+  { to: '/bellacasa-cms/collections', label: 'Koleksionet', icon: '🗂️' },
+  { to: '/bellacasa-cms/sales', label: 'Shitjet', icon: '🧾' },
+  { to: '/bellacasa-cms/pages', label: 'Përmbajtja e Faqeve', icon: '📄' },
+  { to: '/bellacasa-cms/messages', label: 'Mesazhet', icon: '📬' },
+  { to: '/bellacasa-cms/settings', label: 'Cilësimet', icon: '⚙️' },
 ];
 
 export default function AdminLayout({ children }) {

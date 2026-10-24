@@ -15,8 +15,8 @@ function resolveSecret() {
 }
 
 const JWT_SECRET = resolveSecret();
-export const COOKIE_NAME = 'mamaj_admin';
-export const CSRF_COOKIE_NAME = 'mamaj_csrf';
+export const COOKIE_NAME = 'bellacasa_admin';
+export const CSRF_COOKIE_NAME = 'bellacasa_csrf';
 export const CSRF_HEADER_NAME = 'x-csrf-token';
 
 export function signToken(user) {

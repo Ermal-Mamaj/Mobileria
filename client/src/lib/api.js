@@ -7,7 +7,7 @@ async function request(path, options = {}) {
   const method = (options.method || 'GET').toUpperCase();
   const headers = options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' };
   if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
-    const csrfToken = getCookie('mamaj_csrf');
+    const csrfToken = getCookie('bellacasa_csrf');
     if (csrfToken) headers['x-csrf-token'] = csrfToken;
   }
 

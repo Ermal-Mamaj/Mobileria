@@ -17,7 +17,7 @@ function Protected() {
   const { checked, loggedIn } = useAdminAuth();
 
   if (!checked) return null;
-  if (!loggedIn) return <Navigate to="/mamaj-cms/login" replace />;
+  if (!loggedIn) return <Navigate to="/bellacasa-cms/login" replace />;
 
   return (
     <UnsavedChangesProvider>
@@ -25,7 +25,7 @@ function Protected() {
         <Routes>
           <Route index element={<DashboardSection />} />
           {/* Products are managed inside each collection now; keep old links/bookmarks working. */}
-          <Route path="products" element={<Navigate to="/mamaj-cms/collections" replace />} />
+          <Route path="products" element={<Navigate to="/bellacasa-cms/collections" replace />} />
           <Route path="collections" element={<CollectionsListSection />} />
           <Route path="collections/:id" element={<CollectionDetailSection />} />
           <Route path="sales" element={<SalesListSection />} />

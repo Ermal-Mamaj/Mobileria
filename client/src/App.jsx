@@ -22,7 +22,7 @@ function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route
-        path="/mamaj-cms/login"
+        path="/bellacasa-cms/login"
         element={
           <Suspense fallback={null}>
             <AdminLogin />
@@ -30,7 +30,7 @@ function App() {
         }
       />
       <Route
-        path="/mamaj-cms/*"
+        path="/bellacasa-cms/*"
         element={
           <Suspense fallback={null}>
             <AdminDashboard />
