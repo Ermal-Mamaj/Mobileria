@@ -63,7 +63,7 @@ export default function ContactPage() {
       <div className="page-body">
         <div className="eyebrow eyebrow--muted">
           <span className="eyebrow__rule" />
-          <span>MAMAJ</span>
+          <span>BELLA CASA</span>
         </div>
         <h1 className="section-heading" style={{ marginBottom: 6 }}>Na Kontaktoni</h1>
         <p className="section-intro">Do të gëzoheshim t'ju dëgjonim.</p>
@@ -72,7 +72,7 @@ export default function ContactPage() {
           {infoRows.map((row) => (
             <div className="contact-info-card" key={row.label}>
               <div className="contact-info-card__icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2733" strokeWidth="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2C3428" strokeWidth="2">
                   {row.icon}
                 </svg>
               </div>
@@ -95,7 +95,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
               >
                 <div className="contact-location-card__icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2733" strokeWidth="2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2C3428" strokeWidth="2">
                     <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>

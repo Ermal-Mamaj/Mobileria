@@ -50,7 +50,7 @@ export default function DashboardSection() {
 
   return (
     <div className="dash">
-      <h2 className="dash__title">Mirë se vini në panelin e MAMAJ</h2>
+      <h2 className="dash__title">Mirë se vini në panelin e Bella Casa</h2>
       <p className="dash__subtitle">Një përmbledhje e shpejtë e dyqanit tuaj.</p>
 
       <div className="dash-stats-grid">
@@ -58,13 +58,13 @@ export default function DashboardSection() {
           icon="📦"
           label="Produkte Gjithsej"
           value={stats.total_products}
-          color="#16222F"
+          color="#232A20"
         />
         <StatCard
           icon="🏷️"
           label="Në Zbritje"
           value={stats.on_sale}
-          color="#C9A227"
+          color="#8C6A40"
         />
         <StatCard
           icon="📬"
@@ -76,7 +76,7 @@ export default function DashboardSection() {
           icon="📊"
           label="Njësi në Stok"
           value={stats.total_stock_units}
-          color="#3B6EA5"
+          color="#3F5A6B"
           sub={stats.out_of_stock > 0 ? `${stats.out_of_stock} produkte pa stok` : null}
         />
       </div>

@@ -25,6 +25,8 @@
 
 .about-hero__title {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: clamp(25px, 13.6px + 3.57vw, 30px);
   font-weight: 600;
   color: var(--white);
@@ -39,6 +41,8 @@
 
 .about-subheading {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: clamp(19px, 12.1px + 2.14vw, 22px);
   font-weight: 600;
   color: var(--text);
@@ -61,7 +65,7 @@
 .value-item__icon {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-deep));
   flex-shrink: 0;
   display: flex;
@@ -83,9 +87,9 @@
 }
 
 .about-quote {
-  background: linear-gradient(165deg, #FBF8F0, #F3EDE0);
+  background: linear-gradient(165deg, #FAF8F4, #EFEBE3);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 6px;
   padding: 20px;
 }
 

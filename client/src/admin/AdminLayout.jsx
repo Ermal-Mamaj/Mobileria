@@ -45,7 +45,7 @@ export default function AdminLayout({ children }) {
       {/* Sidebar — visible on desktop, collapses to a top bar on mobile */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar__brand">
-          <h1 className="admin-sidebar__title">MAMAJ</h1>
+          <h1 className="admin-sidebar__title">Bella Casa</h1>
           <span className="admin-sidebar__subtitle">CMS</span>
         </div>
 
@@ -75,7 +75,7 @@ export default function AdminLayout({ children }) {
 
       {/* Mobile top bar — hidden on desktop where sidebar takes over */}
       <header className="admin-topbar">
-        <h1 className="admin-topbar__title">MAMAJ CMS</h1>
+        <h1 className="admin-topbar__title">Bella Casa</h1>
         <div className="admin-topbar__right">
           <span className="admin-topbar__user">{username}</span>
           <button type="button" className="admin-btn-secondary admin-btn--sm" onClick={logout}>Dil</button>

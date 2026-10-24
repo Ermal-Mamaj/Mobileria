@@ -12,13 +12,13 @@
   padding: 16px;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .contact-info-card__icon {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-deep));
   flex-shrink: 0;
   display: flex;
@@ -52,7 +52,7 @@
   padding: 16px;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 6px;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s ease, transform 0.2s ease;
@@ -66,7 +66,7 @@
 .contact-location-card__icon {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-deep));
   flex-shrink: 0;
   display: flex;
@@ -106,14 +106,16 @@
 }
 
 .contact-form-panel {
-  background: linear-gradient(165deg, #FBF8F0, #F3EDE0);
+  background: linear-gradient(165deg, #FAF8F4, #EFEBE3);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 6px;
   padding: 24px 20px;
 }
 
 .contact-form-panel__heading {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: 20px;
   font-weight: 600;
   color: var(--text);

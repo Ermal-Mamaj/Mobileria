@@ -75,7 +75,7 @@ export default function HomeSection() {
               <EditableText
                 value={form.hero_eyebrow}
                 onSave={(v) => edit('hero_eyebrow', v)}
-                placeholder="MOBILIE TË PUNUARA ME DORË"
+                placeholder="MOBILIE PËR ÇDO DHOMË"
                 className="wysiwyg-field--eyebrow"
               />
             </div>
@@ -93,7 +93,7 @@ export default function HomeSection() {
               <EditableText
                 value={form.hero_cta}
                 onSave={(v) => edit('hero_cta', v)}
-                placeholder="Eksploro Koleksionet"
+                placeholder="Shiko ambientet"
                 className="wysiwyg-field--btn"
               />
             </div>
@@ -117,7 +117,7 @@ export default function HomeSection() {
               <EditableText
                 value={form.quote_label}
                 onSave={(v) => edit('quote_label', v)}
-                placeholder="PUNISHTJA MAMAJ"
+                placeholder="BELLA CASA"
                 className="wysiwyg-field--eyebrow"
               />
             </div>

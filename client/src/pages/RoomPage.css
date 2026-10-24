@@ -6,7 +6,7 @@
 }
 
 .room-product-card {
-  border-radius: 16px;
+  border-radius: 6px;
   overflow: hidden;
   background: var(--white);
   border: 1px solid var(--border);
@@ -37,6 +37,8 @@
 
 .room-product-card__name {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--text);
@@ -104,7 +106,7 @@
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: rgba(15, 22, 30, 0.7);
+  background: rgba(18, 22, 15, 0.7);
   color: var(--gold);
   font-size: 20px;
   cursor: pointer;
@@ -125,7 +127,7 @@
   height: 38px;
   border-radius: 50%;
   border: none;
-  background: rgba(15, 22, 30, 0.6);
+  background: rgba(18, 22, 15, 0.6);
   color: var(--gold);
   font-size: 26px;
   line-height: 1;
@@ -139,7 +141,7 @@
 }
 
 .room-modal__nav:hover {
-  background: rgba(15, 22, 30, 0.85);
+  background: rgba(18, 22, 15, 0.85);
 }
 
 .room-modal__nav--prev { left: 12px; }
@@ -152,7 +154,7 @@
   z-index: 2;
   padding: 3px 10px;
   border-radius: 999px;
-  background: rgba(15, 22, 30, 0.65);
+  background: rgba(18, 22, 15, 0.65);
   color: rgba(255, 255, 255, 0.9);
   font-size: 11px;
   letter-spacing: 0.4px;
@@ -172,7 +174,7 @@
   height: 46px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: 7px;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
   background: none;
@@ -200,7 +202,7 @@
   right: 8px;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(15, 22, 30, 0.7);
+  background: rgba(18, 22, 15, 0.7);
   color: #fff;
   font-size: 10.5px;
   letter-spacing: 0.3px;
@@ -213,6 +215,8 @@
 
 .room-modal__name {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: clamp(25px, 13.6px + 3.57vw, 30px);
   font-weight: 600;
   color: var(--text);

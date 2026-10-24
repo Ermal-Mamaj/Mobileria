@@ -77,7 +77,7 @@ export default function HomePage() {
         <div className="home-page__hero-copy">
           <div className="eyebrow eyebrow--gold">
             <span className="eyebrow__rule" />
-            <span>{home.hero_eyebrow || 'MOBILIE TË PUNUARA ME DORË'}</span>
+            <span>{home.hero_eyebrow || 'MOBILIE PËR ÇDO DHOMË'}</span>
           </div>
           <h1 className="home-page__hero-headline">
             {headlineLines.map((line, i) => (
@@ -92,7 +92,7 @@ export default function HomePage() {
             className="btn-gold"
             onClick={() => collectionsRef.current?.scrollIntoView({ behavior: 'smooth' })}
           >
-            {home.hero_cta || 'Eksploro Koleksionet'}
+            {home.hero_cta || 'Shiko ambientet'}
           </button>
         </div>
       </div>
