@@ -113,7 +113,7 @@ function itemsCte(firstParam) {
 }
 
 const SALE_SUMMARY = `
-  SELECT s.id, s.customer_name, s.customer_phone, s.discount, s.created_at,
+  SELECT s.id, s.customer_name, s.customer_phone, s.discount, s.vat_rate, s.created_at,
     COUNT(i.id)::int AS item_count,
     COALESCE(SUM(i.quantity * i.unit_price), 0) AS subtotal,
     COALESCE(string_agg(i.product_name, ', ' ORDER BY i.sort_order), '') AS product_names
@@ -187,8 +187,8 @@ router.post('/', asyncHandler(async (req, res) => {
   // sale can never be saved without its stock change or vice versa.
   const [row] = await sql.query(
     `WITH new_sale AS (
-       INSERT INTO sales (customer_name, customer_phone, customer_address, notes, discount)
-       VALUES ($1, $2, $3, $4, $5)
+       INSERT INTO sales (customer_name, customer_phone, customer_address, notes, discount, vat_rate)
+       VALUES ($1, $2, $3, $4, $5, (SELECT vat_rate FROM site_settings WHERE id = 1))
        RETURNING id
      ),
      ${itemsCte(6)},
@@ -268,6 +268,49 @@ router.put('/:id', asyncHandler(async (req, res) => {
      SELECT id FROM upd`,
     [id, sale.customer_name, sale.customer_phone, sale.customer_address, sale.notes, sale.discount, ...itemArrays(items)]
   );
+  if (rows.length === 0) return res.status(404).json({ error: 'Shitja nuk u gjet.' });
+  res.json(await loadSale(id));
+}));
+
+// Edits made on the invoice (Fatura) page: text that differs from what the
+// page prefills (seller/buyer details, number, date, units per line) plus
+// the VAT rate. Only these fields are accepted; everything is plain text
+// with a length cap, so nothing here can affect totals or stock.
+const INVOICE_TEXT = {
+  seller_name: 200, seller_nui: 30, seller_address: 300,
+  buyer_name: 200, buyer_nui: 30, buyer_address: 300,
+  number: 30, date: 30,
+};
+
+router.put('/:id/invoice', asyncHandler(async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(404).json({ error: 'Shitja nuk u gjet.' });
+  const raw = req.body?.invoice || {};
+  const invoice = {};
+  for (const [key, max] of Object.entries(INVOICE_TEXT)) {
+    if (typeof raw[key] === 'string') invoice[key] = raw[key].slice(0, max);
+  }
+  if (raw.units && typeof raw.units === 'object') {
+    invoice.units = {};
+    for (const [itemId, unit] of Object.entries(raw.units).slice(0, 200)) {
+      if (/^\d+$/.test(itemId) && typeof unit === 'string') invoice.units[itemId] = unit.slice(0, 20);
+    }
+  }
+
+  let vatRate = null;
+  const v = req.body?.vat_rate;
+  if (v !== null && v !== undefined && v !== '') {
+    vatRate = Number(String(v).replace(',', '.'));
+    if (!Number.isFinite(vatRate) || vatRate < 0 || vatRate >= 100) {
+      return res.status(400).json({ error: 'Norma e TVSH-së duhet të jetë nga 0 deri në 99.' });
+    }
+  }
+
+  const rows = await sql`
+    UPDATE sales SET invoice = ${JSON.stringify(invoice)}::jsonb, vat_rate = ${vatRate}, updated_at = NOW()
+    WHERE id = ${id}
+    RETURNING id
+  `;
   if (rows.length === 0) return res.status(404).json({ error: 'Shitja nuk u gjet.' });
   res.json(await loadSale(id));
 }));
