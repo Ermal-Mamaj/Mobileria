@@ -87,7 +87,7 @@ export default function DashboardSection() {
             ⚠️ Stok i Ulët ose i Mbaruar ({lowStock.length})
           </h3>
           <p className="dash-alert-panel__desc">
-            Produktet me 3 ose më pak njësi në stok. Shkoni te "Produkte" për të përditësuar sasinë.
+            Produktet me 3 ose më pak njësi në stok. Shkoni te "Koleksionet" dhe hapni koleksionin e produktit për të përditësuar sasinë.
           </p>
           <div className="dash-stock-list">
             {lowStock.map((item) => (

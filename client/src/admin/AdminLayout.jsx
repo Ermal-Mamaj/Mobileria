@@ -5,9 +5,8 @@ import { useConfirm } from './useConfirm.jsx';
 
 const TABS = [
   { to: '/mamaj-cms', label: 'Paneli', icon: '📊', end: true },
-  { to: '/mamaj-cms/products', label: 'Produkte', icon: '📦' },
   { to: '/mamaj-cms/collections', label: 'Koleksionet', icon: '🗂️' },
-  { to: '/mamaj-cms/pages', label: 'Faqet', icon: '📄' },
+  { to: '/mamaj-cms/pages', label: 'Përmbajtja e Faqeve', icon: '📄' },
   { to: '/mamaj-cms/messages', label: 'Mesazhet', icon: '📬' },
   { to: '/mamaj-cms/settings', label: 'Cilësimet', icon: '⚙️' },
 ];

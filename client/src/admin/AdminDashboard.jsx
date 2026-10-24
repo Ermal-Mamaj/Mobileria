@@ -3,7 +3,6 @@ import { AdminAuthProvider, useAdminAuth } from './AdminAuth.jsx';
 import { UnsavedChangesProvider } from './UnsavedChangesContext.jsx';
 import AdminLayout from './AdminLayout.jsx';
 import DashboardSection from './sections/DashboardSection.jsx';
-import ProductsSection from './sections/ProductsSection.jsx';
 import CollectionsListSection from './sections/CollectionsListSection.jsx';
 import CollectionDetailSection from './sections/CollectionDetailSection.jsx';
 import PagesSection from './sections/PagesSection.jsx';
@@ -22,7 +21,8 @@ function Protected() {
       <AdminLayout>
         <Routes>
           <Route index element={<DashboardSection />} />
-          <Route path="products" element={<ProductsSection />} />
+          {/* Products are managed inside each collection now; keep old links/bookmarks working. */}
+          <Route path="products" element={<Navigate to="/mamaj-cms/collections" replace />} />
           <Route path="collections" element={<CollectionsListSection />} />
           <Route path="collections/:id" element={<CollectionDetailSection />} />
           <Route path="pages" element={<PagesSection />} />
