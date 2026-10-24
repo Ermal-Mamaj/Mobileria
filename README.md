@@ -1,8 +1,9 @@
-# MAMAJ Furniture Showroom
+# Bella Casa — Furniture Showroom
 
-A mobile-first digital showroom for MAMAJ (Fabrika e Mobileve) — browse handcrafted
-furniture by room, view collections, and contact the showroom. This is a **catalog,
-not a store**: there is no cart, checkout, or pricing anywhere in the app, by design.
+The website and CMS for Bella Casa, a furniture showroom: browse furniture by room,
+see prices and photos, and contact the showroom. This is a **catalog, not a store**:
+there is no cart or online checkout, by design. Sales are recorded by staff in the
+CMS (Shitjet), which also prints the invoice (Fatura).
 
 The whole site — every photo, product, category/room page, and piece of copy — is
 editable by the business owner through a private admin dashboard, with no code

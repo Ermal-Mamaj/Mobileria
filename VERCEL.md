@@ -75,7 +75,7 @@ password.
    [myaccount.google.com/security](https://myaccount.google.com/security).
 2. Generate an App Password:
    [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-   — name it something like "MAMAJ website," Google gives you a 16-character
+   — name it something like "Bella Casa website," Google gives you a 16-character
    code. **This is not your normal Gmail password** — Gmail rejects the
    regular login password for this.
 3. Set `EMAIL_USER` to the full Gmail address, and `EMAIL_PASS` to that
@@ -99,7 +99,7 @@ password.
      script against production; not read at runtime otherwise
    - `EMAIL_USER`, `EMAIL_PASS`, `CONTACT_TO_EMAIL` (optional — see step 3)
    - `CLIENT_ORIGIN` — set this to your real production URL (e.g.
-     `https://mamaj-showroom.vercel.app` or your custom domain) once you know
+     `https://bella-casa.vercel.app` or your custom domain) once you know
      it, otherwise the API's CORS check will reject the frontend's requests
    - `NODE_ENV` — set to `production`
 3. Connect the Blob store you created in step 2 to this project: **Storage →
@@ -113,6 +113,13 @@ password.
    Vercel Blob.
 5. Visit `https://<your-project>.vercel.app/mamaj-cms/login` and log in with
    the admin credentials from the seed step to confirm everything's wired up.
+6. Fill in the shop's details in the CMS under **Cilësimet** (phone, email,
+   addresses, opening hours, logo, and the business name / NUI / address used
+   on invoices) and the home and about texts under **Përmbajtja e Faqeve**.
+
+Whenever a later change adds to the database schema, run
+`npm run migrate -w server` against the production `DATABASE_URL` once after
+it deploys. It only adds what's missing, so running it again is harmless.
 
 ## A few things worth knowing after deploying
 
