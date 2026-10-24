@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { adminAuth } from '../lib/api.js';
 import { useAdminAuth } from './AdminAuth.jsx';
 import { useUnsavedChanges } from './UnsavedChangesContext.jsx';
 import { useConfirm } from './useConfirm.jsx';
@@ -17,6 +19,23 @@ export default function AdminLayout({ children }) {
   const { isDirty, setIsDirty } = useUnsavedChanges();
   const { confirm, modal } = useConfirm();
   const navigate = useNavigate();
+  const [sessionLost, setSessionLost] = useState(false);
+
+  // Any API call that finds the session gone raises this. Signing in again
+  // happens in a new tab; when this tab gets focus back and the session is
+  // valid again, the banner clears and the user just presses save again.
+  useEffect(() => {
+    const onLost = () => setSessionLost(true);
+    const onFocus = () => {
+      adminAuth.me().then((res) => { if (res.loggedIn) setSessionLost(false); });
+    };
+    window.addEventListener('admin-session-expired', onLost);
+    window.addEventListener('focus', onFocus);
+    return () => {
+      window.removeEventListener('admin-session-expired', onLost);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, []);
 
   // Every nav click (sidebar or mobile tabs) goes through here — if the
   // current page has unsaved edits, confirm before actually leaving instead
@@ -98,7 +117,17 @@ export default function AdminLayout({ children }) {
         ))}
       </nav>
 
-      <main className="admin-main">{children}</main>
+      <main className="admin-main">
+        {sessionLost && (
+          <div className="admin-session-banner" role="alert">
+            <span>Seanca juaj ka përfunduar — hyni përsëri për të vazhduar. Ndryshimet në këtë faqe mbeten.</span>
+            <a href="/bellacasa-cms/login" target="_blank" rel="noopener" className="admin-session-banner__btn">
+              Hyr përsëri ↗
+            </a>
+          </div>
+        )}
+        {children}
+      </main>
       {modal}
     </div>
   );
