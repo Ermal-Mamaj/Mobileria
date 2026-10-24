@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { sql } from './index.js';
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-this-password';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const categories = [
   { slug: 'living-room', name: 'Dhoma e Ndenjes', tagline: 'Divane, kolltukë dhe tavolina kafeje të krijuara për momente të bukura së bashku.' },
@@ -74,7 +74,9 @@ const featuredHome = [
 
 async function run() {
   const [{ n: userCount }] = await sql`SELECT COUNT(*)::int AS n FROM admin_users`;
-  if (userCount === 0) {
+  // Without ADMIN_PASSWORD the account is created by the first visitor to the
+  // CMS (see /api/admin/setup) instead of with a guessable default.
+  if (userCount === 0 && ADMIN_PASSWORD) {
     const hash = bcrypt.hashSync(ADMIN_PASSWORD, 10);
     await sql`INSERT INTO admin_users (username, password_hash) VALUES (${ADMIN_USERNAME}, ${hash})`;
     console.log(`Seeded admin user "${ADMIN_USERNAME}"`);

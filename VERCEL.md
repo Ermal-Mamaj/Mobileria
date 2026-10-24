@@ -1,5 +1,12 @@
 # Deploying to Vercel
 
+> **Short version.** Import the repo in Vercel, add a Neon database and a Blob
+> store from the project's **Storage** tab, and deploy. Every build runs the
+> database migration and the starter content (both only add what's missing),
+> the session key is derived from `DATABASE_URL` when `JWT_SECRET` isn't set,
+> and the first person to open `/mamaj-cms` creates the admin account. Nothing
+> secret has to be typed into Vercel by hand. Email (step 3) is optional.
+
 This document covers what changed to make the app deployable on Vercel, and
 the exact steps to set it up. It assumes you're starting from a fresh Vercel
 account with nothing configured yet.

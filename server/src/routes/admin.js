@@ -42,6 +42,41 @@ router.post('/login', loginLimiter, asyncHandler(async (req, res) => {
   res.json({ username: user.username });
 }));
 
+// First run: a fresh database has no admin. Whoever opens the CMS first
+// creates the account with their own username and password, so nobody has
+// to put a password in an environment variable. Once an admin exists this
+// route refuses, and the insert itself only succeeds while the table is
+// empty, so two people racing for it can't both win.
+router.get('/setup-status', asyncHandler(async (req, res) => {
+  const [{ n }] = await sql`SELECT COUNT(*)::int AS n FROM admin_users`;
+  res.set('Cache-Control', 'no-store');
+  res.json({ needsSetup: n === 0 });
+}));
+
+router.post('/setup', loginLimiter, asyncHandler(async (req, res) => {
+  const username = String(req.body?.username || '').trim();
+  const password = String(req.body?.password || '');
+  if (username.length < 3 || username.length > 50) {
+    return res.status(400).json({ error: 'Përdoruesi duhet të ketë 3–50 shkronja.' });
+  }
+  if (password.length < 10) {
+    return res.status(400).json({ error: 'Fjalëkalimi duhet të ketë të paktën 10 karaktere.' });
+  }
+
+  const hash = bcrypt.hashSync(password, 10);
+  const [user] = await sql`
+    INSERT INTO admin_users (username, password_hash)
+    SELECT ${username}, ${hash}
+    WHERE NOT EXISTS (SELECT 1 FROM admin_users)
+    RETURNING id, username
+  `;
+  if (!user) return res.status(409).json({ error: 'Llogaria e administratorit ekziston tashmë. Hyni me të.' });
+
+  res.cookie(COOKIE_NAME, signToken(user), COOKIE_OPTS);
+  res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), CSRF_COOKIE_OPTS);
+  res.json({ username: user.username });
+}));
+
 router.post('/logout', (req, res) => {
   res.clearCookie(COOKIE_NAME, { ...COOKIE_OPTS, maxAge: undefined });
   res.clearCookie(CSRF_COOKIE_NAME, { ...CSRF_COOKIE_OPTS, maxAge: undefined });

@@ -1,7 +1,20 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'node:crypto';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+// The key that signs CMS sessions. JWT_SECRET wins when it's set. Otherwise
+// it's derived from DATABASE_URL, which is already a server-only secret that
+// is stable for the life of the deployment, so a fresh Vercel project works
+// without anyone inventing and pasting a key. Changing the database password
+// signs everyone out, which is the right outcome anyway.
+function resolveSecret() {
+  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
+  if (process.env.DATABASE_URL) {
+    return crypto.createHmac('sha256', 'bella-casa-session-key').update(process.env.DATABASE_URL).digest('hex');
+  }
+  return 'dev-secret-change-me';
+}
+
+const JWT_SECRET = resolveSecret();
 export const COOKIE_NAME = 'mamaj_admin';
 export const CSRF_COOKIE_NAME = 'mamaj_csrf';
 export const CSRF_HEADER_NAME = 'x-csrf-token';
