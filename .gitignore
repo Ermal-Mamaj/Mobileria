@@ -20,3 +20,6 @@ server/data/
 
 # One-off admin scripts that contain credentials
 server/reset-*.mjs
+
+# Screenshots from local testing
+/shots/
