@@ -12,3 +12,11 @@ server/data/
 /.thumbnail
 .vercel
 .env*
+
+# Local design skills and their working files (never commit)
+.claude/skills/
+.taste-skill/
+.impeccable/
+
+# One-off admin scripts that contain credentials
+server/reset-*.mjs
