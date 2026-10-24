@@ -10,6 +10,15 @@ const CONTACT_FIELDS = [
   ['business_hours', 'Orari i Punës'],
 ];
 
+// Prefilled on every Fatura (each one can still be changed on the invoice
+// itself before printing).
+const INVOICE_FIELDS = [
+  ['business_name', 'Emri i shitësit (emri i biznesit si në faturë)'],
+  ['business_nui', 'NUI i shitësit (numri unik identifikues)'],
+  ['business_address', 'Adresa e shitësit'],
+  ['vat_rate', 'Norma e TVSH-së (%) — lëreni bosh nëse nuk jeni në TVSH; çmimet konsiderohen me TVSH të përfshirë'],
+];
+
 const SOCIAL_FIELDS = [
   ['facebook', 'Facebook'],
   ['instagram', 'Instagram'],
@@ -27,7 +36,7 @@ function FieldGroup({ title, fields, form, onChange }) {
       {fields.map(([key, label]) => (
         <div className="admin-field" key={key}>
           <label className="admin-field__label">{label}</label>
-          <input value={form[key] || ''} onChange={(e) => onChange(key, e.target.value)} />
+          <input value={form[key] ?? ''} onChange={(e) => onChange(key, e.target.value)} />
         </div>
       ))}
     </div>
@@ -86,6 +95,7 @@ export default function SiteSettingsSection() {
       <FieldGroup title="Kontakti" fields={CONTACT_FIELDS} form={form} onChange={set} />
       <FieldGroup title="Vendndodhjet" fields={LOCATION_FIELDS} form={form} onChange={set} />
       <FieldGroup title="Rrjetet Sociale" fields={SOCIAL_FIELDS} form={form} onChange={set} />
+      <FieldGroup title="Të dhënat për faturë" fields={INVOICE_FIELDS} form={form} onChange={set} />
 
       <div className="settings-group">
         <h3 className="settings-group__title">Ballina</h3>

@@ -19,7 +19,11 @@ export const SCHEMA_STATEMENTS = [
     instagram TEXT DEFAULT '',
     business_hours TEXT DEFAULT '',
     logo_url TEXT,
-    sale_section_enabled BOOLEAN NOT NULL DEFAULT FALSE
+    sale_section_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    business_name TEXT NOT NULL DEFAULT '',
+    business_nui TEXT NOT NULL DEFAULT '',
+    business_address TEXT NOT NULL DEFAULT '',
+    vat_rate NUMERIC(5,2)
   )`,
 
   `CREATE TABLE IF NOT EXISTS categories (
@@ -103,6 +107,8 @@ export const SCHEMA_STATEMENTS = [
     customer_address TEXT NOT NULL DEFAULT '',
     notes TEXT NOT NULL DEFAULT '',
     discount NUMERIC(10,2) NOT NULL DEFAULT 0,
+    vat_rate NUMERIC(5,2),
+    invoice JSONB NOT NULL DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`,

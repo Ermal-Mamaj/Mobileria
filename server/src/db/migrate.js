@@ -26,6 +26,15 @@ async function migrate() {
   await sql.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS price NUMERIC(10,2)`);
   await sql.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS sale_price NUMERIC(10,2)`);
   await sql.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_count INTEGER NOT NULL DEFAULT 0`);
+  // Fatura: seller details + VAT rate in settings prefill the invoice. A sale
+  // keeps the VAT rate it was made with (so changing the rate never rewrites
+  // old invoices) and stores any edits made on its invoice page in `invoice`.
+  await sql.query(`ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS business_name TEXT NOT NULL DEFAULT ''`);
+  await sql.query(`ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS business_nui TEXT NOT NULL DEFAULT ''`);
+  await sql.query(`ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS business_address TEXT NOT NULL DEFAULT ''`);
+  await sql.query(`ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS vat_rate NUMERIC(5,2)`);
+  await sql.query(`ALTER TABLE sales ADD COLUMN IF NOT EXISTS vat_rate NUMERIC(5,2)`);
+  await sql.query(`ALTER TABLE sales ADD COLUMN IF NOT EXISTS invoice JSONB NOT NULL DEFAULT '{}'::jsonb`);
 
   // Product names must be unique (case- and whitespace-insensitive) so a sale
   // can find a product by its full name. Existing duplicates — e.g. several

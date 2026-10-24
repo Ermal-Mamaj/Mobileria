@@ -2389,3 +2389,379 @@ button {
     max-width: none;
   }
 }
+
+/* ============================================================
+   FATURA (invoice) — modelled on the standard Kosovo paper form
+   ============================================================ */
+
+.fatura-hint {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  background: #FFF8E7;
+  border: 1px solid #EAD9A0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: var(--muted-2);
+}
+
+.fatura-hint > span:first-child {
+  flex: 1 1 280px;
+}
+
+.fatura-hint__vat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fatura-hint__vat input {
+  width: 80px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+}
+
+.fatura {
+  color: #1f1f1f;
+}
+
+/* Editable values: look like printed text, dashed underline on screen. */
+.fatura-input {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed rgba(201, 162, 39, 0.75);
+  border-radius: 0;
+  padding: 2px 4px;
+  outline: none;
+  min-width: 0;
+}
+
+.fatura-input:hover,
+.fatura-input:focus {
+  background: rgba(235, 200, 76, 0.14);
+  border-bottom-color: var(--gold-deep);
+}
+
+.fatura-input::placeholder {
+  color: #9a9a9a;
+}
+
+/* The unit cell's suggestion arrow takes most of a narrow cell ("copë"
+   showed as "cop"); suggestions still appear while typing. */
+.fatura-input::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+.fatura__top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.fatura__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fatura__logo {
+  width: 52px;
+  height: 52px;
+  padding: 6px;
+}
+
+.fatura__title h1 {
+  font-family: var(--font-body);
+  font-size: 38px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+  color: #1f1f1f;
+}
+
+.fatura__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.fatura__meta label {
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fatura-input--date {
+  width: 130px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.fatura-input--number {
+  width: 200px;
+  text-align: right;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #C4552B;
+}
+
+.fatura__parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+  margin-bottom: 18px;
+}
+
+.fatura__party {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fatura__label {
+  display: block;
+  text-align: center;
+  font-size: 11.5px;
+  margin-bottom: 3px;
+  color: #333;
+}
+
+/* The grey labelled boxes of the paper form. */
+.fatura__box .fatura-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: #E9E7E1;
+  border: 1.5px solid #2a2a2a;
+  padding: 7px 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.fatura__box .fatura-input:hover,
+.fatura__box .fatura-input:focus {
+  border-color: var(--gold-deep);
+  background: #F3EEDC;
+}
+
+.fatura__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.fatura__table th,
+.fatura__table td {
+  border: 1.5px solid #2a2a2a;
+  padding: 6px 8px;
+}
+
+.fatura__table th {
+  font-weight: 500;
+  font-size: 11.5px;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.fatura__table tr {
+  break-inside: avoid;
+}
+
+.fatura__shade {
+  background: #E3E1DB;
+}
+
+.fatura__col-nr {
+  width: 44px;
+  text-align: center;
+}
+
+.fatura__col-unit {
+  width: 66px;
+  text-align: center;
+}
+
+.fatura__col-qty {
+  width: 56px;
+  text-align: center;
+}
+
+.fatura__col-money {
+  width: 98px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fatura__table th.fatura__col-money {
+  text-align: center;
+}
+
+.fatura__desc strong {
+  display: block;
+}
+
+.fatura__desc span {
+  display: block;
+  font-size: 11.5px;
+  color: #555;
+  white-space: pre-wrap;
+}
+
+.fatura-input--unit {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.fatura__empty td {
+  height: 26px;
+}
+
+.fatura__notes {
+  margin: 14px 0 0;
+}
+
+.fatura__bottom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 18px;
+  break-inside: avoid;
+}
+
+.fatura__signatures {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  padding-top: 8px;
+}
+
+.fatura__signatures > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 92px;
+}
+
+.fatura__sign-label {
+  font-size: 11.5px;
+  font-style: italic;
+  text-align: center;
+  color: #333;
+}
+
+.fatura__totals {
+  border-collapse: collapse;
+  min-width: 260px;
+}
+
+.fatura__totals th,
+.fatura__totals td {
+  border: 1.5px solid #2a2a2a;
+  padding: 7px 10px;
+}
+
+.fatura__totals th {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.fatura__totals td {
+  text-align: right;
+  min-width: 120px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fatura__total th,
+.fatura__total td {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .fatura__parties {
+    grid-template-columns: 1fr;
+  }
+  .fatura__top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .fatura__meta {
+    align-items: flex-start;
+  }
+  .fatura__col-nr {
+    width: 30px;
+  }
+  .fatura__col-unit {
+    width: 52px;
+  }
+  .fatura__col-qty {
+    width: 40px;
+  }
+  .fatura__title h1 {
+    font-size: 28px;
+  }
+  .fatura-input--number {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 20px;
+  }
+  .fatura__table {
+    font-size: 11px;
+  }
+  .fatura__table th,
+  .fatura__table td {
+    padding: 4px 4px;
+  }
+  .fatura__col-money {
+    width: 64px;
+  }
+  .fatura__bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .fatura__totals {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media print {
+  /* Editable cues disappear on paper; the grey boxes keep their frame. */
+  .fatura-input {
+    border-bottom-color: transparent !important;
+    background: transparent !important;
+  }
+  .fatura__box .fatura-input {
+    background: #E9E7E1 !important;
+    border: 1.5px solid #2a2a2a !important;
+  }
+  .fatura-input::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+  .fatura-input::placeholder {
+    color: transparent;
+  }
+}
