@@ -4,13 +4,13 @@ import { formatPrice, isOnSale, discountPercent } from '../../lib/price.js';
 import { useConfirm } from '../useConfirm.jsx';
 import ImageUploadField from '../ImageUploadField.jsx';
 import BulkImageUploadField from '../BulkImageUploadField.jsx';
+import StockModal from '../StockModal.jsx';
 
 const BADGES = ['', 'E RE', 'ME POROSI'];
 
 function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDelete, onAddPhoto, onRemovePhoto, onStockChange, onMove }) {
   const [local, setLocal] = useState(p);
-  const [adjusting, setAdjusting] = useState(false);
-  const [qty, setQty] = useState(1);
+  const [stockOpen, setStockOpen] = useState(false);
   const [saveError, setSaveError] = useState('');
 
   // Sync from parent when API saves come back
@@ -35,19 +35,6 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
         setSaveError(err.message);
         setLocal((prev) => ({ ...prev, [field]: p[field] }));
       });
-  }
-
-  function clampQty(n) {
-    return Math.min(99, Math.max(1, n || 1));
-  }
-
-  async function quickStock(sign) {
-    setAdjusting(true);
-    try {
-      await onStockChange(p.id, sign * qty);
-    } finally {
-      setAdjusting(false);
-    }
   }
 
   const sale = isOnSale(p);
@@ -87,33 +74,27 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
                 ) : formatPrice(p.price)}
               </span>
             )}
-            <span className={`prod-stock-badge ${stockClass}`}>
+            <button
+              type="button"
+              className={`prod-stock-badge prod-stock-badge--btn ${stockClass}`}
+              onClick={() => setStockOpen(true)}
+              aria-label={`Stoku: ${p.stock_count <= 0 ? 'pa stok' : `${p.stock_count} copë`}. Ndrysho stokun`}
+            >
               {p.stock_count <= 0 ? 'Pa stok' : `${p.stock_count} copë`}
-            </span>
+              <span className="prod-stock-badge__edit" aria-hidden="true">Ndrysho</span>
+            </button>
           </div>
-        </div>
-        <div className="prod-stock-controls">
-          <div className="prod-qty-stepper">
-            <button type="button" className="prod-qty-btn" onClick={() => setQty((q) => clampQty(q - 1))} disabled={adjusting} aria-label="Zvogëlo sasinë">−</button>
-            <input
-              type="number"
-              className="prod-qty-input"
-              min="1"
-              max="99"
-              value={qty}
-              onChange={(e) => setQty(clampQty(parseInt(e.target.value, 10)))}
-              disabled={adjusting}
-            />
-            <button type="button" className="prod-qty-btn" onClick={() => setQty((q) => clampQty(q + 1))} disabled={adjusting} aria-label="Rrit sasinë">+</button>
-          </div>
-          <button type="button" className="prod-stock-btn prod-stock-btn--sell" disabled={adjusting || p.stock_count <= 0} onClick={() => quickStock(-1)} title={`Shitje (-${qty})`}>
-            − Shit
-          </button>
-          <button type="button" className="prod-stock-btn prod-stock-btn--add" disabled={adjusting} onClick={() => quickStock(1)} title={`Shto stok (+${qty})`}>
-            + Stok
-          </button>
         </div>
       </div>
+
+      {stockOpen && (
+        <StockModal
+          product={p}
+          onAdjust={(delta) => onStockChange(p.id, delta)}
+          onSetExact={(count) => onUpdate(p.id, { stock_count: count })}
+          onClose={() => setStockOpen(false)}
+        />
+      )}
 
       <details className="prod-card__details">
         <summary className="prod-card__toggle">Ndrysho detajet ▾</summary>
