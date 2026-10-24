@@ -10,8 +10,8 @@ export default function PriceTag({ product, className = '' }) {
     const percent = discountPercent(product);
     return (
       <div className={`price-tag ${className}`}>
-        <span className="price-tag__original">{price}</span>
         <span className="price-tag__sale">{salePrice}</span>
+        <span className="price-tag__original"><span className="sr-only">Më parë </span>{price}</span>
         <span className="price-tag__discount">-{percent}%</span>
       </div>
     );

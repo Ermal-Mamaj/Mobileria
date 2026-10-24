@@ -1,8 +1,8 @@
-﻿import { Link } from 'react-router-dom';
-import NavHeader from '../components/NavHeader.jsx';
+﻿import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
-import ImageSlot from '../components/ImageSlot.jsx';
+import RoomTile from '../components/RoomTile.jsx';
 import { useApiGet } from '../lib/hooks.js';
+import './CategoriesPage.css';
 
 export default function CategoriesPage() {
   const { data: categories } = useApiGet('/categories', []);
@@ -11,24 +11,16 @@ export default function CategoriesPage() {
     <div className="app-shell">
       <NavHeader />
       <div className="page-body">
-        <div className="eyebrow eyebrow--muted">
-          <span className="eyebrow__rule" />
-          <span>KOLEKSIONET</span>
-        </div>
-        <h1 className="section-heading" style={{ marginBottom: 6 }}>Ambientet</h1>
-        <p className="section-intro">Shfletoni mobiliet sipas ambientit.</p>
+        <header className="page-intro">
+          <h1 className="page-intro__title">Ambientet</h1>
+          <p className="page-intro__text">
+            Shfletoni mobiliet sipas ambientit — çdo dhomë e shtëpisë, me foto, materiale dhe çmime.
+          </p>
+        </header>
 
-        <div className="category-grid">
-          {categories.map((cat) => (
-            <Link key={cat.id} to={`/rooms/${cat.slug}`} className="category-card">
-              <div className="category-card__image">
-                <ImageSlot src={cat.hero_image_url} placeholder="Foto" />
-              </div>
-              <div className="category-card__body">
-                <h3 className="category-card__name">{cat.name}</h3>
-                <p className="category-card__tagline">{cat.tagline}</p>
-              </div>
-            </Link>
+        <div className="rooms-grid">
+          {categories.map((cat, i) => (
+            <RoomTile key={cat.id} category={cat} index={i} />
           ))}
         </div>
       </div>

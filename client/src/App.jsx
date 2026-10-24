@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import CategoriesPage from './pages/CategoriesPage.jsx';
 import RoomPage from './pages/RoomPage.jsx';
@@ -13,31 +13,43 @@ import ContactPage from './pages/ContactPage.jsx';
 const AdminLogin = lazy(() => import('./admin/AdminLogin.jsx'));
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard.jsx'));
 
+// A new page starts at its top, the way a normal link would.
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/categories" element={<CategoriesPage />} />
-      <Route path="/rooms/:slug" element={<RoomPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route
-        path="/bellacasa-cms/login"
-        element={
-          <Suspense fallback={null}>
-            <AdminLogin />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/bellacasa-cms/*"
-        element={
-          <Suspense fallback={null}>
-            <AdminDashboard />
-          </Suspense>
-        }
-      />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/rooms/:slug" element={<RoomPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route
+          path="/bellacasa-cms/login"
+          element={
+            <Suspense fallback={null}>
+              <AdminLogin />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/bellacasa-cms/*"
+          element={
+            <Suspense fallback={null}>
+              <AdminDashboard />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </>
   );
 }
 

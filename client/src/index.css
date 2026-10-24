@@ -1,27 +1,66 @@
-
 :root {
-  --navy: #232A20;
+  /* Brand palette. The original names (--navy, --gold…) are kept because the
+     CMS stylesheet reads them too; the newer names describe what they are. */
+  --navy: #232A20;          /* forest ink — the brand's dark */
   --navy-2: #2C3428;
-  --gold: #D6B88E;
-  --gold-deep: #8C6A40;
-  --bg: #F4F1EB;
+  --gold: #D6B88E;          /* oak — the brand's accent */
+  --gold-deep: #7A5A33;     /* oak dark enough for text on linen (5.6:1) */
+  --bg: #F4F1EB;            /* linen — page background */
+  --paper: #FBF9F5;         /* lifted surfaces: form fields, panels */
   --white: #FFFFFF;
-  --text: #262A24;
-  --muted: #8E877A;
-  --muted-2: #66604F;
-  --border: #E5DED2;
+  --text: #232A20;
+  --muted: #6B6457;         /* secondary text, AA on linen (5.2:1) */
+  --muted-2: #5F584C;
+  --border: #E2DACB;
+  --hairline: rgba(35, 42, 32, 0.14);
+  --cream: #F3EBDD;         /* light text on the dark wall tones */
+  --clay: #A4472E;          /* sale price only */
 
-  /* Layered, soft shadows reused across cards for a consistent depth system. */
-  --shadow-sm: 0 2px 8px rgba(38, 42, 36, 0.05), 0 1px 2px rgba(38, 42, 36, 0.04);
-  --shadow-md: 0 8px 22px rgba(38, 42, 36, 0.10), 0 2px 6px rgba(38, 42, 36, 0.05);
-  --shadow-lg: 0 16px 36px rgba(38, 42, 36, 0.14), 0 4px 10px rgba(38, 42, 36, 0.06);
+  /* Each room is painted its own wall colour (see lib/brand.js ROOM_TONES).
+     All of them carry --cream text at AA or better. */
+  --tone-walnut: #6B4A33;
+  --tone-sage: #4D5B45;
+  --tone-lake: #3D5560;
+  --tone-ink: #2C3428;
+  --tone-ochre: #8A5E26;
+  --tone-olive: #5A5833;
 
-  --radius: 6px;
-  --app-width: 460px;
+  --shadow-sm: 0 1px 2px rgba(35, 42, 32, 0.06);
+  --shadow-md: 0 10px 30px rgba(35, 42, 32, 0.10), 0 2px 6px rgba(35, 42, 32, 0.05);
+  --shadow-lg: 0 30px 80px rgba(20, 24, 18, 0.28), 0 8px 20px rgba(20, 24, 18, 0.12);
 
+  --radius: 4px;
+  --radius-sm: 2px;
+
+  /* Layout */
+  --page-max: 1280px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --nav-h: 64px;
+  --section-y: clamp(64px, 9vw, 128px);
+
+  /* Type */
   --font-serif: 'Fraunces Variable', Georgia, serif;
-  --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-wordmark: 'Fraunces Variable', Georgia, serif;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --display-sm: clamp(26px, 3vw, 34px);
+  --display-md: clamp(34px, 4.6vw, 56px);
+  --display-lg: clamp(44px, 7.4vw, 104px);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-ui: 200ms;
+  --dur-hero: 900ms;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --nav-h: 76px;
+  }
 }
 
 * {
@@ -39,22 +78,26 @@ html {
 }
 
 html, body {
-  /* Ambient backdrop only visible on tablet/desktop, where the mobile column
-     floats centered. On phones the column fills the width and covers this. */
-  background:
-    radial-gradient(120% 80% at 50% -10%, #2F382A 0%, #20271D 38%, #161B13 100%) fixed;
+  background: var(--bg);
   min-height: 100%;
 }
 
 body {
   font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.55;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Body scroll is frozen while the mobile menu or a product sheet is open. */
+body.is-locked {
+  overflow: hidden;
+}
+
 ::selection {
-  background: rgba(214, 184, 142, 0.35);
+  background: rgba(214, 184, 142, 0.45);
 }
 
 #root {
@@ -62,50 +105,23 @@ body {
   min-height: 100dvh;
 }
 
-/* Public, mobile-first pages render inside this centered column; the admin
-   dashboard intentionally opts out to use the full viewport. On phones it is
-   edge-to-edge; from tablet up it floats as a framed device. */
+/* Every public page renders inside this shell; the CMS opts out and uses the
+   full viewport its own way. The page is fluid from a 320px phone up. */
 .app-shell {
   width: 100%;
-  margin: 0 auto;
-  /* Fill the phone screen edge-to-edge (full width, no max cap in the phone
-     range) and top-to-bottom. `dvh` tracks the dynamic viewport so the layout
-     stays full-height as mobile browser chrome (URL bar) shows/hides; `vh` is
-     the fallback for browsers without `dvh`. The 460px reference width is
-     re-imposed only in the framed-device zone below. */
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg);
   position: relative;
+  display: flex;
+  flex-direction: column;
   /* No `overflow` here on purpose — an overflow container would trap the
-     sticky nav header. Horizontal overflow is contained on <body> instead. */
+     sticky nav header. Horizontal overflow is clipped on <html> instead. */
 }
 
-/* From tablet up (≥600px) the mobile column stops filling the screen and
-   floats as a framed device, re-capped to the 460px reference width. This
-   keeps every phone — including large handsets and small foldables up to
-   599px — edge-to-edge. The nav and footer round their outer corners so the
-   frame looks clipped without an overflow container (which would break the
-   sticky header). */
-@media (min-width: 600px) {
-  .app-shell {
-    max-width: var(--app-width);
-    min-height: auto;
-    margin: 32px auto;
-    border-radius: 26px;
-    box-shadow:
-      0 40px 80px rgba(0, 0, 0, 0.45),
-      0 12px 28px rgba(0, 0, 0, 0.30);
-    outline: 1px solid rgba(214, 184, 142, 0.10);
-  }
-  .app-shell .nav-header__bar {
-    border-top-left-radius: 26px;
-    border-top-right-radius: 26px;
-  }
-  .app-shell .footer {
-    border-bottom-left-radius: 26px;
-    border-bottom-right-radius: 26px;
-  }
+/* Pushes the footer to the bottom on short pages. */
+.app-shell > .footer {
+  margin-top: auto;
 }
 
 a {
@@ -115,6 +131,7 @@ a {
 
 button {
   font-family: inherit;
+  color: inherit;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -124,74 +141,36 @@ img {
 
 /* Keyboard focus stays visible & on-brand; mouse/touch taps don't get a ring. */
 :focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+/* On the dark surfaces the light oak ring is the one that shows. */
+.nav-header :focus-visible,
+.footer :focus-visible,
+.home-page__hero :focus-visible,
+.room-hero :focus-visible,
+.room-tile:focus-visible,
+.contact-form-panel :focus-visible {
+  outline-color: var(--gold);
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-/* From desktop up the framed-device presentation gives way to a true
-   full-width responsive layout; each component adds its own desktop rules. */
-@media (min-width: 900px) {
-  html, body {
-    background: var(--bg);
-  }
-  .app-shell {
-    max-width: none;
-    margin: 0;
-    min-height: 100vh;
-    border-radius: 0;
-    box-shadow: none;
-    outline: none;
-  }
-  .app-shell .nav-header__bar {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-  .app-shell .footer {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-/* ── Small phones ─────────────────────────────────────────────
-   The layout is authored against a 460px reference column. On
-   narrower handsets (≤380px: iPhone SE / mini, compact Androids,
-   down to 320px) the side gutters are tightened to reclaim content
-   width. Display type already scales fluidly via clamp() declared
-   per-component, so only spacing needs adjusting here. */
-@media (max-width: 380px) {
-  .page-body                 { padding: 18px 16px 34px; }
-  .home-page__section        { padding: 30px 16px 8px; }
-  .home-page__section--tight { padding: 8px 16px 0; }
-  .room-product-grid         { padding: 18px 16px 28px; }
-  .product-carousel          { padding: 4px 16px 28px; scroll-padding-left: 16px; }
-  .contact-form-panel        { padding: 20px 16px; }
-
-  /* Full-bleed hero copy hugs closer to the edge on tiny screens. */
-  .home-page__hero-copy      { left: 18px; right: 18px; }
-  .page-hero__copy           { left: 16px; right: 16px; }
-  .about-hero__copy          { left: 16px; }
-
-  /* Editorial band: pull its inner padding and hairlines in to match. */
-  .brand-band                { padding: 38px 20px; }
-  .brand-band::before        { left: 20px; right: 20px; }
-  .brand-band__quote-mark    { left: 14px; font-size: 84px; }
-
-  .category-grid             { gap: 12px; }
-}
-
 ::-webkit-scrollbar {
-  height: 5px;
-  width: 5px;
+  height: 6px;
+  width: 6px;
 }
 ::-webkit-scrollbar-thumb {
   background: #C8B79A;
@@ -205,25 +184,24 @@ img {
 .wordmark {
   display: block;
   font-family: var(--font-wordmark);
-  font-variation-settings: 'SOFT' 100, 'WONK' 0;
-  font-weight: 500;
+  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 72;
+  font-weight: 450;
   letter-spacing: -0.02em;
   line-height: 1;
   white-space: nowrap;
 }
 
 .nav-header__logo--text {
-  font-size: 26px;
-  color: var(--gold);
+  font-size: 25px;
 }
 
 .footer__logo--text {
-  font-size: 34px;
+  font-size: clamp(44px, 7vw, 88px);
   color: var(--gold);
 }
 
 @media (min-width: 900px) {
   .nav-header__logo--text {
-    font-size: 30px;
+    font-size: 28px;
   }
 }

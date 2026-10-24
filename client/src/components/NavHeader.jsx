@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
+import { BRAND, telUrl, whatsappUrl } from '../lib/brand.js';
+import Icon from './Icon.jsx';
 import './NavHeader.css';
 
 const LINKS = [
@@ -22,44 +24,108 @@ export default function NavHeader() {
   const { pathname } = useLocation();
   const active = activeKeyFor(pathname);
   const { data: settings } = useApiGet('/site-settings', {});
+  // On the Home page the bar starts see-through over the hero photo and turns
+  // solid once the page scrolls; every other page gets the solid bar.
+  const overHero = pathname === '/';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!overHero) return;
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [overHero]);
+
+  // The open menu covers the page: freeze the page behind it, close on Escape.
+  useEffect(() => {
+    if (!menuOpen) return;
+    document.body.classList.add('is-locked');
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.classList.remove('is-locked');
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
+  const transparent = overHero && !scrolled && !menuOpen;
+  const close = () => setMenuOpen(false);
 
   return (
-    <div className="nav-header">
+    <header className={`nav-header ${transparent ? 'is-transparent' : ''} ${menuOpen ? 'is-menu-open' : ''}`}>
       <div className="nav-header__bar">
-        <Link to="/" className="nav-header__brand" onClick={() => setMenuOpen(false)}>
+        <Link to="/" className="nav-header__brand" onClick={close} aria-label={`${BRAND} — Ballina`}>
           {settings?.logo_url ? (
-            <img src={settings.logo_url} alt="Bella Casa" className="nav-header__logo" />
+            <img src={settings.logo_url} alt={BRAND} className="nav-header__logo" />
           ) : (
-            <span className="wordmark nav-header__logo--text">Bella Casa</span>
+            <span className="wordmark nav-header__logo--text">{BRAND}</span>
           )}
         </Link>
+
+        <nav className="nav-header__links" aria-label="Kryesore">
+          {LINKS.map((link) => (
+            <Link
+              key={link.key}
+              to={link.to}
+              className={`nav-header__link ${active === link.key ? 'is-active' : ''}`}
+              aria-current={active === link.key ? 'page' : undefined}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {settings?.phone && (
+          <a href={telUrl(settings.phone)} className="nav-header__call">
+            <Icon name="phone" />
+            <span>{settings.phone}</span>
+          </a>
+        )}
+
         <button
           type="button"
           className="nav-header__toggle"
-          aria-label="Menyja"
+          aria-label={menuOpen ? 'Mbyll menynë' : 'Hap menynë'}
           aria-expanded={menuOpen}
+          aria-controls="site-menu"
           onClick={() => setMenuOpen((open) => !open)}
         >
           <span />
           <span />
-          <span />
         </button>
-
-        <div className={`nav-header__menu ${menuOpen ? 'is-open' : ''}`}>
-          <nav>
-            {LINKS.map((link) => (
-              <Link
-                key={link.key}
-                to={link.to}
-                className={`nav-header__link ${active === link.key ? 'is-active' : ''}`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
       </div>
-    </div>
+
+      <div id="site-menu" className="nav-header__menu" hidden={!menuOpen}>
+        <nav aria-label="Menyja">
+          {LINKS.map((link, i) => (
+            <Link
+              key={link.key}
+              to={link.to}
+              className={`nav-header__menu-link ${active === link.key ? 'is-active' : ''}`}
+              aria-current={active === link.key ? 'page' : undefined}
+              style={{ '--i': i }}
+              onClick={close}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        {(settings?.phone || settings?.whatsapp) && (
+          <div className="nav-header__menu-contact">
+            {settings.phone && (
+              <a href={telUrl(settings.phone)} className="btn-gold">
+                <Icon name="phone" /> Telefononi
+              </a>
+            )}
+            {settings.whatsapp && (
+              <a href={whatsappUrl(settings.whatsapp)} className="btn-ghost" target="_blank" rel="noopener noreferrer">
+                <Icon name="whatsapp" /> WhatsApp
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </header>
   );
 }

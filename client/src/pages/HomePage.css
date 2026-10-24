@@ -1,21 +1,29 @@
-.home-page {
-  display: flex;
-  flex-direction: column;
-}
+/* The hero, quote band and contact heading are also rendered by the CMS's
+   live-preview editor (admin/sections/HomeSection.jsx) with these same class
+   names, so the owner edits on the real design. Rules that only make sense on
+   the live page (full-screen height, the load sequence, sitting under the
+   nav) are scoped to `.home-page`. */
 
+/* ── Hero ──────────────────────────────────────────────────── */
 .home-page__hero {
-  height: clamp(340px, 78vw, 400px);
   position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
   background: var(--navy);
+  color: var(--cream);
 }
 
-/* Two layers so the transforms don't fight: the wrapper carries the
-   scroll parallax, the image itself carries the slow zoom. Bleeding the
-   wrapper past the hero edges keeps the parallax from exposing a gap. */
+.home-page .home-page__hero {
+  /* Slide up under the transparent nav so the photo starts at the very top. */
+  margin-top: calc(-1 * var(--nav-h));
+  min-height: max(600px, 92svh);
+}
+
 .home-page__hero-media {
   position: absolute;
-  inset: -6% -2%;
+  inset: -2% 0 -12%;
   transform: translate3d(0, var(--hero-shift, 0px), 0);
   will-change: transform;
 }
@@ -23,368 +31,293 @@
 .home-page__hero-image {
   position: absolute;
   inset: 0;
-  /* Lifts the room out from under the scrim — without it the furniture,
-     which is the whole point of the shot, reads as a dark smudge. */
-  filter: brightness(1.16) saturate(1.06);
-  animation: hero-drift 28s ease-in-out infinite alternate;
-  will-change: transform;
+  width: 100%;
+  height: 100%;
 }
 
-/* A very slow push-in. It should read as the room breathing, not as a
-   slideshow — if you can consciously see it move, it's too fast. */
-@keyframes hero-drift {
-  from {
-    transform: scale(1.03);
-  }
-  to {
-    transform: scale(1.15) translate3d(-2%, -1.5%, 0);
-  }
-}
-
-/* Vignette: darkens the corners so the eye falls to the copy and the
-   hero gains a little depth. */
-.home-page__hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 90% at 65% 40%, transparent 38%, rgba(14, 17, 11, 0.38) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.home-page__hero-copy > * {
-  animation: hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-}
-.home-page__hero-copy > *:nth-child(1) { animation-delay: 0.1s; }
-.home-page__hero-copy > *:nth-child(2) { animation-delay: 0.24s; }
-.home-page__hero-copy > *:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-page__hero-image,
-  .home-page__hero-copy > * {
-    animation: none;
-  }
-  .home-page__hero-media {
-    transform: none;
-  }
-}
-
-/* The scrim has to guarantee legibility for *any* hero photo the client
-   uploads, including bright ones — so it stays heavy where the copy sits
-   rather than only tinting the bottom edge. */
 .home-page__hero-gradient {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
-    linear-gradient(to right, rgba(18, 22, 15, 0.72) 0%, rgba(18, 22, 15, 0.4) 45%, rgba(18, 22, 15, 0.14) 100%),
-    linear-gradient(to top, rgba(18, 22, 15, 0.88) 0%, rgba(18, 22, 15, 0.45) 55%, rgba(18, 22, 15, 0.25) 100%);
-  pointer-events: none;
-}
-
-/* Warm gold glow anchored near the CTA, so the empty hero reads as lit. */
-.home-page__hero::after {
-  content: '';
-  position: absolute;
-  left: -10%;
-  bottom: -20%;
-  width: 75%;
-  height: 55%;
-  background: radial-gradient(circle, rgba(214, 184, 142, 0.18) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
+    linear-gradient(to top, rgba(16, 20, 14, 0.88) 0%, rgba(16, 20, 14, 0.45) 38%, rgba(16, 20, 14, 0.05) 70%),
+    linear-gradient(to right, rgba(16, 20, 14, 0.45) 0%, rgba(16, 20, 14, 0) 60%);
 }
 
 .home-page__hero-copy {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 34px;
+  position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 48px) var(--gutter) clamp(48px, 8vw, 104px);
 }
 
 .home-page__hero-headline {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: clamp(38px, 11vw, 44px);
-  font-weight: 600;
-  color: var(--white);
-  line-height: 1.06;
-  letter-spacing: 0.3px;
-  margin-bottom: 22px;
+  font-variation-settings: 'SOFT' 100, 'opsz' 144;
+  font-size: var(--display-lg);
+  font-weight: 330;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  max-width: 14ch;
+  margin-bottom: clamp(28px, 3.6vw, 44px);
+  text-wrap: balance;
 }
 
+.home-page__hero-line {
+  display: block;
+  overflow: hidden;
+  /* Room for descenders inside the clipping mask. */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.home-page__hero-line > span {
+  display: block;
+}
+
+.home-page__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── The one orchestrated moment: the hero settles in on load. The photo
+   eases from a slight zoom, the headline lines rise out of their masks one
+   after another, then the label and buttons fade up. Nothing waits on it:
+   all of it is visible from the first frame for reduced-motion users. ─── */
+.home-page .home-page__hero-image {
+  animation: hero-photo-in 1600ms var(--ease-out) both;
+}
+
+.home-page .home-page__hero-line > span {
+  animation: hero-line-in var(--dur-hero) var(--ease-out) both;
+  animation-delay: calc(150ms + var(--i, 0) * 110ms);
+}
+
+.home-page .home-page__hero-copy .eyebrow,
+.home-page .home-page__hero-actions {
+  animation: hero-fade-in 700ms var(--ease-out) both;
+}
+
+.home-page .home-page__hero-copy .eyebrow {
+  animation-delay: 60ms;
+}
+
+.home-page .home-page__hero-actions {
+  animation-delay: 520ms;
+}
+
+@keyframes hero-photo-in {
+  from { transform: scale(1.08); opacity: 0.4; }
+}
+
+@keyframes hero-line-in {
+  from { transform: translateY(105%); }
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* ── Sections ──────────────────────────────────────────────── */
 .home-page__section {
-  padding: 36px 20px 8px;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: var(--section-y) var(--gutter) 0;
 }
 
-.home-page__section--tight {
-  padding: 8px 20px 0;
+.home-page__section:last-of-type {
+  padding-bottom: var(--section-y);
 }
 
-.category-grid {
+.home-sale-section .section-heading {
+  color: var(--clay);
+}
+
+/* Rooms: one column on phones, two on tablets, and from desktop an editorial
+   grid where wide and narrow tiles alternate row by row. */
+.home-rooms {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 8px;
+  gap: 16px;
 }
 
-.category-grid .category-card__image {
-  height: 112px;
+@media (min-width: 600px) {
+  .home-rooms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .home-rooms.is-editorial {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .home-rooms.is-editorial > :nth-child(1),
+  .home-rooms.is-editorial > :nth-child(4) {
+    grid-column: span 7;
+  }
+  .home-rooms.is-editorial > :nth-child(2),
+  .home-rooms.is-editorial > :nth-child(3) {
+    grid-column: span 5;
+  }
+  .home-rooms.is-editorial .room-tile__image {
+    aspect-ratio: auto;
+    height: clamp(300px, 29vw, 420px);
+  }
+}
+
+/* Products: a swipeable rail on phones and tablets, a grid on desktop. */
+.product-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(220px, 72%);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gutter);
+  margin: -6px calc(-1 * var(--gutter)) 0;
+  padding: 6px var(--gutter) 8px;
+  scrollbar-width: none;
+  /* Without this Chrome counts the off-screen cards' positioned photos
+     towards the page width, and phones get a sideways scroll. */
+  contain: paint;
+}
+
+.product-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.product-rail > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 600px) {
+  .product-rail {
+    grid-auto-columns: minmax(240px, 40%);
+  }
+}
+
+@media (min-width: 1000px) {
+  .product-rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 48px 24px;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    contain: none;
+  }
+}
+
+/* ── Quote band ────────────────────────────────────────────── */
+.home-page .brand-band {
+  margin-top: var(--section-y);
 }
 
 .brand-band {
-  margin: 30px 0;
-  padding: 44px 28px;
-  background:
-    radial-gradient(120% 100% at 100% 0%, #2A3226 0%, var(--navy) 60%);
   position: relative;
+  background: var(--navy);
+  color: var(--cream);
   overflow: hidden;
-}
-
-/* Thin gold hairlines top & bottom to frame the editorial band. */
-.brand-band::before {
-  content: '';
-  position: absolute;
-  left: 28px;
-  right: 28px;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(214, 184, 142, 0.4), transparent);
-}
-
-.brand-band__quote-mark {
-  font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: 96px;
-  line-height: 0.6;
-  color: rgba(214, 184, 142, 0.26);
-  position: absolute;
-  top: 30px;
-  left: 20px;
 }
 
 .brand-band__content {
   position: relative;
-  z-index: 2;
-  padding-top: 16px;
+  z-index: 1;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 140px) var(--gutter);
+}
+
+.brand-band__quote-mark {
+  position: absolute;
+  top: clamp(-20px, -2vw, 0px);
+  right: var(--gutter);
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 100, 'opsz' 144;
+  font-size: clamp(220px, 30vw, 420px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.14;
+  pointer-events: none;
+  user-select: none;
 }
 
 .brand-band__text {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: clamp(21px, 9.6px + 3.57vw, 26px);
-  font-weight: 500;
-  color: var(--white);
-  line-height: 1.38;
-  margin-bottom: 20px;
+  font-variation-settings: 'SOFT' 100, 'opsz' 96;
+  font-size: clamp(28px, 4.2vw, 54px);
+  font-weight: 320;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  max-width: 24ch;
+  margin-bottom: 32px;
+  text-wrap: balance;
 }
 
-.product-carousel {
+/* ── Contact ───────────────────────────────────────────────── */
+.home-contact {
+  display: grid;
+  gap: 40px;
+}
+
+.home-contact__direct {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+  margin-top: 32px;
+  border-top: 1px solid var(--hairline);
+}
+
+.home-contact__direct a {
   display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding: 4px 20px 30px;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 20px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.product-card {
-  flex: 0 0 176px;
-  scroll-snap-align: start;
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--white);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
   text-decoration: none;
-  color: inherit;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  /* NOTE: deliberately no height:100% here. Percentage heights resolve to
-     auto when the parent (.product-carousel) has no explicit height of its
-     own — which silently disables the browser's default flex/grid stretch
-     behavior entirely, and was the actual cause of cards ending up
-     different heights. Leaving this out is what lets stretch work. */
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.product-card__image {
-  height: 154px;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.product-card__badge {
-  position: absolute;
-  top: 11px;
-  left: 11px;
-  background: var(--navy);
-  color: var(--gold);
-  padding: 4px 11px;
-  border-radius: 20px;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  z-index: 2;
-  box-shadow: 0 4px 10px rgba(18, 22, 15, 0.25);
-}
-
-.product-card__body {
-  padding: 14px;
-  /* Stretches to fill whatever space is left below the (fixed-height)
-     image, and lays its own children in a column so the button can be
-     pushed to the bottom independently of how many lines the name or
-     material take up. */
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  /* Sized to comfortably fit the worst realistic case (2-line name, a
-     material line, and a wrapping sale price + discount badge) so cards
-     land on the same size by default — not just when they happen to be
-     stretched against a taller sibling in the same row. Measured against
-     real worst-case content before picking this number. */
-  min-height: 212px;
-}
-
-.product-card__name {
-  font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
-  color: var(--text);
-  line-height: 1.05;
-  margin-bottom: 4px;
-  /* Long names get 2 lines max, then truncate — keeps card heights from
-     varying wildly between products instead of just being consistent
-     about where the button sits. */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  transition: padding-left var(--dur-ui) var(--ease-out);
 }
 
-.product-card__material {
-  font-size: 10.5px;
+.home-contact__direct a:hover {
+  padding-left: 6px;
+}
+
+.home-contact__direct .icon {
+  width: 22px;
+  height: 22px;
+  color: var(--gold-deep);
+}
+
+.home-contact__direct span {
+  display: grid;
+}
+
+.home-contact__direct small {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 12px;
 }
 
-.product-card__price {
-  margin-bottom: 12px;
-}
-
-.product-card__badge--sale {
-  background: #B5603F;
-  color: #fff;
-}
-
-.product-card__body .btn-outline {
-  /* The actual fix: whatever space the name/material didn't use gets
-     absorbed here, so the button always sits flush with the card's
-     bottom edge no matter how much text is above it. */
-  margin-top: auto;
+.home-contact__form {
+  background: #EDE7DC;
+  border-radius: var(--radius);
+  padding: clamp(24px, 4vw, 48px);
 }
 
 @media (min-width: 900px) {
-  .home-page__hero {
-    height: 560px;
-  }
-  .home-page__hero-copy {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: min(100% - 96px, 1184px);
-    bottom: 64px;
-  }
-  .home-page__hero-headline {
-    font-size: 60px;
-    max-width: 640px;
-  }
-  .home-page__section {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 64px 48px 12px;
-  }
-  .home-page__section--tight {
-    padding: 12px 48px 0;
-  }
-  .category-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-  }
-  .category-grid .category-card__image {
-    height: 190px;
-  }
-  .brand-band {
-    padding: 64px 48px;
-  }
-  .brand-band::before {
-    left: 48px;
-    right: 48px;
-  }
-  .brand-band__quote-mark {
-    left: max(20px, calc(50% - 612px));
-    top: 40px;
-    font-size: 120px;
-  }
-  .brand-band__content {
-    max-width: 1184px;
-    margin: 0 auto;
-  }
-  .brand-band__text {
-    font-size: 34px;
-    max-width: 720px;
-  }
-  .product-carousel {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    overflow: visible;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 10px 48px 48px;
-    width: 100%;
-  }
-  .product-card {
-    flex: initial;
-  }
-  .product-card__image {
-    height: 200px;
-  }
-  #contactForm.home-page__section {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 440px;
-    column-gap: 64px;
+  .home-contact {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(48px, 7vw, 112px);
     align-items: start;
-    padding-bottom: 88px;
-  }
-  #contactForm .contact-form,
-  #contactForm .contact-form__success {
-    grid-column: 2;
-    grid-row: 1 / span 3;
   }
 }

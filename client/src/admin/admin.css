@@ -1674,14 +1674,21 @@ button {
 /* Base editable field — resets to blend into whatever typography it sits
    inside, then gains a visible dashed outline on hover/focus so it's
    discoverable as editable without disturbing the page's real look. */
-.wysiwyg-field {
-  display: block;
-  width: 100%;
+/* The type reset sits in :where() (no specificity) so a page class on the
+   same field — e.g. `brand-band__text`, `about-quote__text` — keeps its own
+   font, size and colour, and the field reads exactly like the live page. */
+:where(.wysiwyg-field) {
   font: inherit;
   color: inherit;
   text-align: inherit;
   line-height: inherit;
   letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.wysiwyg-field {
+  display: block;
+  width: 100%;
   background: rgba(214, 184, 142, 0.07);
   border: 1.5px dashed rgba(140, 106, 64, 0.55);
   border-radius: 6px;
@@ -1725,7 +1732,6 @@ button {
 
 .wysiwyg-field--headline {
   min-height: 2.2em;
-  font-family: inherit;
 }
 
 .wysiwyg-field--btn {

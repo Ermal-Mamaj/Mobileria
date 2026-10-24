@@ -27,3 +27,22 @@ export function telUrl(phone) {
   const rest = String(phone).includes('/') ? String(phone).split('/')[1].replace(/^\d+/, '') : '';
   return `tel:${(first + rest).replace(/[^\d+]/g, '')}`;
 }
+
+// WhatsApp chat link for a number typed any way ("+383 44 218 690",
+// "044218690"…). Local Kosovo numbers starting with 0 get the 383 prefix.
+// An optional message is prefilled in the chat.
+export function whatsappUrl(number, message) {
+  let digits = String(number).split('/')[0].replace(/\D/g, '');
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  else if (digits.startsWith('0')) digits = `383${digits.slice(1)}`;
+  return `https://wa.me/${digits}${message ? `?text=${encodeURIComponent(message)}` : ''}`;
+}
+
+// The CMS takes Facebook / Instagram as either a full link or a bare page
+// name; both end up as a link.
+export function socialUrl(network, value) {
+  const v = String(value).trim();
+  if (/^https?:\/\//i.test(v)) return v;
+  const handle = v.replace(/^@/, '').replace(/^(www\.)?(facebook|instagram)\.com\//i, '');
+  return `https://www.${network}.com/${handle}`;
+}

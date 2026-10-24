@@ -1,147 +1,275 @@
-.room-product-grid {
-  padding: 22px 20px 32px;
+/* ── Room hero: the room's wall colour beside its photo ─────── */
+.room-hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  background: var(--tone, var(--tone-ink));
+  color: var(--cream);
 }
 
-.room-product-card {
-  border-radius: 6px;
+.room-hero__media {
+  position: relative;
+  order: -1;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--white);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
+}
+
+.room-hero__image {
+  position: absolute;
+  inset: 0;
+  animation: room-photo-in 1200ms var(--ease-out) both;
+}
+
+.room-hero__panel {
+  padding: 28px var(--gutter) 40px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  justify-content: flex-end;
 }
 
-.room-product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.room-hero__crumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 18px;
+  color: rgba(243, 235, 221, 0.8);
 }
 
-.room-product-card:active {
-  transform: translateY(-1px);
+.room-hero__crumbs a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(243, 235, 221, 0.35);
+  transition: border-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
 }
 
-.room-product-card__image {
-  height: 124px;
-  position: relative;
+.room-hero__crumbs a:hover {
+  color: var(--cream);
+  border-bottom-color: var(--cream);
 }
 
-.room-product-card__body {
-  padding: 12px 13px;
-}
-
-.room-product-card__name {
+.room-hero__title {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: 18px;
+  font-variation-settings: 'SOFT' 100, 'opsz' 144;
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 330;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.room-hero__tagline {
+  margin-top: 18px;
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  max-width: 38ch;
+  opacity: 0.88;
+}
+
+.room-hero__count {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(243, 235, 221, 0.2);
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text);
-  line-height: 1.05;
-  margin-bottom: 3px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
-.room-product-card__material {
-  font-size: 10.5px;
+@keyframes room-photo-in {
+  from { transform: scale(1.05); opacity: 0.5; }
+}
+
+@media (min-width: 900px) {
+  .room-hero {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    min-height: clamp(460px, 44vw, 620px);
+  }
+  .room-hero__media {
+    order: 0;
+    aspect-ratio: auto;
+  }
+  .room-hero__panel {
+    /* Line the copy up with the page container's left edge. */
+    padding: 56px clamp(32px, 4vw, 64px) 56px max(var(--gutter), calc((100vw - var(--page-max)) / 2));
+  }
+}
+
+/* ── Products ──────────────────────────────────────────────── */
+.room-products {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 88px) var(--gutter) 0;
+}
+
+.room-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px 14px;
+}
+
+@media (min-width: 900px) {
+  .room-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px 28px;
+  }
+}
+
+.room-products__empty {
+  font-size: var(--text-lg);
   color: var(--muted);
-  line-height: 1.4;
+  padding: 40px 0;
 }
 
-.room-product-card__price {
-  margin-top: 6px;
+/* ── "Didn't find it?" band ─────────────────────────────────── */
+.room-cta {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: var(--section-y) var(--gutter);
 }
 
+.room-cta__inner {
+  display: grid;
+  gap: 28px;
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
+}
+
+.room-cta__title {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 50, 'opsz' 96;
+  font-size: var(--display-sm);
+  font-weight: 380;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.room-cta__text {
+  margin-top: 10px;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.room-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+}
+
+.room-cta__next {
+  display: grid;
+  text-decoration: none;
+}
+
+.room-cta__next small {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.room-cta__next span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  transition: gap var(--dur-ui) var(--ease-out);
+}
+
+.room-cta__next:hover span {
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  .room-cta__inner {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}
+
+/* ── Product sheet ─────────────────────────────────────────── */
 .room-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 12, 8, 0.6);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  z-index: 40;
+  z-index: 100;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 24px;
-  animation: modal-fade 0.2s ease-out;
-}
-
-@keyframes modal-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  background: rgba(16, 20, 14, 0.62);
+  animation: room-overlay-in 200ms var(--ease-out);
 }
 
 .room-modal {
-  width: 100%;
-  max-width: 390px;
-  background: var(--bg);
-  border-radius: 20px;
-  overflow: hidden;
-  max-height: 82vh;
-  overflow-y: auto;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
-  animation: modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes modal-pop {
-  from { opacity: 0; transform: translateY(12px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.room-modal__image {
-  height: 250px;
   position: relative;
-  background: var(--navy);
+  width: 100%;
+  max-height: 94svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  border-radius: 14px 14px 0 0;
+  box-shadow: var(--shadow-lg);
+  animation: room-sheet-in 320ms var(--ease-out);
 }
 
 .room-modal__close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 36px;
-  height: 36px;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
-  background: rgba(18, 22, 15, 0.7);
-  color: var(--gold);
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 2;
+  background: rgba(251, 249, 245, 0.92);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--dur-ui) var(--ease-out);
 }
 
-/* --- Product photo carousel --- */
+.room-modal__close:hover {
+  background: var(--white);
+}
+
+.room-modal__image {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--navy);
+}
+
+.room-modal__image .image-slot {
+  position: absolute;
+  inset: 0;
+  animation: room-photo-swap 250ms var(--ease-out);
+}
 
 .room-modal__nav {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
   border-radius: 50%;
   border: none;
-  background: rgba(18, 22, 15, 0.6);
-  color: var(--gold);
-  font-size: 26px;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 2;
+  background: rgba(251, 249, 245, 0.9);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
-  transition: background 0.15s;
+  cursor: pointer;
+  transition: background-color var(--dur-ui) var(--ease-out);
 }
 
 .room-modal__nav:hover {
-  background: rgba(18, 22, 15, 0.85);
+  background: var(--white);
 }
 
 .room-modal__nav--prev { left: 12px; }
@@ -149,37 +277,37 @@
 
 .room-modal__counter {
   position: absolute;
+  left: 12px;
   bottom: 12px;
-  right: 14px;
   z-index: 2;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(18, 22, 15, 0.65);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 11px;
-  letter-spacing: 0.4px;
-  backdrop-filter: blur(4px);
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  background: rgba(24, 29, 22, 0.72);
+  color: var(--cream);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .room-modal__thumbs {
   display: flex;
   gap: 8px;
-  padding: 10px 22px 0;
+  padding: 10px 16px 0;
   overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .room-modal__thumb {
-  flex: 0 0 auto;
-  width: 62px;
-  height: 46px;
+  flex: 0 0 64px;
+  height: 64px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   cursor: pointer;
-  background: none;
-  opacity: 0.6;
-  transition: opacity 0.15s, border-color 0.15s;
+  background: #E9E4DA;
+  opacity: 0.65;
+  transition: opacity var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
 }
 
 .room-modal__thumb img {
@@ -189,66 +317,123 @@
   display: block;
 }
 
-.room-modal__thumb.is-active,
 .room-modal__thumb:hover {
   opacity: 1;
-  border-color: var(--gold);
 }
 
-/* Tells you a product has more angles before you open it. */
-.room-product-card__count {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: rgba(18, 22, 15, 0.7);
-  color: #fff;
-  font-size: 10.5px;
-  letter-spacing: 0.3px;
-  backdrop-filter: blur(4px);
+.room-modal__thumb.is-active {
+  opacity: 1;
+  border-color: var(--gold-deep);
 }
 
 .room-modal__body {
-  padding: 24px 22px 30px;
+  padding: 24px var(--gutter) calc(28px + env(safe-area-inset-bottom));
+}
+
+.room-modal__room {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
 }
 
 .room-modal__name {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: clamp(25px, 13.6px + 3.57vw, 30px);
-  font-weight: 600;
-  color: var(--text);
+  font-variation-settings: 'SOFT' 50, 'opsz' 96;
+  font-size: clamp(30px, 3.4vw, 42px);
+  font-weight: 360;
   line-height: 1.05;
-  margin: 10px 0;
+  letter-spacing: -0.02em;
+}
+
+.room-modal__material {
+  margin-top: 8px;
+  color: var(--muted);
 }
 
 .room-modal__price {
-  margin-bottom: 14px;
+  margin-top: 18px;
+}
+
+.room-modal__price .price-tag__current,
+.room-modal__price .price-tag__sale {
+  font-size: 22px;
 }
 
 .room-modal__description {
-  font-size: 13.5px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
   color: var(--muted-2);
   line-height: 1.65;
 }
 
+.room-modal__actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+@keyframes room-overlay-in {
+  from { opacity: 0; }
+}
+
+@keyframes room-sheet-in {
+  from { transform: translateY(40px); opacity: 0; }
+}
+
+@keyframes room-photo-swap {
+  from { opacity: 0.4; }
+}
+
+/* Desktop: a centred two-column dialog, photos left, details right. */
 @media (min-width: 900px) {
-  .room-product-grid {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 40px 48px 64px;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-  }
-  .room-product-card__image {
-    height: 190px;
+  .room-modal-overlay {
+    align-items: center;
+    padding: 32px;
   }
   .room-modal {
-    max-width: 640px;
+    max-width: 1120px;
+    max-height: min(760px, 92vh);
+    border-radius: var(--radius);
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    overflow: hidden;
+    animation-name: room-dialog-in;
+  }
+  .room-modal__gallery {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--navy);
   }
   .room-modal__image {
-    height: 340px;
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 420px;
   }
+  .room-modal__thumbs {
+    padding: 10px;
+    background: var(--navy);
+  }
+  .room-modal__body {
+    padding: 56px 44px 44px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .room-modal__actions {
+    margin-top: auto;
+    padding-top: 28px;
+  }
+  .room-modal__close {
+    top: 16px;
+    right: 16px;
+  }
+}
+
+@keyframes room-dialog-in {
+  from { transform: translateY(12px) scale(0.985); opacity: 0; }
 }
