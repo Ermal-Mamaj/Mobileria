@@ -5,6 +5,21 @@ import { asyncHandler } from '../lib/asyncHandler.js';
 
 const router = Router();
 
+// Product names are unique ignoring case and surrounding spaces (enforced by
+// products_name_unique_idx too) so a sale can pick a product by its full name.
+async function nameTaken(name, excludeId = 0) {
+  const rows = await sql`
+    SELECT id FROM products
+    WHERE lower(btrim(name)) = lower(btrim(${name})) AND id <> ${excludeId}
+    LIMIT 1
+  `;
+  return rows.length > 0;
+}
+
+function duplicateNameError(name) {
+  return { error: `Ekziston tashmë një produkt me emrin "${name}". Emrat e produkteve duhet të jenë unikë.` };
+}
+
 // Products come back with their extra photos already attached, so opening a
 // product doesn't cost a second round trip just to see the other angles. The
 // cover shot stays in products.image_url; `images` is everything beyond it.
@@ -50,7 +65,16 @@ router.get('/', asyncHandler(async (req, res) => {
 
 router.post('/', requireAdmin, asyncHandler(async (req, res) => {
   const { category_id, name, material = '', image_url = null, badge = null, price = null, sale_price = null, stock_count = 0, featured_home = 0, sort_order } = req.body || {};
-  if (!category_id || !name) return res.status(400).json({ error: 'category_id and name required' });
+  if (!category_id || !name || !String(name).trim()) return res.status(400).json({ error: 'category_id and name required' });
+
+  // A clashing name gets a number appended ("Produkt i Ri 2") rather than
+  // failing, so the CMS "add product" button always works.
+  const base = String(name).trim();
+  let uniqueName = base;
+  for (let n = 2; await nameTaken(uniqueName); n++) {
+    if (n > 500) return res.status(409).json(duplicateNameError(base));
+    uniqueName = `${base} ${n}`;
+  }
 
   // New products append to the end of their category by default, rather
   // than all piling up at 0 — matters for reordering to feel predictable
@@ -63,7 +87,7 @@ router.post('/', requireAdmin, asyncHandler(async (req, res) => {
 
   const [row] = await sql`
     INSERT INTO products (category_id, name, material, image_url, badge, price, sale_price, stock_count, featured_home, sort_order)
-    VALUES (${category_id}, ${name}, ${material}, ${image_url}, ${badge}, ${price}, ${sale_price}, ${stock_count}, ${featured_home ? 1 : 0}, ${order})
+    VALUES (${category_id}, ${uniqueName}, ${material}, ${image_url}, ${badge}, ${price}, ${sale_price}, ${stock_count}, ${featured_home ? 1 : 0}, ${order})
     RETURNING *
   `;
   res.status(201).json({ ...row, images: [] });
@@ -85,6 +109,11 @@ const IMAGES_SUBQUERY = `(
 router.put('/:id', requireAdmin, asyncHandler(async (req, res) => {
   const body = { ...req.body };
   if ('featured_home' in body) body.featured_home = body.featured_home ? 1 : 0;
+  if ('name' in body) {
+    body.name = String(body.name ?? '').trim();
+    if (!body.name) return res.status(400).json({ error: 'Emri i produktit nuk mund të jetë bosh.' });
+    if (await nameTaken(body.name, Number(req.params.id))) return res.status(409).json(duplicateNameError(body.name));
+  }
 
   // Only touch columns the client actually sent. The admin UI genuinely
   // relies on this being a real partial update (each field auto-saves on

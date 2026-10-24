@@ -11,6 +11,7 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
   const [local, setLocal] = useState(p);
   const [adjusting, setAdjusting] = useState(false);
   const [qty, setQty] = useState(1);
+  const [saveError, setSaveError] = useState('');
 
   // Sync from parent when API saves come back
   useEffect(() => setLocal(p), [p]);
@@ -21,12 +22,19 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
 
   function blur(field) {
     const value = local[field];
+    if (value === p[field]) return;
     // For numeric fields, send null instead of empty string
-    if (['price', 'sale_price'].includes(field)) {
-      onUpdate(p.id, { [field]: value === '' || value === null ? null : value });
-    } else {
-      onUpdate(p.id, { [field]: value });
-    }
+    const patch = ['price', 'sale_price'].includes(field)
+      ? { [field]: value === '' || value === null ? null : value }
+      : { [field]: value };
+    // A rejected save (e.g. a name another product already uses) shows the
+    // reason and puts the field back to its saved value.
+    Promise.resolve(onUpdate(p.id, patch))
+      .then(() => setSaveError(''))
+      .catch((err) => {
+        setSaveError(err.message);
+        setLocal((prev) => ({ ...prev, [field]: p[field] }));
+      });
   }
 
   function clampQty(n) {
@@ -140,7 +148,9 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
           <div className="admin-field">
             <label className="admin-field__label">Emri</label>
             <input value={local.name || ''} onChange={(e) => setField('name', e.target.value)} onBlur={() => blur('name')} />
+            <span className="admin-field__hint">Emri duhet të jetë unik — përdoret për ta gjetur produktin te Shitjet.</span>
           </div>
+          {saveError && <p className="sale-form__error" role="alert">{saveError}</p>}
 
           <div className="admin-field">
             <label className="admin-field__label">Materiali</label>

@@ -12,6 +12,7 @@ import productsRoutes from './routes/products.js';
 import contentRoutes from './routes/content.js';
 import uploadsRoutes from './routes/uploads.js';
 import contactRoutes from './routes/contact.js';
+import salesRoutes from './routes/sales.js';
 
 const PORT = process.env.PORT || 3001;
 
@@ -54,8 +55,14 @@ app.use('/api/products', cachePublicReads, productsRoutes);
 app.use('/api/content', cachePublicReads, contentRoutes);
 app.use('/api/uploads', uploadsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/sales', salesRoutes);
 
 app.use((err, req, res, next) => {
+  // Unique-constraint violation (e.g. two admins saving the same product
+  // name at the same moment): a clear 409 instead of a generic 500.
+  if (err?.code === '23505') {
+    return res.status(409).json({ error: 'Ky emër ekziston tashmë. Zgjidhni një emër tjetër.' });
+  }
   console.error(err);
   res.status(500).json({ error: 'Internal server error' });
 });

@@ -5,6 +5,9 @@ import AdminLayout from './AdminLayout.jsx';
 import DashboardSection from './sections/DashboardSection.jsx';
 import CollectionsListSection from './sections/CollectionsListSection.jsx';
 import CollectionDetailSection from './sections/CollectionDetailSection.jsx';
+import SalesListSection from './sections/SalesListSection.jsx';
+import SaleFormSection from './sections/SaleFormSection.jsx';
+import SaleDocumentSection from './sections/SaleDocumentSection.jsx';
 import PagesSection from './sections/PagesSection.jsx';
 import SiteSettingsSection from './sections/SiteSettingsSection.jsx';
 import MessagesSection from './sections/MessagesSection.jsx';
@@ -25,6 +28,10 @@ function Protected() {
           <Route path="products" element={<Navigate to="/mamaj-cms/collections" replace />} />
           <Route path="collections" element={<CollectionsListSection />} />
           <Route path="collections/:id" element={<CollectionDetailSection />} />
+          <Route path="sales" element={<SalesListSection />} />
+          <Route path="sales/new" element={<SaleFormSection />} />
+          <Route path="sales/:id" element={<SaleDocumentSection />} />
+          <Route path="sales/:id/edit" element={<SaleFormSection />} />
           <Route path="pages" element={<PagesSection />} />
           <Route path="messages" element={<MessagesSection />} />
           <Route path="settings" element={<SiteSettingsSection />} />
