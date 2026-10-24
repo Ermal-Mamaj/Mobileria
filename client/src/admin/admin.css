@@ -965,15 +965,24 @@ button {
   color: #2E7D32;
 }
 
-/* The stock badge on a product row is a button that opens the stock popup. */
+/* Name on the left, stock on the right; the stock badge opens the popup. */
+.prod-card__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.prod-card__title-row .prod-card__name {
+  margin: 0;
+  min-width: 0;
+}
+
 .prod-stock-badge--btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 28px;
-  padding: 4px 10px;
   border: 1px solid transparent;
   font-family: inherit;
+  line-height: 1.4;
   cursor: pointer;
   transition: border-color 0.15s, transform 0.1s;
 }
@@ -983,14 +992,7 @@ button {
 }
 
 .prod-stock-badge--btn:active {
-  transform: scale(0.97);
-}
-
-.prod-stock-badge__edit {
-  font-weight: 600;
-  opacity: 0.75;
-  padding-left: 6px;
-  border-left: 1px solid currentColor;
+  transform: scale(0.96);
 }
 
 /* ============================================================
@@ -1093,19 +1095,20 @@ button {
 
 .stock-modal__stepper {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  grid-template-columns: 40px 64px 40px;
+  width: max-content;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 12px;
 }
 
 .stock-modal__stepper button {
-  height: 52px;
+  height: 36px;
   border: 0;
   background: #F7F5F0;
   color: var(--text);
-  font-size: 22px;
+  font-size: 17px;
   cursor: pointer;
 }
 
@@ -1116,12 +1119,12 @@ button {
 
 .stock-modal__stepper input {
   width: 100%;
-  height: 52px;
+  height: 36px;
   border: 0;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
   text-align: center;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 700;
   font-family: inherit;
   color: var(--text);
@@ -1146,19 +1149,19 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  min-height: 56px;
-  padding: 8px 10px;
+  min-height: 44px;
+  padding: 6px 10px;
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 8px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.12s;
 }
 
 .stock-modal__btn span {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
   opacity: 0.8;
 }
@@ -1202,10 +1205,10 @@ button {
 }
 
 .stock-modal__exact-row input {
-  height: 46px;
-  padding: 0 14px;
+  height: 40px;
+  padding: 0 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   font-family: inherit;
   font-size: 16px;
   color: var(--text);
@@ -1218,10 +1221,10 @@ button {
 }
 
 .stock-modal__save {
-  height: 46px;
-  padding: 0 20px;
+  height: 40px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--navy);
   color: var(--gold);
   font-family: inherit;

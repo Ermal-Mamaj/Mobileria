@@ -61,7 +61,18 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
           }
         </div>
         <div className="prod-card__summary">
-          <h3 className="prod-card__name">{p.name || 'Produkt i Ri'}</h3>
+          <div className="prod-card__title-row">
+            <h3 className="prod-card__name">{p.name || 'Produkt i Ri'}</h3>
+            <button
+              type="button"
+              className={`prod-stock-badge prod-stock-badge--btn ${stockClass}`}
+              onClick={() => setStockOpen(true)}
+              aria-label={`Stoku: ${p.stock_count <= 0 ? 'pa stok' : `${p.stock_count} copë`}. Ndrysho stokun`}
+              title="Ndrysho stokun"
+            >
+              {p.stock_count <= 0 ? 'Pa stok' : `${p.stock_count} copë`}
+            </button>
+          </div>
           <div className="prod-card__meta">
             {formatPrice(p.price) && (
               <span className="prod-card__price">
@@ -74,15 +85,6 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
                 ) : formatPrice(p.price)}
               </span>
             )}
-            <button
-              type="button"
-              className={`prod-stock-badge prod-stock-badge--btn ${stockClass}`}
-              onClick={() => setStockOpen(true)}
-              aria-label={`Stoku: ${p.stock_count <= 0 ? 'pa stok' : `${p.stock_count} copë`}. Ndrysho stokun`}
-            >
-              {p.stock_count <= 0 ? 'Pa stok' : `${p.stock_count} copë`}
-              <span className="prod-stock-badge__edit" aria-hidden="true">Ndrysho</span>
-            </button>
           </div>
         </div>
       </div>
