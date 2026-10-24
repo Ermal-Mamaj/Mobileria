@@ -8,6 +8,10 @@ import ProductCard from '../components/ProductCard.jsx';
 import Icon from '../components/Icon.jsx';
 import { useApiGet } from '../lib/hooks.js';
 import { roomTone, telUrl, whatsappUrl } from '../lib/brand.js';
+import Magnet from '../components/reactbits/Magnet.jsx';
+import {
+  gsap, lockScroll, MOTION_OK, parallax, refreshTriggers, riseIn, splitReveal, SplitText, unlockScroll, useGSAP, whenIntroDone, wipeIn,
+} from '../lib/motion.js';
 import './RoomPage.css';
 
 // The cover shot plus any extra angles, as one list to page through.
@@ -27,6 +31,9 @@ export default function RoomPage() {
   const [index, setIndex] = useState(0);
   const closeRef = useRef(null);
   const openerRef = useRef(null);
+  const heroRef = useRef(null);
+  const gridRef = useRef(null);
+  const ctaRef = useRef(null);
 
   const photos = photosOf(selected);
   // The room keeps the wall colour it has everywhere else (its place in the
@@ -50,7 +57,7 @@ export default function RoomPage() {
   // up; the page behind it stays still and focus moves into the sheet.
   useEffect(() => {
     if (!selected) return;
-    document.body.classList.add('is-locked');
+    lockScroll();
     closeRef.current?.focus();
     const onKey = (e) => {
       if (e.key === 'Escape') close();
@@ -60,10 +67,47 @@ export default function RoomPage() {
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      document.body.classList.remove('is-locked');
+      unlockScroll();
       window.removeEventListener('keydown', onKey);
     };
   }, [selected, photos.length]);
+
+  // Hero: the photo wipes in from the right and settles from a zoom, the
+  // room name rises word by word, the rest follows; then the photo drifts
+  // against the scroll.
+  useGSAP(() => {
+    if (!category?.name) return;
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const q = gsap.utils.selector(heroRef);
+      const split = SplitText.create(q('.room-hero__title')[0], { type: 'lines,words', mask: 'lines' });
+      const tl = gsap.timeline({ paused: true });
+      tl.from(q('.room-hero__media'), { clipPath: 'inset(0% 0% 0% 100%)', duration: 1.4, ease: 'expo.inOut' }, 0)
+        .from(q('.room-hero__image'), { scale: 1.3, duration: 2, ease: 'expo.out' }, 0.2)
+        .from(q('.room-hero__crumbs'), { autoAlpha: 0, y: 14, duration: 0.7 }, 0.35)
+        .from(split.words, { yPercent: 120, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, 0.45)
+        .from(q('.room-hero__tagline, .room-hero__count'), { autoAlpha: 0, y: 20, duration: 0.9, stagger: 0.1 }, 0.8);
+      whenIntroDone().then(() => tl.play());
+      parallax(q('.room-hero__image')[0], { trigger: heroRef.current, yPercent: 8, start: 'top top' });
+    });
+    return () => mm.revert();
+  }, { scope: heroRef, dependencies: [slug, category?.name], revertOnUpdate: true });
+
+  // Products wipe open in rows; the "can't find it" band rises after them.
+  useGSAP(() => {
+    if (!products.length) return;
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const q = gsap.utils.selector(gridRef);
+      wipeIn(q('.product-card__image'), { stagger: 0.1 });
+      riseIn(q('.product-card__body'), { y: 24, stagger: 0.1 });
+      const c = gsap.utils.selector(ctaRef);
+      splitReveal(c('.room-cta__title')[0]);
+      riseIn([...c('.room-cta__text'), ...c('.room-cta__actions > *')], { y: 24 });
+      refreshTriggers();
+    });
+    return () => mm.revert();
+  }, { dependencies: [slug, products.length], revertOnUpdate: true });
 
   const enquiry = selected ? `Përshëndetje, jam i interesuar për "${selected.name}" (${category?.name || ''}).` : '';
 
@@ -71,7 +115,7 @@ export default function RoomPage() {
     <div className="app-shell">
       <NavHeader />
 
-      <section className={`room-hero tone-${tone}`}>
+      <section className={`room-hero tone-${tone}`} ref={heroRef}>
         <div className="room-hero__panel">
           <nav className="room-hero__crumbs" aria-label="Ku jeni">
             <Link to="/categories">Ambientet</Link>
@@ -89,7 +133,7 @@ export default function RoomPage() {
         </div>
       </section>
 
-      <div className="room-products">
+      <div className="room-products" ref={gridRef}>
         {products.length > 0 ? (
           <div className="room-product-grid">
             {products.map((p) => (
@@ -101,14 +145,16 @@ export default function RoomPage() {
         )}
       </div>
 
-      <section className="room-cta">
+      <section className="room-cta" ref={ctaRef}>
         <div className="room-cta__inner">
           <div>
             <h2 className="room-cta__title">Nuk e gjeni atë që kërkoni?</h2>
             <p className="room-cta__text">Shumë mobilie i punojmë me porosi — në përmasat, ngjyrat dhe materialet që i duhen shtëpisë suaj.</p>
           </div>
           <div className="room-cta__actions">
-            <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
+            <Magnet padding={50} magnetStrength={4}>
+              <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
+            </Magnet>
             {next && next.slug !== slug && (
               <Link to={`/rooms/${next.slug}`} className="room-cta__next">
                 <small>Ambienti tjetër</small>
@@ -120,7 +166,7 @@ export default function RoomPage() {
       </section>
 
       {selected && (
-        <div className="room-modal-overlay" onClick={close}>
+        <div className="room-modal-overlay" onClick={close} data-lenis-prevent>
           <div
             className="room-modal"
             role="dialog"

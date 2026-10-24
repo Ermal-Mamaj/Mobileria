@@ -23,9 +23,8 @@
 
 .home-page__hero-media {
   position: absolute;
-  inset: -2% 0 -12%;
-  transform: translate3d(0, var(--hero-shift, 0px), 0);
-  will-change: transform;
+  /* Taller than the hero so the scroll parallax never shows an edge. */
+  inset: -2% 0 -18%;
 }
 
 .home-page__hero-image {
@@ -66,60 +65,81 @@
   text-wrap: balance;
 }
 
-.home-page__hero-line {
-  display: block;
-  overflow: hidden;
-  /* Room for descenders inside the clipping mask. */
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
-}
-
-.home-page__hero-line > span {
-  display: block;
-}
-
 .home-page__hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-/* ── The one orchestrated moment: the hero settles in on load. The photo
-   eases from a slight zoom, the headline lines rise out of their masks one
-   after another, then the label and buttons fade up. Nothing waits on it:
-   all of it is visible from the first frame for reduced-motion users. ─── */
-.home-page .home-page__hero-image {
-  animation: hero-photo-in 1600ms var(--ease-out) both;
+/* Scroll cue in the hero's corner: a line that keeps drawing downward. */
+.home-page__hero-scroll {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(48px, 8vw, 104px);
+  z-index: 2;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(243, 235, 221, 0.8);
+  writing-mode: vertical-rl;
 }
 
-.home-page .home-page__hero-line > span {
-  animation: hero-line-in var(--dur-hero) var(--ease-out) both;
-  animation-delay: calc(150ms + var(--i, 0) * 110ms);
+.home-page__hero-scroll-line {
+  position: relative;
+  width: 1px;
+  height: 72px;
+  overflow: hidden;
+  background: rgba(243, 235, 221, 0.25);
 }
 
-.home-page .home-page__hero-copy .eyebrow,
-.home-page .home-page__hero-actions {
-  animation: hero-fade-in 700ms var(--ease-out) both;
+.home-page__hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  animation: hero-scroll-line 2.2s var(--ease-out) infinite;
 }
 
-.home-page .home-page__hero-copy .eyebrow {
-  animation-delay: 60ms;
+@keyframes hero-scroll-line {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
 }
 
-.home-page .home-page__hero-actions {
-  animation-delay: 520ms;
+@media (min-width: 900px) {
+  .home-page__hero-scroll {
+    display: flex;
+  }
 }
 
-@keyframes hero-photo-in {
-  from { transform: scale(1.08); opacity: 0.4; }
+/* ── Room-name marquee (React Bits ScrollVelocity): drifts on its own and
+   speeds up, leaning into the direction, as the page is scrolled. ──────── */
+.home-marquee {
+  padding: clamp(40px, 6vw, 80px) 0 0;
+  overflow: hidden;
+  color: var(--text);
 }
 
-@keyframes hero-line-in {
-  from { transform: translateY(105%); }
+.home-marquee__placeholder {
+  height: calc(2 * 1.12 * clamp(44px, 8vw, 128px));
 }
 
-@keyframes hero-fade-in {
-  from { opacity: 0; transform: translateY(10px); }
+.home-marquee .rb-scroller {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 100, 'opsz' 144;
+  font-size: clamp(44px, 8vw, 128px);
+  font-weight: 320;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  filter: none;
+}
+
+.home-marquee .rb-parallax + .rb-parallax .rb-scroller {
+  color: var(--gold-deep);
 }
 
 /* ── Sections ──────────────────────────────────────────────── */
@@ -130,7 +150,7 @@
   padding: var(--section-y) var(--gutter) 0;
 }
 
-.home-page__section:last-of-type {
+.home-contact {
   padding-bottom: var(--section-y);
 }
 
@@ -216,6 +236,19 @@
 /* ── Quote band ────────────────────────────────────────────── */
 .home-page .brand-band {
   margin-top: var(--section-y);
+}
+
+/* On desktop the band pins while its words light up, so it fills the
+   screen with the quote centred. */
+@media (min-width: 900px) {
+  .home-page .brand-band {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  .home-page .brand-band__content {
+    width: 100%;
+  }
 }
 
 .brand-band {

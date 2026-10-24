@@ -20,11 +20,24 @@
 
 /* ── Page title block for the plain pages (Ambientet, Na Kontaktoni). ─── */
 .page-intro {
+  position: relative;
   display: grid;
   gap: 18px;
   padding-bottom: clamp(32px, 4vw, 48px);
   margin-bottom: clamp(32px, 4vw, 56px);
-  border-bottom: 1px solid var(--hairline);
+}
+
+/* The hairline under the title; --rule lets it draw in from the left. */
+.page-intro::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--hairline);
+  transform: scaleX(var(--rule, 1));
+  transform-origin: left;
 }
 
 .page-intro__title {

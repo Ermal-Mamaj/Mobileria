@@ -1,7 +1,9 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
 import { BRAND, BRAND_LINE, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
+import { gsap, MOTION_OK, riseIn, SplitText, useGSAP } from '../lib/motion.js';
 import './Footer.css';
 
 // Everything here comes from the CMS: rooms from Categories, the rest from
@@ -9,6 +11,26 @@ import './Footer.css';
 export default function Footer() {
   const { data: settings } = useApiGet('/site-settings', {});
   const { data: categories } = useApiGet('/categories', []);
+  const ref = useRef(null);
+
+  // The closing flourish: the big wordmark rises letter by letter as the
+  // footer comes up, and the columns follow.
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const q = gsap.utils.selector(ref);
+      const word = q('.footer__logo--text')[0];
+      if (word) {
+        const split = SplitText.create(word, { type: 'chars', mask: 'chars' });
+        gsap.from(split.chars, {
+          yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: 0.04,
+          scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
+        });
+      }
+      riseIn([...q('.footer__line'), ...q('.footer__col')], { y: 30, stagger: 0.08, start: 'top 95%' });
+    });
+    return () => mm.revert();
+  }, { scope: ref, dependencies: [categories.length, settings?.id, settings?.logo_url], revertOnUpdate: true });
 
   const locations = [
     settings?.address && { label: 'Lokacioni 1', address: settings.address },
@@ -19,7 +41,7 @@ export default function Footer() {
   const hasSocial = settings?.facebook || settings?.instagram;
 
   return (
-    <footer className="footer">
+    <footer className="footer" ref={ref}>
       <div className="footer__inner">
         <div className="footer__brand">
           {settings?.logo_url ? (

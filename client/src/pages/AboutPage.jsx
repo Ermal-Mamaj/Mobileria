@@ -1,9 +1,14 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import Icon from '../components/Icon.jsx';
 import { useApiGet } from '../lib/hooks.js';
+import Magnet from '../components/reactbits/Magnet.jsx';
+import {
+  gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, scrubWords, splitReveal, useGSAP,
+} from '../lib/motion.js';
 import './AboutPage.css';
 
 const VALUE_ICONS = [
@@ -17,12 +22,40 @@ const VALUE_ICONS = [
 export default function AboutPage() {
   const { data: about } = useApiGet('/content/about', {});
   const values = about.values_json || [];
+  const heroRef = useRef(null);
+  const bodyRef = useRef(null);
+
+  // The title rises after the curtain; scrolling pushes the workshop photo
+  // back. The lead paragraph lights up word by word as it's read, values
+  // draw their top rule and rise, the quote comes in line by line.
+  useGSAP(() => {
+    if (!about.id) return;
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const h = gsap.utils.selector(heroRef);
+      introHeadline(h('.about-hero__title')[0], { stagger: 0.1 });
+      gsap.from(h('.about-hero__image'), { scale: 1.25, duration: 2.2, ease: 'expo.out' });
+      gsap.to(h('.about-hero__image'), {
+        yPercent: 18, ease: 'none',
+        scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true },
+      });
+      const q = gsap.utils.selector(bodyRef);
+      scrubWords(q('.about-paragraph')[0], { start: 'top 85%', end: 'bottom 55%' });
+      riseIn(q('.about-paragraph:nth-child(2)'), { y: 30 });
+      splitReveal(q('.about-subheading')[0]);
+      riseIn(q('.value-item'), { y: 40, stagger: 0.12 });
+      splitReveal(q('.about-quote__text')[0], { stagger: 0.12 });
+      riseIn([...q('.about-quote__author'), ...q('.about-visit > *')], { y: 24 });
+      refreshTriggers();
+    });
+    return () => mm.revert();
+  }, { dependencies: [about.id, values.length], revertOnUpdate: true });
 
   return (
     <div className="app-shell">
       <NavHeader />
 
-      <div className="about-hero">
+      <div className="about-hero" ref={heroRef}>
         <ImageSlot src={about.hero_image_url} placeholder="Foto e sallonit" alt="" dark priority className="about-hero__image" />
         <div className="about-hero__gradient" />
         <div className="about-hero__copy">
@@ -30,7 +63,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="page-body about-body">
+      <div className="page-body about-body" ref={bodyRef}>
         <p className="about-paragraph">{about.paragraph_1}</p>
         <p className="about-paragraph">{about.paragraph_2}</p>
 
@@ -59,7 +92,9 @@ export default function AboutPage() {
         <div className="about-visit">
           <p>Mobiliet duken më mirë nga afër. Ejani në sallon, ose na shkruani se çfarë po kërkoni.</p>
           <div className="about-visit__actions">
-            <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
+            <Magnet padding={50} magnetStrength={4}>
+              <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
+            </Magnet>
             <Link to="/categories" className="btn-outline">Shiko ambientet</Link>
           </div>
         </div>

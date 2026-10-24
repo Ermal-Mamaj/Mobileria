@@ -1,13 +1,34 @@
+import { useRef } from 'react';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ContactForm from '../components/ContactForm.jsx';
 import Icon from '../components/Icon.jsx';
 import { useApiGet } from '../lib/hooks.js';
 import { mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
+import { gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, useGSAP } from '../lib/motion.js';
 import './ContactPage.css';
 
 export default function ContactPage() {
   const { data: settings } = useApiGet('/site-settings', {});
+  const ref = useRef(null);
+
+  // Title after the curtain; contact rows slide in from the left one by one,
+  // the form panel rises beside them.
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const q = gsap.utils.selector(ref);
+      introHeadline(q('.page-intro__title')[0]);
+      gsap.from(q('.page-intro__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
+      gsap.from(q('.page-intro'), { '--rule': 0, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
+      if (!settings.id) return;
+      gsap.from(q('.contact-channel'), { autoAlpha: 0, x: -40, duration: 1, stagger: 0.1, delay: 0.6 });
+      gsap.from(q('.contact-form-panel'), { autoAlpha: 0, y: 60, duration: 1.2, ease: 'expo.out', delay: 0.7 });
+      riseIn([...q('.contact-visit__title'), ...q('.contact-hours'), ...q('.contact-location-card'), ...q('.contact-social')], { y: 28, stagger: 0.08 });
+      refreshTriggers();
+    });
+    return () => mm.revert();
+  }, { scope: ref, dependencies: [settings.id], revertOnUpdate: true });
 
   // Every way to reach the showroom that's filled in under Site Settings.
   const channels = [
@@ -33,7 +54,7 @@ export default function ContactPage() {
   return (
     <div className="app-shell">
       <NavHeader />
-      <div className="page-body">
+      <div className="page-body" ref={ref}>
         <header className="page-intro">
           <h1 className="page-intro__title">Na Kontaktoni</h1>
           <p className="page-intro__text">Do të gëzoheshim t'ju dëgjonim — për një pyetje, një çmim, apo një mobilie me porosi.</p>

@@ -4,6 +4,11 @@
   z-index: 50;
   height: var(--nav-h);
   color: var(--cream);
+  transition: transform 450ms var(--ease-out);
+}
+
+.nav-header.is-tucked {
+  transform: translateY(-100%);
 }
 
 .nav-header__bar {

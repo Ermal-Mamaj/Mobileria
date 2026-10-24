@@ -11,7 +11,7 @@ export default function RoomTile({ category, index, className = '' }) {
   const count = Number(category.product_count) || 0;
   return (
     <Link to={`/rooms/${category.slug}`} className={`room-tile tone-${roomTone(index)} ${className}`}>
-      <div className="room-tile__image">
+      <div className="room-tile__image" data-cursor="Hap">
         <ImageSlot src={category.hero_image_url} placeholder="Foto" alt="" />
       </div>
       <div className="room-tile__caption">

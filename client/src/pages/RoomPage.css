@@ -14,8 +14,9 @@
 
 .room-hero__image {
   position: absolute;
-  inset: 0;
-  animation: room-photo-in 1200ms var(--ease-out) both;
+  inset: -10% 0;
+  width: 100%;
+  height: 120%;
 }
 
 .room-hero__panel {
@@ -73,10 +74,6 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-}
-
-@keyframes room-photo-in {
-  from { transform: scale(1.05); opacity: 0.5; }
 }
 
 @media (min-width: 900px) {

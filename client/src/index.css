@@ -71,7 +71,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  /* No CSS smooth scrolling: Lenis does it, and the two fight. */
   /* Clip stray horizontal overflow at the root. Kept on <html> (not <body>)
      so <body> stays the normal document scroller and position:sticky works. */
   overflow-x: hidden;
@@ -119,6 +119,12 @@ body.is-locked {
      sticky nav header. Horizontal overflow is clipped on <html> instead. */
 }
 
+/* ScrollTrigger wraps a pinned section in a spacer; in the flex shell it
+   must not be squeezed, or the page after it slides under the pin. */
+.app-shell > .pin-spacer {
+  flex-shrink: 0;
+}
+
 /* Pushes the footer to the bottom on short pages. */
 .app-shell > .footer {
   margin-top: auto;
@@ -156,9 +162,6 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
