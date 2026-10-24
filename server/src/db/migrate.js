@@ -27,7 +27,30 @@ async function migrate() {
   await sql.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS sale_price NUMERIC(10,2)`);
   await sql.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_count INTEGER NOT NULL DEFAULT 0`);
 
-  console.log(`Migration complete: ${SCHEMA_STATEMENTS.length} tables ensured, gallery_images dropped, new columns ensured.`);
+  // Product names must be unique (case- and whitespace-insensitive) so a sale
+  // can find a product by its full name. Existing duplicates — e.g. several
+  // "Produkt i Ri" made with the add button — would block the unique index,
+  // so the newer copies get a numbered suffix first. The oldest product with
+  // each name keeps it unchanged. Loops in case a suffixed name itself
+  // collides with an existing product.
+  for (let pass = 0; pass < 5; pass++) {
+    const renamed = await sql.query(`
+      WITH ranked AS (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY lower(btrim(name)) ORDER BY id) AS rn
+        FROM products
+      )
+      UPDATE products p
+      SET name = btrim(p.name) || ' (' || ranked.rn || ')'
+      FROM ranked
+      WHERE p.id = ranked.id AND ranked.rn > 1
+      RETURNING p.id, p.name
+    `);
+    if (renamed.length === 0) break;
+    for (const r of renamed) console.log(`Renamed duplicate product #${r.id} to "${r.name}"`);
+  }
+  await sql.query('CREATE UNIQUE INDEX IF NOT EXISTS products_name_unique_idx ON products (lower(btrim(name)))');
+
+  console.log(`Migration complete: ${SCHEMA_STATEMENTS.length} tables ensured, gallery_images dropped, new columns ensured, product names unique.`);
 }
 
 migrate()

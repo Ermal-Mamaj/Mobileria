@@ -460,7 +460,9 @@
 
 .admin-field input,
 .admin-field textarea,
-.admin-field select {
+.admin-field select,
+.sale-picker__input,
+.sale-totals__row input {
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -472,7 +474,9 @@
 
 .admin-field input:focus,
 .admin-field textarea:focus,
-.admin-field select:focus {
+.admin-field select:focus,
+.sale-picker__input:focus,
+.sale-totals__row input:focus {
   border-color: var(--gold);
 }
 
@@ -1785,4 +1789,603 @@ button {
 .bulk-upload__btn:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+/* ============================================================
+   SALES — form
+   ============================================================ */
+
+.sale-form__error {
+  background: #FBEAEA;
+  color: #B3261E;
+  border: 1px solid #F1C7C7;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sale-line {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #FCFBF8;
+}
+
+.sale-line__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sale-line__num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sale-line__remove {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #F1C7C7;
+  background: #FFF0EE;
+  color: #C94B3F;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sale-line__remove:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.sale-line__tag {
+  margin: -4px 0 0 34px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted-2);
+}
+
+.sale-line__tag.is-linked {
+  color: #2E7D32;
+}
+
+.sale-line__grid {
+  display: grid;
+  /* minmax(0, …) lets inputs shrink; a bare fr column won't go narrower
+     than the input's built-in width and spills out of the card on phones. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.sale-line__grid .admin-field,
+.sale-line__grid input {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 700px) {
+  .sale-line__grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.sale-line__price {
+  display: flex;
+  gap: 6px;
+}
+
+.sale-line__price input {
+  flex: 1;
+  min-width: 0;
+}
+
+.sale-line__reset {
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: 8px;
+  padding: 0 10px;
+  cursor: pointer;
+  color: var(--gold-deep);
+  font-weight: 700;
+}
+
+.sale-line__total {
+  padding: 10px 0;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.sale-line__warn {
+  margin: 0;
+  font-size: 12px;
+  color: #E65100;
+  font-weight: 600;
+}
+
+.sale-totals__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13.5px;
+}
+
+.sale-totals__row input {
+  width: 140px;
+  max-width: 50%;
+  text-align: right;
+}
+
+.sale-totals__grand {
+  font-size: 17px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.sale-form__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Product name picker */
+.sale-picker {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.sale-picker__input {
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.sale-picker__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(22, 34, 47, 0.16);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sale-picker__option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.sale-picker__option.is-active {
+  background: rgba(235, 200, 76, 0.16);
+}
+
+.sale-picker__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sale-picker__meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ============================================================
+   SALES — history list
+   ============================================================ */
+
+.sales-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sales-filters__dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sales-filters__dates label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-2);
+}
+
+.sales-filters__dates input {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+}
+
+.sales-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.sales-summary__label {
+  display: block;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sales-summary__value {
+  font-size: 16px;
+  color: var(--gold);
+}
+
+.sales-summary__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sales-summary__actions .admin-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sales-row__num {
+  display: flex;
+  flex-direction: column;
+  min-width: 92px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sales-row__num small {
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sales-row__products {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sales-row__total {
+  font-size: 13.5px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+/* ============================================================
+   SALES — printable document / report
+   ============================================================ */
+
+.doc-toolbar .col-back-link {
+  padding: 0;
+}
+
+.doc-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.doc-toolbar__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.doc-paper {
+  background: #fff;
+  color: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(22, 34, 47, 0.08);
+  padding: 36px 40px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.45;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #16222F;
+  margin-bottom: 18px;
+}
+
+.doc-brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.doc-brand__tile {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  background: #16222F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px;
+}
+
+.doc-brand__tile img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.doc-brand__contact {
+  display: flex;
+  flex-direction: column;
+  font-size: 11.5px;
+  color: #555;
+}
+
+.doc-brand__contact strong {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: #16222F;
+  letter-spacing: 1px;
+}
+
+.doc-title {
+  text-align: right;
+}
+
+.doc-title h1 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: #16222F;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.doc-meta {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: end;
+  gap: 2px 12px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.doc-meta dt {
+  color: #777;
+}
+
+.doc-meta dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.doc-customer,
+.doc-notes {
+  margin-bottom: 18px;
+}
+
+.doc-customer h2,
+.doc-notes h2 {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #8a7a4a;
+  margin: 0 0 4px;
+}
+
+.doc-customer p,
+.doc-notes p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+}
+
+.doc-table th {
+  background: #F4F1E8;
+  text-align: left;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.doc-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.doc-table tr {
+  break-inside: avoid;
+}
+
+.doc-table__num {
+  width: 36px;
+  color: #777;
+}
+
+.doc-table__right {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.doc-table__sub {
+  display: block;
+  font-size: 11.5px;
+  color: #666;
+  white-space: pre-wrap;
+}
+
+.doc-totals {
+  margin-left: auto;
+  width: 280px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+
+.doc-totals > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.doc-totals__grand {
+  border-top: 2px solid #16222F;
+  padding-top: 6px;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #16222F;
+}
+
+.doc-signatures {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 40px;
+  break-inside: avoid;
+}
+
+.doc-signatures > div {
+  flex: 1;
+  text-align: center;
+  font-size: 11.5px;
+  color: #555;
+}
+
+.doc-signatures__line {
+  display: block;
+  border-bottom: 1px solid #333;
+  height: 36px;
+  margin-bottom: 6px;
+}
+
+.doc-footer {
+  margin: 28px 0 0;
+  text-align: center;
+  font-size: 11px;
+  color: #888;
+}
+
+@media (max-width: 600px) {
+  .doc-paper {
+    padding: 20px 16px;
+  }
+  .doc-header {
+    flex-direction: column;
+  }
+  .doc-title {
+    text-align: left;
+  }
+  .doc-meta {
+    justify-content: start;
+  }
+}
+
+/* Report markup on the history page only exists for printing. */
+.print-only {
+  display: none;
+}
+
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  /* Keep the navy logo tile and table header tints on paper. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .admin-sidebar,
+  .admin-topbar,
+  .admin-mobile-tabs,
+  .no-print,
+  .confirm-modal__backdrop {
+    display: none !important;
+  }
+  .admin-layout {
+    display: block !important;
+    background: #fff !important;
+    min-height: 0 !important;
+  }
+  .admin-main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .doc-paper {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    max-width: none;
+  }
 }
