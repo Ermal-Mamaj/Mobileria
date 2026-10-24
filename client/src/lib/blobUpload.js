@@ -14,7 +14,7 @@ export async function uploadImage(file) {
     handleUploadUrl: '/api/uploads',
     // upload() makes its own fetch call, bypassing our api.js wrapper, so
     // the CSRF header has to be attached here explicitly.
-    headers: { 'x-csrf-token': getCookie('mamaj_csrf') || '' },
+    headers: { 'x-csrf-token': getCookie('bellacasa_csrf') || '' },
   });
   return blob.url;
 }

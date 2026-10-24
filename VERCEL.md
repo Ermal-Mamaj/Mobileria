@@ -4,7 +4,7 @@
 > store from the project's **Storage** tab, and deploy. Every build runs the
 > database migration and the starter content (both only add what's missing),
 > the session key is derived from `DATABASE_URL` when `JWT_SECRET` isn't set,
-> and the first person to open `/mamaj-cms` creates the admin account. Nothing
+> and the first person to open `/bellacasa-cms` creates the admin account. Nothing
 > secret has to be typed into Vercel by hand. Email (step 3) is optional.
 
 This document covers what changed to make the app deployable on Vercel, and
@@ -118,7 +118,7 @@ password.
    (so deep links like `/rooms/kitchen` don't 404 on refresh). Image uploads
    never touch this function at all — the browser sends them straight to
    Vercel Blob.
-5. Visit `https://<your-project>.vercel.app/mamaj-cms/login` and log in with
+5. Visit `https://<your-project>.vercel.app/bellacasa-cms/login` and log in with
    the admin credentials from the seed step to confirm everything's wired up.
 6. Fill in the shop's details in the CMS under **Cilësimet** (phone, email,
    addresses, opening hours, logo, and the business name / NUI / address used

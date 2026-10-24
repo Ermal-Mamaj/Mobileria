@@ -75,7 +75,7 @@ export default function SalesListSection() {
       <div className="no-print sales-screen">
         <div className="admin-panel__header-row">
           <h2 className="admin-panel__heading">Shitjet</h2>
-          <button type="button" className="admin-save-btn" onClick={() => navigate('/mamaj-cms/sales/new')}>+ Shitje e Re</button>
+          <button type="button" className="admin-save-btn" onClick={() => navigate('/bellacasa-cms/sales/new')}>+ Shitje e Re</button>
         </div>
 
         <div className="settings-group sales-filters">
@@ -132,8 +132,8 @@ export default function SalesListSection() {
               className="col-row sales-row"
               role="button"
               tabIndex={0}
-              onClick={() => navigate(`/mamaj-cms/sales/${sale.id}`)}
-              onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/mamaj-cms/sales/${sale.id}`); }}
+              onClick={() => navigate(`/bellacasa-cms/sales/${sale.id}`)}
+              onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/bellacasa-cms/sales/${sale.id}`); }}
             >
               <div className="sales-row__num">
                 <span>Nr. {saleNumber(sale.id)}</span>

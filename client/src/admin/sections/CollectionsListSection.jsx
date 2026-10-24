@@ -26,7 +26,7 @@ export default function CollectionsListSection() {
       setNewName('');
       reload();
       // Jump straight into the new room so you can start adding products
-      navigate(`/mamaj-cms/collections/${created.id}`);
+      navigate(`/bellacasa-cms/collections/${created.id}`);
     } finally {
       setAdding(false);
     }
@@ -107,8 +107,8 @@ export default function CollectionsListSection() {
               className="col-row"
               role="button"
               tabIndex={0}
-              onClick={() => navigate(`/mamaj-cms/collections/${cat.id}`)}
-              onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/mamaj-cms/collections/${cat.id}`); }}
+              onClick={() => navigate(`/bellacasa-cms/collections/${cat.id}`)}
+              onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/bellacasa-cms/collections/${cat.id}`); }}
             >
               {canReorder && (
                 <div className="col-reorder">

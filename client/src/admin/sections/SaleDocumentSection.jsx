@@ -163,7 +163,7 @@ export default function SaleDocumentSection() {
     if (!ok) return;
     try {
       await api.del(`/sales/${id}`);
-      navigate('/mamaj-cms/sales');
+      navigate('/bellacasa-cms/sales');
     } catch (e) {
       setError(e.message);
     }
@@ -172,7 +172,7 @@ export default function SaleDocumentSection() {
   if (error && !sale) {
     return (
       <div className="admin-panel">
-        <p className="prod-empty-state">{error} <Link to="/mamaj-cms/sales" className="admin-inline-link">Kthehu te Shitjet</Link></p>
+        <p className="prod-empty-state">{error} <Link to="/bellacasa-cms/sales" className="admin-inline-link">Kthehu te Shitjet</Link></p>
       </div>
     );
   }
@@ -191,10 +191,10 @@ export default function SaleDocumentSection() {
   return (
     <div className="admin-panel">
       <div className="doc-toolbar no-print">
-        <button type="button" className="col-back-link" onClick={() => navigate('/mamaj-cms/sales')}>‹ Shitjet</button>
+        <button type="button" className="col-back-link" onClick={() => navigate('/bellacasa-cms/sales')}>‹ Shitjet</button>
         <div className="doc-toolbar__actions">
           <button type="button" className="admin-btn-danger" onClick={handleDelete}>Fshi</button>
-          <button type="button" className="admin-btn-secondary" onClick={() => navigate(`/mamaj-cms/sales/${id}/edit`)}>Ndrysho shitjen</button>
+          <button type="button" className="admin-btn-secondary" onClick={() => navigate(`/bellacasa-cms/sales/${id}/edit`)}>Ndrysho shitjen</button>
           <button type="button" className="admin-save-btn" onClick={() => window.print()}>🖨 Printo / Ruaj PDF</button>
         </div>
       </div>

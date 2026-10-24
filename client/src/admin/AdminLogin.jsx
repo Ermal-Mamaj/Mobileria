@@ -19,7 +19,7 @@ function LoginForm() {
   }, []);
 
   if (!checked || needsSetup === null) return null;
-  if (loggedIn) return <Navigate to="/mamaj-cms" replace />;
+  if (loggedIn) return <Navigate to="/bellacasa-cms" replace />;
 
   async function handleSubmit(e) {
     e.preventDefault();
