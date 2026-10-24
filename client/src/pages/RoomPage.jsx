@@ -126,12 +126,12 @@ export default function RoomPage() {
             <div className="room-modal__body">
               <div className="eyebrow eyebrow--muted" style={{ fontSize: '9.5px', letterSpacing: '2px' }}>
                 <span className="eyebrow__rule" style={{ width: 18 }} />
-                <span>MAMAJ</span>
+                <span>BELLA CASA</span>
               </div>
               <h2 className="room-modal__name">{selected.name}</h2>
               <PriceTag product={selected} className="room-modal__price" />
               <p className="room-modal__description">
-                Punuar me dorë — {selected.material}. Ofrohet me porosi në përmasa e përfundime të ndryshme — vizitoni sallonin tonë për ta parë nga afër.
+                {selected.material ? `${selected.material}. ` : ''}Shumë mobilie i ofrojmë edhe me porosi, në përmasa e ngjyra të ndryshme — vizitoni sallonin tonë për ta parë nga afër.
               </p>
             </div>
           </div>

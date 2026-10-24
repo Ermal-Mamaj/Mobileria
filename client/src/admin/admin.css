@@ -1,3 +1,21 @@
+/* Bella Casa — CMS tokens, the same olive, champagne and paper as the public site. */
+:root {
+  --navy: #232A20;
+  --navy-2: #2C3428;
+  --gold: #D6B88E;
+  --gold-deep: #8C6A40;
+  --bg: #F4F1EB;
+  --white: #FFFFFF;
+  --text: #262A24;
+  --muted: #8E877A;
+  --muted-2: #66604F;
+  --border: #E5DED2;
+  --shadow-sm: 0 2px 8px rgba(38, 42, 36, 0.05), 0 1px 2px rgba(38, 42, 36, 0.04);
+  --radius: 6px;
+  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 .admin-login {
   min-height: 100vh;
   display: flex;
@@ -72,7 +90,7 @@
 
 .admin-layout {
   min-height: 100vh;
-  background: #F3F1EC;
+  background: #F7F5F0;
 }
 
 /* --- Desktop sidebar (hidden on mobile) --- */
@@ -235,7 +253,7 @@
   }
 
   .admin-nav-item.is-active {
-    background: rgba(235, 200, 76, 0.12);
+    background: rgba(214, 184, 142, 0.12);
     color: var(--gold);
     font-weight: 600;
   }
@@ -266,7 +284,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(235, 200, 76, 0.18);
+    background: rgba(214, 184, 142, 0.18);
     color: var(--gold);
     font-weight: 700;
     font-size: 13px;
@@ -535,9 +553,9 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(15, 22, 30, 0.72);
+  background: rgba(30, 36, 26, 0.72);
   color: #fff;
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1;
   cursor: pointer;
 }
@@ -554,7 +572,7 @@
   padding: 2px 9px;
   border-radius: 999px;
   background: var(--gold, #ebc84c);
-  color: #16222f;
+  color: #232A20;
   font-size: 12px;
   font-weight: 700;
   vertical-align: middle;
@@ -658,7 +676,7 @@
   width: 72px;
   height: 72px;
   border-radius: 8px;
-  background: #F3F1EC;
+  background: #F7F5F0;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -841,8 +859,8 @@ button {
 
 /* Low-stock alert panel */
 .dash-alert-panel {
-  background: #FFF8E7;
-  border: 1px solid #EAD9A0;
+  background: #F6EEDD;
+  border: 1px solid #DDC48E;
   border-radius: 12px;
   padding: 18px;
 }
@@ -881,7 +899,7 @@ button {
   height: 36px;
   border-radius: 6px;
   overflow: hidden;
-  background: #F3F1EC;
+  background: #F7F5F0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1086,7 +1104,7 @@ button {
   height: 56px;
   border-radius: 8px;
   overflow: hidden;
-  background: #F3F1EC;
+  background: #F7F5F0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1191,7 +1209,7 @@ button {
 
 .prod-add-btn:hover {
   border-color: var(--gold-deep);
-  background: rgba(201, 162, 39, 0.04);
+  background: rgba(140, 106, 64, 0.04);
 }
 
 
@@ -1228,7 +1246,7 @@ button {
   width: 26px;
   height: 26px;
   border: none;
-  background: #F3F1EC;
+  background: #F7F5F0;
   color: var(--text);
   font-size: 14px;
   font-weight: 700;
@@ -1242,7 +1260,7 @@ button {
 }
 
 .prod-qty-btn:hover:not(:disabled) {
-  background: #E9E5DA;
+  background: #E1DFD9;
 }
 
 .prod-qty-input {
@@ -1338,7 +1356,7 @@ button {
   height: 44px;
   border-radius: 8px;
   overflow: hidden;
-  background: #F3F1EC;
+  background: #F7F5F0;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1379,7 +1397,7 @@ button {
 .col-row__delete {
   background: none;
   border: none;
-  font-size: 15px;
+  font-size: 1rem;
   padding: 6px 8px;
   cursor: pointer;
   opacity: 0.45;
@@ -1459,8 +1477,8 @@ button {
   text-align: inherit;
   line-height: inherit;
   letter-spacing: inherit;
-  background: rgba(235, 200, 76, 0.07);
-  border: 1.5px dashed rgba(201, 162, 39, 0.55);
+  background: rgba(214, 184, 142, 0.07);
+  border: 1.5px dashed rgba(140, 106, 64, 0.55);
   border-radius: 6px;
   padding: 3px 6px;
   margin: -3px -6px;
@@ -1471,7 +1489,7 @@ button {
 
 .wysiwyg-field:hover {
   border-color: var(--gold-deep);
-  background: rgba(235, 200, 76, 0.14);
+  background: rgba(214, 184, 142, 0.14);
 }
 
 .wysiwyg-field:focus {
@@ -1482,7 +1500,7 @@ button {
 
 /* --- Hero (dark background — needs light-mode hover/focus colors) --- */
 .wysiwyg-hero .wysiwyg-field:hover {
-  border-color: rgba(235, 200, 76, 0.6);
+  border-color: rgba(214, 184, 142, 0.6);
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -1512,6 +1530,11 @@ button {
 
 .wysiwyg-field--quote {
   min-height: 3em;
+}
+
+/* The quote sits on the dark band; keep its text light while editing. */
+.brand-band .wysiwyg-field--quote {
+  color: var(--white);
 }
 
 .wysiwyg-field--section-heading {
@@ -1560,7 +1583,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #E9E5DA;
+  background: #E1DFD9;
   color: var(--muted-2);
   font-size: 12.5px;
   text-align: center;
@@ -1568,7 +1591,7 @@ button {
 }
 
 .wysiwyg-image--dark .wysiwyg-image__empty {
-  background: #2A3746;
+  background: #2F3A2B;
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -1578,7 +1601,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(22, 34, 47, 0.55);
+  background: rgba(30, 36, 26, 0.55);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -1598,9 +1621,9 @@ button {
   position: absolute;
   bottom: 10%;
   right: 6%;
-  background: rgba(22, 34, 47, 0.82);
+  background: rgba(30, 36, 26, 0.82);
   color: var(--gold);
-  border: 1px solid rgba(235, 200, 76, 0.5);
+  border: 1px solid rgba(214, 184, 142, 0.5);
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 11px;
@@ -1661,7 +1684,7 @@ button {
 .confirm-modal__backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(22, 34, 47, 0.5);
+  background: rgba(30, 36, 26, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1783,7 +1806,7 @@ button {
 
 .bulk-upload__btn:hover:not(:disabled) {
   border-color: var(--gold-deep);
-  background: rgba(201, 162, 39, 0.04);
+  background: rgba(140, 106, 64, 0.04);
 }
 
 .bulk-upload__btn:disabled {
@@ -1970,7 +1993,7 @@ button {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 12px 30px rgba(22, 34, 47, 0.16);
+  box-shadow: 0 12px 30px rgba(30, 36, 26, 0.16);
   max-height: 300px;
   overflow-y: auto;
 }
@@ -1985,7 +2008,7 @@ button {
 }
 
 .sale-picker__option.is-active {
-  background: rgba(235, 200, 76, 0.16);
+  background: rgba(214, 184, 142, 0.16);
 }
 
 .sale-picker__name {
@@ -2120,7 +2143,7 @@ button {
   color: #1a1a1a;
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(22, 34, 47, 0.08);
+  box-shadow: 0 10px 30px rgba(30, 36, 26, 0.08);
   padding: 36px 40px;
   font-family: var(--font-body);
   font-size: 12.5px;
@@ -2135,7 +2158,7 @@ button {
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 18px;
-  border-bottom: 2px solid #16222F;
+  border-bottom: 2px solid #232A20;
   margin-bottom: 18px;
 }
 
@@ -2149,7 +2172,7 @@ button {
   width: 72px;
   height: 72px;
   border-radius: 10px;
-  background: #16222F;
+  background: #232A20;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2163,6 +2186,17 @@ button {
   object-fit: contain;
 }
 
+.doc-brand__wordmark {
+  color: #F4F1EB;
+  font-family: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-align: left;
+  width: 100%;
+}
+
 .doc-brand__contact {
   display: flex;
   flex-direction: column;
@@ -2173,7 +2207,7 @@ button {
 .doc-brand__contact strong {
   font-family: var(--font-serif);
   font-size: 20px;
-  color: #16222F;
+  color: #232A20;
   letter-spacing: 1px;
 }
 
@@ -2184,7 +2218,7 @@ button {
 .doc-title h1 {
   font-family: var(--font-serif);
   font-size: 22px;
-  color: #16222F;
+  color: #232A20;
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2289,12 +2323,12 @@ button {
 }
 
 .doc-totals__grand {
-  border-top: 2px solid #16222F;
+  border-top: 2px solid #232A20;
   padding-top: 6px;
   margin-top: 4px;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 800;
-  color: #16222F;
+  color: #232A20;
 }
 
 .doc-signatures {
@@ -2399,8 +2433,8 @@ button {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px 14px;
-  background: #FFF8E7;
-  border: 1px solid #EAD9A0;
+  background: #F6EEDD;
+  border: 1px solid #DDC48E;
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 12.5px;
@@ -2438,7 +2472,7 @@ button {
   color: inherit;
   background: transparent;
   border: none;
-  border-bottom: 1.5px dashed rgba(201, 162, 39, 0.75);
+  border-bottom: 1.5px dashed rgba(140, 106, 64, 0.75);
   border-radius: 0;
   padding: 2px 4px;
   outline: none;
@@ -2447,7 +2481,7 @@ button {
 
 .fatura-input:hover,
 .fatura-input:focus {
-  background: rgba(235, 200, 76, 0.14);
+  background: rgba(214, 184, 142, 0.14);
   border-bottom-color: var(--gold-deep);
 }
 
@@ -2479,6 +2513,10 @@ button {
   width: 52px;
   height: 52px;
   padding: 6px;
+}
+
+.fatura__logo .doc-brand__wordmark {
+  font-size: 13px;
 }
 
 .fatura__title h1 {
@@ -2546,7 +2584,7 @@ button {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  background: #E9E7E1;
+  background: #E4E2DC;
   border: 1.5px solid #2a2a2a;
   padding: 7px 10px;
   font-size: 13.5px;
@@ -2695,7 +2733,7 @@ button {
 
 .fatura__total th,
 .fatura__total td {
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 800;
 }
 
@@ -2755,7 +2793,7 @@ button {
     background: transparent !important;
   }
   .fatura__box .fatura-input {
-    background: #E9E7E1 !important;
+    background: #E4E2DC !important;
     border: 1.5px solid #2a2a2a !important;
   }
   .fatura-input::-webkit-calendar-picker-indicator {

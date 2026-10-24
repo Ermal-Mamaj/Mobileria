@@ -13,14 +13,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(22, 34, 47, 0.92);
+  background: rgba(30, 36, 26, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 20;
-  border-bottom: 1px solid rgba(235, 200, 76, 0.18);
-  box-shadow: 0 6px 20px rgba(15, 22, 30, 0.18);
+  border-bottom: 1px solid rgba(214, 184, 142, 0.18);
+  box-shadow: 0 6px 20px rgba(18, 22, 15, 0.18);
 }
 
 .nav-header__brand {
@@ -39,8 +39,8 @@
 .nav-header__toggle {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(235, 200, 76, 0.4);
-  border-radius: 9px;
+  border: 1px solid rgba(214, 184, 142, 0.4);
+  border-radius: 4px;
   background: transparent;
   cursor: pointer;
   display: flex;
@@ -53,7 +53,7 @@
 }
 
 .nav-header__toggle:hover {
-  background: rgba(235, 200, 76, 0.12);
+  background: rgba(214, 184, 142, 0.12);
 }
 
 .nav-header__toggle span {
@@ -70,8 +70,8 @@
   right: 20px;
   width: 210px;
   background: var(--navy-2);
-  border: 1px solid rgba(235, 200, 76, 0.2);
-  border-radius: 14px;
+  border: 1px solid rgba(214, 184, 142, 0.2);
+  border-radius: 6px;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
   z-index: 25;
   overflow: hidden;
@@ -102,13 +102,13 @@
   color: rgba(255, 255, 255, 0.82);
   text-decoration: none;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 4px;
   letter-spacing: 0.3px;
   transition: background 0.15s;
 }
 
 .nav-header__link:hover {
-  background: rgba(235, 200, 76, 0.1);
+  background: rgba(214, 184, 142, 0.1);
 }
 
 .nav-header__link.is-active {

@@ -23,7 +23,7 @@ const productsByCategory = {
     { name: 'Kolltuk Leximi', material: 'Skelet prej Ahu · Lesh' },
   ],
   bedroom: [
-    { name: 'Krevat prej Lisi', material: 'Lis Masiv · Punuar me Dorë' },
+    { name: 'Krevat prej Lisi', material: 'Lis Masiv' },
     { name: 'Komodinë', material: 'Rimeso Arre' },
     { name: 'Komodë', material: 'Lis · Doreza prej Tunxhi' },
     { name: 'Garderobë', material: 'Me Porosi' },
@@ -84,7 +84,7 @@ async function run() {
   if (settingsCount === 0) {
     await sql`
       INSERT INTO site_settings (id, phone, whatsapp, email, address, facebook, instagram, business_hours)
-      VALUES (1, ${'+383 44/49 218 690'}, ${'+383 44/49 218 690'}, ${'hello@mamaj.com'}, ${'Rr. Nena Terezë, Prishtinë'}, ${'MobileriaMamaj'}, ${''}, ${'Hën–Sht: 9:00–18:00'})
+      VALUES (1, ${''}, ${''}, ${''}, ${''}, ${''}, ${''}, ${''})
     `;
     console.log('Seeded site settings');
   }
@@ -93,7 +93,7 @@ async function run() {
   if (homeCount === 0) {
     await sql`
       INSERT INTO home_content (id, hero_eyebrow, hero_headline, hero_cta, quote_text, quote_label, contact_heading, contact_intro)
-      VALUES (1, ${'MOBILIE TË PUNUARA ME DORË'}, ${'Mjeshtëri në çdo detaj.\nElegancë në çdo ambient.'}, ${'Eksploro Koleksionet'}, ${'Çdo mobilie punohet me dorë në punishten tonë dhe krijohet për të zgjatur me breza.'}, ${'PUNISHTJA MAMAJ'}, ${'Le të krijojmë diçka të veçantë.'}, ${'Na shkruani dhe së bashku do të krijojmë mobilien ideale për shtëpinë tuaj.'})
+      VALUES (1, ${'MOBILIE PËR ÇDO DHOMË'}, ${'Shtëpia e bukur\nnis nga mobilia.'}, ${'Shiko ambientet'}, ${'Një shtëpi e bukur ndërtohet dhomë pas dhome, me mobilie që i zgjidhni me kujdes.'}, ${'BELLA CASA'}, ${'Na tregoni për shtëpinë tuaj.'}, ${'Na shkruani për cilën dhomë është dhe çfarë kërkoni. Ju kthejmë përgjigje me ide dhe çmime.'})
     `;
     console.log('Seeded home content');
   }
@@ -101,13 +101,13 @@ async function run() {
   const [{ n: aboutCount }] = await sql`SELECT COUNT(*)::int AS n FROM about_content`;
   if (aboutCount === 0) {
     const values = [
-      { title: 'Mjeshtëri', description: 'Çdo bashkim dhe përfundim bëhet me dorë dhe kontrollohet dy herë.' },
-      { title: 'Materiale të Qëndrueshme', description: 'Dru i përzgjedhur me përgjegjësi dhe pëlhura natyrale.' },
-      { title: 'Me Porosi', description: 'Përmasa dhe përfundime të personalizuara për çdo shtëpi.' },
+      { title: 'Cilësi', description: 'Materiale të qëndrueshme dhe punim i kontrolluar në çdo detaj.' },
+      { title: 'Me porosi', description: 'Përmasa, pëlhura dhe ngjyra sipas shtëpisë suaj.' },
+      { title: 'Këshillim', description: 'Ju ndihmojmë të zgjidhni mobilien që i shkon dhomës dhe buxhetit.' },
     ];
     await sql`
       INSERT INTO about_content (id, paragraph_1, paragraph_2, values_json, quote_text, quote_author)
-      VALUES (1, ${'MAMAJ nisi si një punishte e vogël familjare, duke punuar me dorë mobilie që sjellin ngrohtësi dhe karakter në jetesën moderne. Çdo mobilie që krijojmë ndërthur zdrukthëtarinë tradicionale me dizajnin bashkëkohor dhe ndërtohet për të zgjatur me breza.'}, ${'Sot punojmë me mjeshtër vendas dhe materiale të përzgjedhura për të krijuar mobilie për çdo ambient — nga divanet përfaqësuese deri te setet e ngrënies me porosi.'}, ${JSON.stringify(values)}, ${'Mobilia duhet të ndihet sikur ka qenë gjithmonë pjesë e shtëpisë suaj.'}, ${'Ekipi MAMAJ'})
+      VALUES (1, ${'Bella Casa do të thotë «shtëpi e bukur». Ky është premtimi ynë: mobilie që e bëjnë çdo dhomë një vend ku ndiheni mirë, të zgjedhura për formën, materialin dhe jetëgjatësinë.'}, ${'Në sallonin tonë gjeni mobilie për dhomën e ndenjes, dhomën e gjumit, kuzhinën, dhomën e ngrënies, zyrën dhe oborrin — dhe shumë prej tyre mund t’i porosisni në përmasat dhe ngjyrat që i duhen shtëpisë suaj.'}, ${JSON.stringify(values)}, ${'Mobilia duhet të ndihet sikur ka qenë gjithmonë pjesë e shtëpisë suaj.'}, ${'Ekipi i Bella Casa'})
     `;
     console.log('Seeded about content');
   }

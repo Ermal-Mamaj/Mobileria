@@ -39,6 +39,8 @@
 
 .section-heading {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   /* Fluid from ~25px on a 320px handset up to the 30px reference at 460px+
      (capped there so the framed-device and desktop zones are unaffected). */
   font-size: clamp(25px, 13.6px + 3.57vw, 30px);
@@ -68,21 +70,21 @@
 
 .btn-gold {
   padding: 14px 28px;
-  background: linear-gradient(180deg, #F0D45E 0%, var(--gold) 100%);
+  background: var(--gold);
   border: none;
-  border-radius: 11px;
+  border-radius: 4px;
   color: var(--navy);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.5px;
   cursor: pointer;
-  box-shadow: 0 10px 26px rgba(235, 200, 76, 0.34);
+  box-shadow: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-gold:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(235, 200, 76, 0.42);
+  box-shadow: 0 10px 24px rgba(18, 22, 15, 0.18);
 }
 
 .btn-gold:active {
@@ -93,7 +95,7 @@
   padding: 15px 16px;
   background: var(--navy);
   border: none;
-  border-radius: 11px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -104,7 +106,7 @@
 }
 
 .btn-navy:hover {
-  background: #0F1922;
+  background: #1A2017;
 }
 
 .btn-navy:active {
@@ -118,7 +120,7 @@
   padding: 9px 0;
   background: transparent;
   border: 1.5px solid var(--navy);
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -142,7 +144,7 @@
 .contact-form textarea {
   padding: 13px 15px;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: 4px;
   font-size: 12.5px;
   outline: none;
   background: var(--white);
@@ -153,7 +155,7 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(235, 200, 76, 0.16);
+  box-shadow: 0 0 0 3px rgba(214, 184, 142, 0.16);
 }
 
 .contact-form textarea {
@@ -168,7 +170,7 @@
 }
 
 .category-card {
-  border-radius: 16px;
+  border-radius: 6px;
   overflow: hidden;
   background: var(--white);
   border: 1px solid var(--border);
@@ -197,6 +199,8 @@
 
 .category-card__name {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--text);
@@ -225,7 +229,7 @@
 .page-hero__gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(15, 22, 30, 0.92) 0%, rgba(15, 22, 30, 0.35) 55%, rgba(15, 22, 30, 0.1) 100%);
+  background: linear-gradient(to top, rgba(18, 22, 15, 0.92) 0%, rgba(18, 22, 15, 0.35) 55%, rgba(18, 22, 15, 0.1) 100%);
   pointer-events: none;
 }
 
@@ -236,7 +240,7 @@
   bottom: -30%;
   width: 65%;
   height: 70%;
-  background: radial-gradient(circle, rgba(235, 200, 76, 0.16) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(214, 184, 142, 0.16) 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
@@ -251,6 +255,8 @@
 
 .page-hero__title {
   font-family: var(--font-serif);
+  font-size-adjust: 0.45;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   /* Scales 27px → 34px across phone widths, then holds at the reference. */
   font-size: clamp(27px, 11px + 5vw, 34px);
   font-weight: 600;
@@ -271,9 +277,9 @@
 .contact-form__success {
   font-size: 13px;
   color: var(--muted-2);
-  background: rgba(235, 200, 76, 0.12);
+  background: rgba(214, 184, 142, 0.12);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 4px;
   padding: 16px;
 }
 
@@ -282,7 +288,7 @@
   color: #b3261e;
   background: rgba(179, 38, 30, 0.08);
   border: 1px solid rgba(179, 38, 30, 0.25);
-  border-radius: 10px;
+  border-radius: 4px;
   padding: 12px 16px;
   margin: 0;
 }

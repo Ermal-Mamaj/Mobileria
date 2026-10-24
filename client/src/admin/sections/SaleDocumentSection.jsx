@@ -3,19 +3,29 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { useConfirm } from '../useConfirm.jsx';
 import { formatDate, formatMoney, saleNumber } from '../salesUtils.js';
+import { BRAND, BRAND_LINE } from '../../lib/brand.js';
 
-// Shared document header (used by the printed sales report). The logo is
-// light yellow on transparent, so it sits on a navy tile to stay visible.
+// The shop's mark on printed documents: the uploaded logo when there is one,
+// otherwise the name set in the brand face on an ink tile.
+export function BrandTile({ settings, className = '' }) {
+  return (
+    <div className={`doc-brand__tile ${className}`}>
+      {settings?.logo_url
+        ? <img src={settings.logo_url} alt={BRAND} />
+        : <span className="doc-brand__wordmark">{BRAND}</span>}
+    </div>
+  );
+}
+
+// Shared document header (used by the printed sales report).
 export function DocHeader({ settings, title, children }) {
   return (
     <header className="doc-header">
       <div className="doc-brand">
-        <div className="doc-brand__tile">
-          <img src={settings?.logo_url || '/logo-full.png'} alt="MAMAJ" />
-        </div>
+        <BrandTile settings={settings} />
         <div className="doc-brand__contact">
-          <strong>{settings?.business_name || 'MAMAJ'}</strong>
-          <span>Mobilie të Punuara me Dorë</span>
+          <strong>{settings?.business_name || BRAND}</strong>
+          <span>{BRAND_LINE}</span>
           {settings?.phone && <span>Tel: {settings.phone}</span>}
           {settings?.email && <span>{settings.email}</span>}
         </div>
@@ -82,7 +92,7 @@ export default function SaleDocumentSection() {
   const defaults = useMemo(() => {
     if (!sale || !settings) return {};
     return {
-      seller_name: settings.business_name || 'MAMAJ',
+      seller_name: settings.business_name || BRAND,
       seller_nui: settings.business_nui || '',
       seller_address: settings.business_address || '',
       buyer_name: sale.customer_name,
@@ -214,9 +224,7 @@ export default function SaleDocumentSection() {
       <article className="doc-paper fatura">
         <header className="fatura__top">
           <div className="fatura__title">
-            <div className="doc-brand__tile fatura__logo">
-              <img src={settings.logo_url || '/logo-full.png'} alt="" />
-            </div>
+            <BrandTile settings={settings} className="fatura__logo" />
             <h1>Fatura</h1>
           </div>
           <div className="fatura__meta">

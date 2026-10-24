@@ -72,6 +72,6 @@ app.use((err, req, res, next) => {
 // platform's own runtime handles the request/response cycle.
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
-    console.log(`MAMAJ server listening on http://localhost:${PORT}`);
+    console.log(`Bella Casa server listening on http://localhost:${PORT}`);
   });
 }

@@ -19,7 +19,7 @@ export default function AboutPage() {
       <NavHeader />
 
       <div className="about-hero">
-        <ImageSlot src={about.hero_image_url} placeholder="Foto e punishtes / sallonit" dark priority className="about-hero__image" />
+        <ImageSlot src={about.hero_image_url} placeholder="Foto e sallonit" dark priority className="about-hero__image" />
         <div className="about-hero__gradient" />
         <div className="about-hero__copy">
           <h1 className="about-hero__title">Historia Jonë</h1>
@@ -35,7 +35,7 @@ export default function AboutPage() {
           {values.map((v, i) => (
             <div className="value-item" key={i}>
               <div className="value-item__icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2733" strokeWidth="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2C3428" strokeWidth="2">
                   {VALUE_ICONS[i % VALUE_ICONS.length]}
                 </svg>
               </div>

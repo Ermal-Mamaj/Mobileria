@@ -1,28 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap');
 
 :root {
-  --navy: #16222F;
-  --navy-2: #1C2A3A;
-  --gold: #EBC84C;
-  --gold-deep: #C9A227;
-  --bg: #F6F2E9;
+  --navy: #232A20;
+  --navy-2: #2C3428;
+  --gold: #D6B88E;
+  --gold-deep: #8C6A40;
+  --bg: #F4F1EB;
   --white: #FFFFFF;
-  --text: #22303F;
-  --muted: #948B78;
-  --muted-2: #6E6656;
-  --border: #EAE2D0;
+  --text: #262A24;
+  --muted: #8E877A;
+  --muted-2: #66604F;
+  --border: #E5DED2;
 
   /* Layered, soft shadows reused across cards for a consistent depth system. */
-  --shadow-sm: 0 2px 8px rgba(34, 48, 63, 0.05), 0 1px 2px rgba(34, 48, 63, 0.04);
-  --shadow-md: 0 8px 22px rgba(34, 48, 63, 0.10), 0 2px 6px rgba(34, 48, 63, 0.05);
-  --shadow-lg: 0 16px 36px rgba(34, 48, 63, 0.14), 0 4px 10px rgba(34, 48, 63, 0.06);
+  --shadow-sm: 0 2px 8px rgba(38, 42, 36, 0.05), 0 1px 2px rgba(38, 42, 36, 0.04);
+  --shadow-md: 0 8px 22px rgba(38, 42, 36, 0.10), 0 2px 6px rgba(38, 42, 36, 0.05);
+  --shadow-lg: 0 16px 36px rgba(38, 42, 36, 0.14), 0 4px 10px rgba(38, 42, 36, 0.06);
 
-  --radius: 16px;
+  --radius: 6px;
   --app-width: 460px;
 
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-wordmark: 'Poppins', sans-serif;
+  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-wordmark: 'Fraunces Variable', Georgia, serif;
 }
 
 * {
@@ -43,7 +42,7 @@ html, body {
   /* Ambient backdrop only visible on tablet/desktop, where the mobile column
      floats centered. On phones the column fills the width and covers this. */
   background:
-    radial-gradient(120% 80% at 50% -10%, #22323f 0%, #182430 38%, #10191f 100%) fixed;
+    radial-gradient(120% 80% at 50% -10%, #2F382A 0%, #20271D 38%, #161B13 100%) fixed;
   min-height: 100%;
 }
 
@@ -55,7 +54,7 @@ body {
 }
 
 ::selection {
-  background: rgba(235, 200, 76, 0.35);
+  background: rgba(214, 184, 142, 0.35);
 }
 
 #root {
@@ -97,7 +96,7 @@ body {
     box-shadow:
       0 40px 80px rgba(0, 0, 0, 0.45),
       0 12px 28px rgba(0, 0, 0, 0.30);
-    outline: 1px solid rgba(235, 200, 76, 0.10);
+    outline: 1px solid rgba(214, 184, 142, 0.10);
   }
   .app-shell .nav-header__bar {
     border-top-left-radius: 26px;
@@ -195,9 +194,36 @@ img {
   width: 5px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C9B98A;
+  background: #C8B79A;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* Typographic wordmark, used until a logo is uploaded in the CMS. */
+.wordmark {
+  display: block;
+  font-family: var(--font-wordmark);
+  font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.nav-header__logo--text {
+  font-size: 26px;
+  color: var(--gold);
+}
+
+.footer__logo--text {
+  font-size: 34px;
+  color: var(--gold);
+}
+
+@media (min-width: 900px) {
+  .nav-header__logo--text {
+    font-size: 30px;
+  }
 }

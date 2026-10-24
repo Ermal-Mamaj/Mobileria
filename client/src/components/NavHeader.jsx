@@ -27,11 +27,11 @@ export default function NavHeader() {
     <div className="nav-header">
       <div className="nav-header__bar">
         <Link to="/" className="nav-header__brand" onClick={() => setMenuOpen(false)}>
-          <img
-            src={settings?.logo_url || '/logo-full.png'}
-            alt="MAMAJ — Fabrika e Mobileve"
-            className="nav-header__logo"
-          />
+          {settings?.logo_url ? (
+            <img src={settings.logo_url} alt="Bella Casa" className="nav-header__logo" />
+          ) : (
+            <span className="wordmark nav-header__logo--text">Bella Casa</span>
+          )}
         </Link>
         <button
           type="button"

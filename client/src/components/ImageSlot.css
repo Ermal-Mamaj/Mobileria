@@ -14,13 +14,13 @@
   object-fit: cover;
   background:
     repeating-linear-gradient(45deg, rgba(148, 139, 120, 0.05) 0 1px, transparent 1px 11px),
-    linear-gradient(135deg, #f4efe3 0%, #ede7d8 100%);
+    linear-gradient(135deg, #EFEBE3 0%, #E9E4DA 100%);
 }
 
 .image-slot--filled-dark {
   background:
-    repeating-linear-gradient(45deg, rgba(235, 200, 76, 0.035) 0 1px, transparent 1px 12px),
-    radial-gradient(90% 70% at 50% 0%, #223140 0%, #16222f 70%);
+    repeating-linear-gradient(45deg, rgba(214, 184, 142, 0.035) 0 1px, transparent 1px 12px),
+    radial-gradient(90% 70% at 50% 0%, #2E3729 0%, #232A20 70%);
 }
 
 /* Empty state (no photo uploaded yet). Two flavours:
@@ -36,7 +36,7 @@
   text-align: center;
   color: var(--muted);
   background:
-    linear-gradient(135deg, #F4EFE3 0%, #EDE7D8 100%);
+    linear-gradient(135deg, #EFEBE3 0%, #E9E4DA 100%);
   position: relative;
   overflow: hidden;
 }
@@ -60,14 +60,14 @@
 .image-slot--dark {
   justify-content: flex-start;
   padding-top: 16px;
-  color: rgba(235, 200, 76, 0.5);
+  color: rgba(214, 184, 142, 0.5);
   background:
-    radial-gradient(90% 70% at 50% 0%, #223140 0%, #16222F 70%);
+    radial-gradient(90% 70% at 50% 0%, #2E3729 0%, #232A20 70%);
 }
 
 .image-slot--dark::after {
   background-image:
-    repeating-linear-gradient(45deg, rgba(235, 200, 76, 0.035) 0 1px, transparent 1px 12px);
+    repeating-linear-gradient(45deg, rgba(214, 184, 142, 0.035) 0 1px, transparent 1px 12px);
 }
 
 .image-slot__caption {

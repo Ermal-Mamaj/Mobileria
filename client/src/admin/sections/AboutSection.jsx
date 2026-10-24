@@ -149,7 +149,7 @@ export default function AboutSection() {
             <EditableText
               value={form.quote_author}
               onSave={(v) => edit('quote_author', v)}
-              placeholder="Ekipi MAMAJ"
+              placeholder="Ekipi i Bella Casa"
               className="wysiwyg-field--author about-quote__author"
             />
           </div>

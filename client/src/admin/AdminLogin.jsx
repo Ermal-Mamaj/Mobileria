@@ -29,8 +29,8 @@ function LoginForm() {
   return (
     <div className="admin-login">
       <form className="admin-login__card" onSubmit={handleSubmit}>
-        <h1 className="admin-login__title">Administrimi i MAMAJ</h1>
-        <p className="admin-login__subtitle">Hyni për të menaxhuar faqen e MAMAJ.</p>
+        <h1 className="admin-login__title">Bella Casa</h1>
+        <p className="admin-login__subtitle">Hyni për të menaxhuar faqen, koleksionet dhe shitjet.</p>
         <input
           type="text"
           placeholder="Përdoruesi"
