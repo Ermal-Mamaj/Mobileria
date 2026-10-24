@@ -35,4 +35,6 @@ export const adminAuth = {
   login: (username, password) => request('/admin/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
   logout: () => request('/admin/logout', { method: 'POST' }),
   me: () => request('/admin/me').catch(() => ({ loggedIn: false })),
+  setupStatus: () => request('/admin/setup-status').catch(() => ({ needsSetup: false })),
+  setup: (username, password) => request('/admin/setup', { method: 'POST', body: JSON.stringify({ username, password }) }),
 };

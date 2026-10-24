@@ -15,12 +15,17 @@ export function AdminAuthProvider({ children }) {
     setStatus({ checked: true, loggedIn: true, username: res.username });
   }
 
+  async function setup(username, password) {
+    const res = await adminAuth.setup(username, password);
+    setStatus({ checked: true, loggedIn: true, username: res.username });
+  }
+
   async function logout() {
     await adminAuth.logout();
     setStatus({ checked: true, loggedIn: false, username: null });
   }
 
-  return <AuthContext.Provider value={{ ...status, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ ...status, login, setup, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAdminAuth() {
