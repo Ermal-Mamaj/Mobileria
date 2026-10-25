@@ -4,6 +4,14 @@
   height: 100%;
 }
 
+/* A press on a photo shouldn't start dragging the image or open the
+   phone's image preview; the swipe should move the page. */
+img.image-slot {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* A photo's pixels can't paint until it has been fetched and decoded, and the
    fetch can't even start until the API call that supplies its URL comes back.
    Without a backdrop the <img> is simply transparent for that whole window, so
