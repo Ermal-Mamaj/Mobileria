@@ -22,8 +22,9 @@ export default function CursorLabel() {
 
     // Sits just below-right of the pointer, so it never covers what's under it.
     gsap.set(el, { xPercent: 0, yPercent: 0, x: 0, y: 0, scale: 0, autoAlpha: 0, transformOrigin: '0% 0%' });
-    const toX = gsap.quickTo(el, 'x', { duration: 0.45, ease: 'power3' });
-    const toY = gsap.quickTo(el, 'y', { duration: 0.45, ease: 'power3' });
+    // Glued to the pointer: set straight from each move, no easing lag.
+    const setX = gsap.quickSetter(el, 'x', 'px');
+    const setY = gsap.quickSetter(el, 'y', 'px');
     let current = null;
     let pointer = null;
 
@@ -45,8 +46,8 @@ export default function CursorLabel() {
     };
     const onMove = (e) => {
       pointer = { x: e.clientX, y: e.clientY };
-      toX(e.clientX + 16);
-      toY(e.clientY + 18);
+      setX(e.clientX + 16);
+      setY(e.clientY + 18);
       update();
     };
     const onLeave = () => {
