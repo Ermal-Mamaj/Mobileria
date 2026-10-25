@@ -120,6 +120,18 @@ export function whenIntroDone() {
 
 /* ── Reusable reveals ──────────────────────────────────────── */
 
+// The line masks clip everything outside the text line, which cut off the
+// descenders (g, j, p, y, q) until the animation ended, so they popped in
+// late. Padding the mask (and pulling it back with a negative margin, so the
+// layout doesn't move) leaves room for them from the first frame.
+export function padMasks(split) {
+  (split.masks || []).forEach((mask) => {
+    mask.style.paddingBottom = '0.28em';
+    mask.style.marginBottom = '-0.28em';
+  });
+  return split;
+}
+
 // Headline that rises line by line out of masks as it scrolls into view.
 // Pass `trigger: false` to get the timeline back un-triggered (for heroes).
 export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', stagger = 0.08, start = 'top 88%' } = {}) {
@@ -130,6 +142,7 @@ export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', sta
     mask: 'lines',
     autoSplit: true,
     onSplit(self) {
+      padMasks(self);
       tween = gsap.from(type === 'words' ? self.words : self.lines, {
         yPercent: 110,
         duration: DUR.slow,
@@ -224,7 +237,7 @@ export function parallax(el, { trigger, yPercent = 15, start = 'top bottom', end
 // curtain clears (no scroll trigger — it's already on screen).
 export function introHeadline(el, { delay = 0.1, stagger = 0.08 } = {}) {
   if (!el || !el.textContent.trim()) return null;
-  const split = SplitText.create(el, { type: 'lines,words', mask: 'lines' });
+  const split = padMasks(SplitText.create(el, { type: 'lines,words', mask: 'lines' }));
   const tween = gsap.from(split.words, {
     yPercent: 120, duration: DUR.slow, ease: EASE.enter, stagger, delay, paused: true,
     onComplete: () => split.revert(),

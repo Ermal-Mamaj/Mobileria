@@ -11,7 +11,7 @@ import Magnet from '../components/reactbits/Magnet.jsx';
 import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
-  gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn, EASE,
+  gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn, EASE, padMasks,
 } from '../lib/motion.js';
 import './HomePage.css';
 
@@ -47,7 +47,7 @@ export default function HomePage() {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(heroRef);
-      const split = SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' });
+      const split = padMasks(SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' }));
       const tl = gsap.timeline({ paused: true });
       tl.from(q('.home-page__hero-image'), { scale: 1.12, duration: 2.4, ease: EASE.enter }, 0)
         .from(q('.home-page__hero-gradient'), { autoAlpha: 0, duration: 1.4 }, 0)
