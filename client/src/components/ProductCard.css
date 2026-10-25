@@ -26,11 +26,11 @@
 .product-card__image .image-slot {
   position: absolute;
   inset: 0;
-  transition: transform 700ms var(--ease-out);
+  transition: transform 500ms var(--ease-out);
 }
 
 .product-card:hover .product-card__image .image-slot {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .product-card__badge {

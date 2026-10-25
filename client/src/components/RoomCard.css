@@ -21,11 +21,11 @@
 .room-card__media .image-slot {
   position: absolute;
   inset: 0;
-  transition: transform 900ms var(--ease-out);
+  transition: transform 500ms var(--ease-out);
 }
 
 .room-card:hover .room-card__media .image-slot {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 .room-card::before {

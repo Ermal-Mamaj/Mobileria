@@ -10,7 +10,7 @@ import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { roomTone, telUrl, whatsappUrl } from '../lib/brand.js';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import {
-  gsap, lockScroll, MOTION_OK, parallax, refreshTriggers, riseIn, splitReveal, SplitText, unlockScroll, useGSAP, whenIntroDone, wipeIn,
+  gsap, lockScroll, MOTION_OK, parallax, refreshTriggers, riseIn, splitReveal, SplitText, unlockScroll, useGSAP, whenIntroDone, wipeIn, EASE,
 } from '../lib/motion.js';
 import './RoomPage.css';
 
@@ -103,9 +103,9 @@ export default function RoomPage() {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.room-hero__title')[0], { type: 'lines,words', mask: 'lines' });
       const tl = gsap.timeline({ paused: true, onComplete: () => split.revert() });
-      tl.from(q('.room-hero__image'), { scale: 1.2, duration: 2.6, ease: 'expo.out' }, 0)
+      tl.from(q('.room-hero__image'), { scale: 1.1, duration: 2, ease: EASE.enter }, 0)
         .from(q('.room-hero__crumbs'), { autoAlpha: 0, y: 14, duration: 0.7 }, 0.35)
-        .from(split.words, { yPercent: 120, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, 0.45)
+        .from(split.words, { yPercent: 120, duration: 1.2, ease: EASE.enter, stagger: 0.08 }, 0.45)
         .from(q('.room-hero__tagline, .room-hero__count'), { autoAlpha: 0, y: 20, duration: 0.9, stagger: 0.1 }, 0.8);
       whenIntroDone().then(() => tl.play());
       parallax(q('.room-hero__media')[0], { trigger: heroRef.current, yPercent: 10, start: 'top top' });

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { BRAND, LOGO_FULL } from '../lib/brand.js';
-import { beginIntro, endIntro, gsap, MOTION_OK, refreshTriggers, useGSAP } from '../lib/motion.js';
+import { beginIntro, endIntro, gsap, MOTION_OK, refreshTriggers, useGSAP, EASE } from '../lib/motion.js';
 import './Curtain.css';
 
 const isCms = (path) => path.startsWith('/bellacasa-cms');
@@ -44,14 +44,14 @@ export default function Curtain() {
         ]);
         const tl = gsap.timeline();
         tl.fromTo(logo, { clipPath: 'circle(0% at 50% 42%)', scale: 1.08 }, {
-          clipPath: 'circle(75% at 50% 42%)', scale: 1, duration: 0.9, ease: 'expo.out',
+          clipPath: 'circle(75% at 50% 42%)', scale: 1, duration: 0.9, ease: EASE.enter,
         });
         ready.then(() => {
           if (cancelled) return;
           introPlayed = true;
           gsap.timeline({ delay: Math.max(0, tl.duration() - tl.time() - 0.2) })
-            .to(logo, { yPercent: -10, autoAlpha: 0, duration: 0.4, ease: 'expo.in' })
-            .to(panel, { yPercent: -100, duration: 0.8, ease: 'expo.inOut' }, '-=0.15')
+            .to(logo, { yPercent: -10, autoAlpha: 0, duration: 0.4, ease: 'power2.in' })
+            .to(panel, { yPercent: -100, duration: 0.8, ease: EASE.move }, '-=0.15')
             .call(endIntro, null, '-=0.45')
             .set(panel, { autoAlpha: 0 })
             .call(refreshTriggers);
@@ -60,7 +60,7 @@ export default function Curtain() {
         gsap.set(panel, { autoAlpha: 1, yPercent: 0 });
         gsap.set(panel.querySelector('.curtain__inner'), { autoAlpha: 0 });
         gsap.timeline({ delay: 0.05 })
-          .to(panel, { yPercent: -100, duration: 0.7, ease: 'expo.inOut' })
+          .to(panel, { yPercent: -100, duration: 0.5, ease: EASE.move })
           .set(panel, { autoAlpha: 0 });
       } else {
         gsap.set(panel, { autoAlpha: 0 });

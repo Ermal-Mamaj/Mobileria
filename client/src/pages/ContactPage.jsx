@@ -6,7 +6,7 @@ import PageBanner from '../components/PageBanner.jsx';
 import Icon from '../components/Icon.jsx';
 import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
-import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP } from '../lib/motion.js';
+import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP, EASE } from '../lib/motion.js';
 import './ContactPage.css';
 
 export default function ContactPage() {
@@ -24,7 +24,7 @@ export default function ContactPage() {
       const q = gsap.utils.selector(ref);
       if (!settings.id) return;
       gsap.from(q('.contact-channel'), { autoAlpha: 0, x: -40, duration: 1, stagger: 0.1, delay: 0.6 });
-      gsap.from(q('.contact-form-panel'), { autoAlpha: 0, y: 60, duration: 1.2, ease: 'expo.out', delay: 0.7 });
+      gsap.from(q('.contact-form-panel'), { autoAlpha: 0, y: 60, duration: 1.2, ease: EASE.enter, delay: 0.7 });
       riseIn([...q('.contact-visit__title'), ...q('.contact-hours'), ...q('.contact-location-card'), ...q('.contact-social')], { y: 28, stagger: 0.08 });
       refreshTriggers();
     });

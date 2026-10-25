@@ -4,9 +4,9 @@
 .admin-login,
 .admin-layout {
   accent-color: #7D5C34;
-  --navy: #16130F;
+  --navy: #1C130F;
   --navy-2: #221E19;
-  --gold: #C9A66B;
+  --gold: #CCA57D;
   --gold-deep: #7D5C34;
   --bg: #F5F0E8;
   --white: #FFFFFF;
@@ -294,7 +294,7 @@
   }
 
   .admin-nav-item.is-active {
-    background: rgba(201, 166, 107, 0.1);
+    background: rgba(204, 165, 125, 0.1);
     color: var(--gold);
     font-weight: 600;
   }
@@ -335,7 +335,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(201, 166, 107, 0.18);
+    background: rgba(204, 165, 125, 0.18);
     color: var(--gold);
     font-weight: 700;
     font-size: 13px;
@@ -604,7 +604,7 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(22, 19, 15, 0.72);
+  background: rgba(28, 19, 15, 0.72);
   color: #fff;
   font-size: 1rem;
   line-height: 1;
@@ -623,7 +623,7 @@
   padding: 2px 9px;
   border-radius: 999px;
   background: var(--gold, #ebc84c);
-  color: #16130F;
+  color: #1C130F;
   font-size: 12px;
   font-weight: 700;
   vertical-align: middle;
@@ -1053,7 +1053,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(22, 19, 15, 0.5);
+  background: rgba(28, 19, 15, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1740,7 +1740,7 @@ button {
 .wysiwyg-field {
   display: block;
   width: 100%;
-  background: rgba(201, 166, 107, 0.07);
+  background: rgba(204, 165, 125, 0.07);
   border: 1.5px dashed rgba(125, 92, 52, 0.55);
   border-radius: 6px;
   padding: 3px 6px;
@@ -1758,7 +1758,7 @@ textarea.wysiwyg-field {
 
 .wysiwyg-field:hover {
   border-color: var(--gold-deep);
-  background: rgba(201, 166, 107, 0.14);
+  background: rgba(204, 165, 125, 0.14);
 }
 
 .wysiwyg-field:focus {
@@ -1769,7 +1769,7 @@ textarea.wysiwyg-field {
 
 /* --- Hero (dark background — needs light-mode hover/focus colors) --- */
 .wysiwyg-hero .wysiwyg-field:hover {
-  border-color: rgba(201, 166, 107, 0.6);
+  border-color: rgba(204, 165, 125, 0.6);
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -1869,7 +1869,7 @@ textarea.wysiwyg-field {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(22, 19, 15, 0.55);
+  background: rgba(28, 19, 15, 0.55);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -1889,9 +1889,9 @@ textarea.wysiwyg-field {
   position: absolute;
   bottom: 10%;
   right: 6%;
-  background: rgba(22, 19, 15, 0.82);
+  background: rgba(28, 19, 15, 0.82);
   color: var(--gold);
-  border: 1px solid rgba(201, 166, 107, 0.5);
+  border: 1px solid rgba(204, 165, 125, 0.5);
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 11px;
@@ -1952,7 +1952,7 @@ textarea.wysiwyg-field {
 .confirm-modal__backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(22, 19, 15, 0.5);
+  background: rgba(28, 19, 15, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2261,7 +2261,7 @@ textarea.wysiwyg-field {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 12px 30px rgba(22, 19, 15, 0.16);
+  box-shadow: 0 12px 30px rgba(28, 19, 15, 0.16);
   max-height: 300px;
   overflow-y: auto;
 }
@@ -2276,7 +2276,7 @@ textarea.wysiwyg-field {
 }
 
 .sale-picker__option.is-active {
-  background: rgba(201, 166, 107, 0.16);
+  background: rgba(204, 165, 125, 0.16);
 }
 
 .sale-picker__name {
@@ -2411,7 +2411,7 @@ textarea.wysiwyg-field {
   color: #1a1a1a;
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(22, 19, 15, 0.08);
+  box-shadow: 0 10px 30px rgba(28, 19, 15, 0.08);
   padding: 36px 40px;
   font-family: var(--font-body);
   font-size: 12.5px;
@@ -2426,7 +2426,7 @@ textarea.wysiwyg-field {
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 18px;
-  border-bottom: 2px solid #16130F;
+  border-bottom: 2px solid #1C130F;
   margin-bottom: 18px;
 }
 
@@ -2440,7 +2440,7 @@ textarea.wysiwyg-field {
   width: 72px;
   height: 72px;
   border-radius: 10px;
-  background: #16130F;
+  background: #1C130F;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2464,7 +2464,7 @@ textarea.wysiwyg-field {
 .doc-brand__contact strong {
   font-family: var(--font-serif);
   font-size: 24px;
-  color: #16130F;
+  color: #1C130F;
   letter-spacing: 1px;
 }
 
@@ -2475,7 +2475,7 @@ textarea.wysiwyg-field {
 .doc-title h1 {
   font-family: var(--font-serif);
   font-size: 26px;
-  color: #16130F;
+  color: #1C130F;
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2580,12 +2580,12 @@ textarea.wysiwyg-field {
 }
 
 .doc-totals__grand {
-  border-top: 2px solid #16130F;
+  border-top: 2px solid #1C130F;
   padding-top: 6px;
   margin-top: 4px;
   font-size: 1rem;
   font-weight: 800;
-  color: #16130F;
+  color: #1C130F;
 }
 
 .doc-signatures {
@@ -2738,7 +2738,7 @@ textarea.wysiwyg-field {
 
 .fatura-input:hover,
 .fatura-input:focus {
-  background: rgba(201, 166, 107, 0.14);
+  background: rgba(204, 165, 125, 0.14);
   border-bottom-color: var(--gold-deep);
 }
 

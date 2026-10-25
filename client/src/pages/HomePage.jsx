@@ -11,7 +11,7 @@ import Magnet from '../components/reactbits/Magnet.jsx';
 import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
-  gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn,
+  gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn, EASE,
 } from '../lib/motion.js';
 import './HomePage.css';
 
@@ -48,15 +48,23 @@ export default function HomePage() {
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' });
-      const tl = gsap.timeline({ paused: true, onComplete: () => split.revert() });
-      tl.from(q('.home-page__hero-image'), { scale: 1.22, duration: 3, ease: 'expo.out' }, 0)
+      const tl = gsap.timeline({ paused: true });
+      tl.from(q('.home-page__hero-image'), { scale: 1.12, duration: 2.4, ease: EASE.enter }, 0)
         .from(q('.home-page__hero-gradient'), { autoAlpha: 0, duration: 1.4 }, 0)
-        .fromTo(q('.eyebrow'), { '--rule': 0 }, { '--rule': 1, duration: 1.1, ease: 'expo.inOut' }, 0.3)
+        .fromTo(q('.eyebrow'), { '--rule': 0 }, { '--rule': 1, duration: 1.1, ease: EASE.move }, 0.3)
         .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, y: 10, duration: 0.8 }, 0.5)
-        .from(split.words, { yPercent: 120, duration: 1.25, ease: 'expo.out', stagger: 0.07 }, 0.4)
+        .from(split.words, { yPercent: 120, duration: 1.25, ease: EASE.enter, stagger: 0.07 }, 0.4)
         .from(q('.home-page__hero-actions > *'), { autoAlpha: 0, y: 28, duration: 0.9, stagger: 0.1 }, 1)
         .from(q('.home-page__hero-scroll'), { autoAlpha: 0, y: 16, duration: 0.8 }, 1.3);
       whenIntroDone().then(() => tl.play());
+      // Ambient layer: once the opening has played, the photo breathes very
+      // slowly, so the room feels alive without asking for attention. Its own
+      // tween, so the opening timeline still completes (and un-splits the
+      // headline).
+      tl.eventCallback('onComplete', () => {
+        split.revert();
+        gsap.to(q('.home-page__hero-image'), { scale: 1.04, duration: 14, ease: 'sine.inOut', repeat: -1, yoyo: true });
+      });
 
       const scrub = { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true };
       gsap.to(q('.home-page__hero-media'), { yPercent: 18, ease: 'none', scrollTrigger: scrub });
@@ -114,7 +122,7 @@ export default function HomePage() {
         });
       }
       gsap.from(q('.room-arch__frame'), {
-        clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', stagger: 0.1, clearProps: 'clipPath',
+        clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: EASE.move, stagger: 0.1, clearProps: 'clipPath',
         scrollTrigger: { trigger: galleryRef.current, start: 'top 70%', once: true },
       });
       gsap.from(q('.room-arch__caption'), {
