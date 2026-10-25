@@ -1,66 +1,48 @@
-/* ── Room hero: the room's wall colour, its photo standing in an arch with
-   the logo's gold ring around it. ─────────────────────────────────────── */
+/* ── Room hero: the room photo edge to edge, like the Home hero, with the
+   room's wall colour washing in from the left behind the title. ─────── */
 .room-hero {
-  display: grid;
-  gap: 36px;
-  align-items: center;
-  padding: 36px var(--gutter) 48px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(440px, 72vh, 760px);
   background: var(--tone, var(--tone-ink));
   color: var(--cream);
-  overflow: hidden;
-}
-
-.room-hero__visual {
-  position: relative;
-  order: -1;
-  justify-self: center;
-  width: min(66vw, 300px);
-  aspect-ratio: 4 / 5;
-  margin-top: 16px;
 }
 
 .room-hero__media {
   position: absolute;
+  inset: -2% 0 -14%;
+}
+
+.room-hero__media .room-hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.room-hero::before {
+  content: '';
+  position: absolute;
   inset: 0;
   z-index: 1;
-  overflow: hidden;
-  border-radius: 999px 999px 0 0;
-  background: rgba(0, 0, 0, 0.18);
-  isolation: isolate;
-}
-
-.room-hero__image {
-  position: absolute;
-  inset: -10% 0 auto;
-  width: 100%;
-  height: 120%;
-}
-
-/* Concentric with the arch's top, 14% wider: the circle of the logo. */
-.room-hero__arc {
-  position: absolute;
-  left: -14%;
-  top: -11.2%;
-  width: 128%;
-  height: auto;
-  aspect-ratio: 1;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.room-hero__arc .ring {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 0.25;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-  opacity: 0.8;
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--tone, var(--tone-ink)) 92%, transparent) 0%, color-mix(in srgb, var(--tone, var(--tone-ink)) 55%, transparent) 38%, transparent 68%),
+    linear-gradient(to top, rgba(14, 12, 9, 0.6) 0%, rgba(14, 12, 9, 0) 45%);
 }
 
 .room-hero__panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 64px var(--gutter) clamp(40px, 6vw, 72px);
+}
+
+.room-hero__panel > * {
+  max-width: 640px;
 }
 
 .room-hero__crumbs {
@@ -112,18 +94,21 @@
   color: var(--gold);
 }
 
-@media (min-width: 900px) {
-  .room-hero {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    min-height: clamp(520px, 46vw, 680px);
-    /* Line the copy up with the page container's edges. */
-    padding: 64px max(var(--gutter), calc((100vw - var(--page-max)) / 2));
+/* A square or portrait photo: from tablet up it stands whole on the right as
+   a soft-cornered panel, the wall colour filling the rest. */
+@media (min-width: 800px) {
+  .room-hero.is-tall::before {
+    background: none;
   }
-  .room-hero__visual {
-    order: 0;
-    justify-self: end;
-    width: min(100%, 380px, calc((100vh - var(--nav-h) - 180px) * 0.8));
-    margin: 0 clamp(16px, 3vw, 48px) 0 0;
+  .room-hero.is-tall .room-hero__media {
+    inset: 48px max(var(--gutter), calc((100vw - var(--page-max)) / 2)) 48px auto;
+    width: min(44%, 560px);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .room-hero.is-tall .room-hero__panel > * {
+    max-width: min(520px, 46vw);
   }
 }
 
