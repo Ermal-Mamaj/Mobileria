@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from './AdminAuth.jsx';
 import { adminAuth } from '../lib/api.js';
+// The CMS keeps its own type (Fraunces); the public site is set in Cormorant.
+import '@fontsource-variable/fraunces/full.css';
 import './admin.css';
 
 function LoginForm() {

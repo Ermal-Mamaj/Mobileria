@@ -11,6 +11,8 @@ import SaleDocumentSection from './sections/SaleDocumentSection.jsx';
 import PagesSection from './sections/PagesSection.jsx';
 import SiteSettingsSection from './sections/SiteSettingsSection.jsx';
 import MessagesSection from './sections/MessagesSection.jsx';
+// The CMS keeps its own type (Fraunces); the public site is set in Cormorant.
+import '@fontsource-variable/fraunces/full.css';
 import './admin.css';
 
 function Protected() {

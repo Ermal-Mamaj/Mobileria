@@ -1699,6 +1699,12 @@ button {
   transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
 }
 
+/* A grown textarea never scrolls itself, so the mouse wheel always moves
+   the page instead of getting caught inside a field. */
+textarea.wysiwyg-field {
+  overflow: hidden;
+}
+
 .wysiwyg-field:hover {
   border-color: var(--gold-deep);
   background: rgba(214, 184, 142, 0.14);

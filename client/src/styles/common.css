@@ -42,11 +42,10 @@
 
 .page-intro__title {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
   font-size: clamp(48px, 8vw, 112px);
-  font-weight: 320;
+  font-weight: 400;
   line-height: 0.95;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.016em;
 }
 
 .page-intro__text {
@@ -75,9 +74,9 @@
   gap: 12px;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .eyebrow__rule {
@@ -100,11 +99,10 @@
 /* ── Headings ───────────────────────────────────────────────── */
 .section-heading {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 50, 'opsz' 96;
   font-size: var(--display-md);
-  font-weight: 380;
+  font-weight: 450;
   line-height: 1.04;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.009em;
   color: var(--text);
   margin-bottom: 14px;
 }
@@ -136,8 +134,10 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--text);
   text-decoration: none;
   padding: 6px 0;
@@ -159,13 +159,14 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 52px;
-  padding: 0 28px;
-  border-radius: var(--radius-sm);
+  min-height: 54px;
+  padding: 0 30px;
+  border-radius: 0;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   border: 1px solid transparent;
@@ -181,7 +182,7 @@
 }
 
 .btn-gold:hover {
-  background: #E2C9A4;
+  background: #D8B98A;
 }
 
 .btn-navy {
@@ -190,7 +191,7 @@
 }
 
 .btn-navy:hover {
-  background: #343E2F;
+  background: #2A2520;
 }
 
 .btn-navy:disabled {

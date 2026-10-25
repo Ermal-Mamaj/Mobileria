@@ -4,64 +4,49 @@
    the live page (full-screen height, the load sequence, sitting under the
    nav) are scoped to `.home-page`. */
 
-/* ── Hero ──────────────────────────────────────────────────── */
+/* ── Hero: copy on the left; on the right the photo stands in an arch with
+   the logo's gold circle drawn around it and the BC seal at its foot. Any
+   photo the owner uploads is cropped into the same shape. ────────────── */
 .home-page__hero {
   position: relative;
-  min-height: 560px;
-  display: flex;
-  align-items: flex-end;
   overflow: hidden;
   background: var(--navy);
   color: var(--cream);
 }
 
 .home-page .home-page__hero {
-  /* Slide up under the transparent nav so the photo starts at the very top. */
+  /* Slide up under the transparent nav so the black runs to the very top. */
   margin-top: calc(-1 * var(--nav-h));
-  min-height: max(600px, 92svh);
 }
 
-.home-page__hero-media {
-  position: absolute;
-  /* Taller than the hero so the scroll parallax never shows an edge. */
-  inset: -2% 0 -18%;
-}
-
-.home-page__hero-image {
-  position: absolute;
-  inset: 0;
+.home-page__hero-inner {
+  position: relative;
   width: 100%;
-  height: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 28px) var(--gutter) clamp(56px, 8vw, 104px);
+  display: grid;
+  gap: clamp(32px, 5vw, 56px);
+  align-items: center;
 }
 
-.home-page__hero-gradient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to top, rgba(16, 20, 14, 0.88) 0%, rgba(16, 20, 14, 0.45) 38%, rgba(16, 20, 14, 0.05) 70%),
-    linear-gradient(to right, rgba(16, 20, 14, 0.45) 0%, rgba(16, 20, 14, 0) 60%);
+.home-page .home-page__hero-inner {
+  min-height: max(640px, 100svh);
 }
 
 .home-page__hero-copy {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: calc(var(--page-max) + 2 * var(--gutter));
-  margin: 0 auto;
-  padding: calc(var(--nav-h) + 48px) var(--gutter) clamp(48px, 8vw, 104px);
 }
 
 .home-page__hero-headline {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
-  font-size: var(--display-lg);
-  font-weight: 330;
+  font-size: clamp(36px, 11vw, 60px);
+  font-weight: 400;
   line-height: 0.98;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.012em;
   color: var(--cream);
-  max-width: 14ch;
-  margin-bottom: clamp(28px, 3.6vw, 44px);
+  margin-bottom: clamp(28px, 3.6vw, 48px);
   text-wrap: balance;
 }
 
@@ -71,30 +56,105 @@
   gap: 12px;
 }
 
-/* Scroll cue in the hero's corner: a line that keeps drawing downward. */
+.home-page__hero-visual {
+  position: relative;
+  order: -1;
+  justify-self: center;
+  width: min(74vw, 340px);
+  aspect-ratio: 4 / 5;
+  margin-top: 28px;
+}
+
+/* 999px top corners collapse to a perfect semicircle on any width. */
+.home-page__hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: var(--navy-2);
+  isolation: isolate;
+}
+
+.home-page__hero-media .home-page__hero-image {
+  position: absolute;
+  /* Taller than the arch so the scroll drift never shows an edge. */
+  inset: -8% 0 auto;
+  width: 100%;
+  height: 116%;
+}
+
+/* The gold ring, concentric with the arch's top and 14% wider, so it reads
+   as the circle of the logo; its lower part passes behind the photo. */
+.home-page__hero-arc {
+  position: absolute;
+  left: -14%;
+  top: -11.2%;
+  width: 128%;
+  height: auto;
+  aspect-ratio: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.home-page__hero-arc .ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.22;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.8;
+}
+
+/* A bead on the ring that travels round as the page scrolls. */
+.home-page__hero-arc .dot {
+  fill: var(--gold);
+}
+
+.home-page__hero-seal {
+  position: absolute;
+  left: -9%;
+  bottom: 12%;
+  z-index: 2;
+  width: clamp(64px, 7vw, 92px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  border: 1px solid rgba(201, 166, 107, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.home-page__hero-seal img {
+  width: 42%;
+  height: auto;
+}
+
+/* Scroll cue at the hero's foot: a line that keeps drawing downward. */
 .home-page__hero-scroll {
   position: absolute;
-  right: var(--gutter);
-  bottom: clamp(48px, 8vw, 104px);
+  left: 50%;
+  bottom: 24px;
   z-index: 2;
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  transform: translateX(-50%);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 235, 221, 0.8);
-  writing-mode: vertical-rl;
+  color: rgba(241, 233, 219, 0.7);
 }
 
 .home-page__hero-scroll-line {
   position: relative;
   width: 1px;
-  height: 72px;
+  height: 44px;
   overflow: hidden;
-  background: rgba(243, 235, 221, 0.25);
+  background: rgba(241, 233, 219, 0.2);
 }
 
 .home-page__hero-scroll-line::after {
@@ -111,6 +171,19 @@
 }
 
 @media (min-width: 900px) {
+  .home-page__hero-headline {
+    font-size: clamp(56px, 6.6vw, 104px);
+  }
+  .home-page__hero-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    padding-top: calc(var(--nav-h) + 48px);
+  }
+  .home-page__hero-visual {
+    order: 0;
+    justify-self: end;
+    width: min(100%, 440px, calc((100svh - var(--nav-h) - 160px) * 0.8));
+    margin: 0 clamp(16px, 4vw, 64px) 0 0;
+  }
   .home-page__hero-scroll {
     display: flex;
   }
@@ -130,23 +203,24 @@
   display: grid;
   gap: 10px;
   padding: 28px 0;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--gold);
   text-decoration: none;
 }
 
 .home-facts__num {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
-  font-size: clamp(64px, 9vw, 128px);
+  font-size: clamp(72px, 10vw, 144px);
   font-weight: 300;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  line-height: 0.85;
+  letter-spacing: -0.018em;
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--text);
 }
 
 .home-facts__num--word {
-  font-size: clamp(44px, 5.6vw, 80px);
+  font-size: clamp(48px, 6vw, 88px);
+  font-weight: 400;
+  font-style: italic;
   line-height: 1.05;
   letter-spacing: -0.03em;
   padding-bottom: clamp(10px, 2vw, 28px);
@@ -200,35 +274,103 @@
   color: var(--clay);
 }
 
-/* Rooms: one column on phones, two on tablets, and from desktop an editorial
-   grid where wide and narrow tiles alternate row by row. */
-.home-rooms {
-  display: grid;
-  gap: 16px;
+/* ── Rooms gallery: arches on black. Phones and tablets swipe; from desktop
+   the section holds still while the row slides sideways with the scroll. ── */
+.home-gallery {
+  position: relative;
+  margin-top: var(--section-y);
+  padding: clamp(64px, 8vw, 104px) 0 clamp(56px, 7vw, 88px);
+  background: var(--navy);
+  color: var(--cream);
+  overflow: hidden;
 }
 
-@media (min-width: 600px) {
-  .home-rooms {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.home-gallery__head {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto clamp(36px, 5vw, 64px);
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.home-gallery .section-heading {
+  color: var(--cream);
+  margin: 0;
+}
+
+.home-gallery .see-all-link,
+.home-gallery .room-arch__meta {
+  color: var(--gold);
+}
+
+.home-gallery__track {
+  display: flex;
+  gap: clamp(24px, 3vw, 48px);
+  padding: 0 var(--gutter) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: none;
+  /* Same Chrome quirk as the product rail: positioned photos in off-screen
+     cards would otherwise widen the page on phones. */
+  contain: paint;
+}
+
+.home-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.home-gallery__item {
+  flex: 0 0 min(70vw, 300px);
+  scroll-snap-align: start;
+}
+
+.home-gallery__progress {
+  display: none;
 }
 
 @media (min-width: 1000px) {
-  .home-rooms.is-editorial {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 20px;
+  .home-page .home-gallery {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-  .home-rooms.is-editorial > :nth-child(1),
-  .home-rooms.is-editorial > :nth-child(4) {
-    grid-column: span 7;
+  .home-gallery__track {
+    width: max-content;
+    overflow: visible;
+    contain: none;
+    /* Start in line with the page container; leave room to finish. */
+    padding: 0 calc(var(--gutter) * 2) 0 max(var(--gutter), calc((100vw - var(--page-max)) / 2));
   }
-  .home-rooms.is-editorial > :nth-child(2),
-  .home-rooms.is-editorial > :nth-child(3) {
-    grid-column: span 5;
+  .home-gallery__item {
+    /* Sized from the screen height too, so a whole arch and its caption
+       always fit while the section is pinned. */
+    flex-basis: min(24vw, 360px, calc((100vh - 380px) * 0.72));
   }
-  .home-rooms.is-editorial .room-tile__image {
-    aspect-ratio: auto;
-    height: clamp(300px, 29vw, 420px);
+  .home-gallery__progress {
+    display: block;
+    max-width: calc(var(--page-max) + 2 * var(--gutter));
+    width: 100%;
+    margin: clamp(32px, 4vw, 56px) auto 0;
+    padding: 0 var(--gutter);
+  }
+  .home-gallery__progress::before,
+  .home-gallery__progress span {
+    content: '';
+    display: block;
+    height: 1px;
+  }
+  .home-gallery__progress::before {
+    background: rgba(241, 233, 219, 0.15);
+  }
+  .home-gallery__progress span {
+    margin-top: -1px;
+    background: var(--gold);
+    transform-origin: left center;
   }
 }
 
@@ -313,9 +455,8 @@
   top: clamp(-20px, -2vw, 0px);
   right: var(--gutter);
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
   font-size: clamp(220px, 30vw, 420px);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1;
   color: var(--gold);
   opacity: 0.14;
@@ -350,11 +491,11 @@
 
 .brand-band__text {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 96;
-  font-size: clamp(28px, 4.2vw, 54px);
-  font-weight: 320;
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  font-size: clamp(32px, 4.8vw, 62px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.12;
+  letter-spacing: -0.009em;
   max-width: 24ch;
   margin-bottom: 32px;
   text-wrap: balance;
@@ -409,7 +550,7 @@
 }
 
 .home-contact__form {
-  background: #EDE7DC;
+  background: var(--sand);
   border-radius: var(--radius);
   padding: clamp(24px, 4vw, 48px);
 }

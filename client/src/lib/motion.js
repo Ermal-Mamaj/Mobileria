@@ -37,7 +37,7 @@ export function startSmoothScroll() {
     prevent: (node) => {
       if (!node.closest) return false;
       if (node.closest('.room-modal, .nav-header__menu')) return true;
-      const rail = node.closest('.product-rail');
+      const rail = node.closest('.product-rail, .home-gallery__track');
       return !!rail && rail.scrollWidth > rail.clientWidth;
     },
   });
@@ -184,7 +184,7 @@ export function wipeIn(frames, { inner, stagger = 0.12, start = 'top 88%', from 
     start,
     once: true,
     onEnter: (batch) => {
-      gsap.to(batch, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger });
+      gsap.to(batch, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger, clearProps: 'clipPath' });
       if (inner) {
         gsap.to(batch.map((el) => el.querySelector(inner)).filter(Boolean), {
           scale: 1, duration: 1.8, ease: 'expo.out', stagger,

@@ -25,7 +25,9 @@ export function EditableText({ value, onSave, placeholder, className = '', as = 
     if (as !== 'textarea' || !el) return;
     const fit = () => {
       el.style.height = 'auto';
-      el.style.height = `${el.scrollHeight}px`;
+      // scrollHeight leaves out the borders, which border-box height counts.
+      const borders = el.offsetHeight - el.clientHeight;
+      el.style.height = `${el.scrollHeight + borders}px`;
     };
     fit();
     let live = true;

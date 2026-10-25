@@ -1,6 +1,6 @@
 .rooms-grid {
   display: grid;
-  gap: 16px;
+  gap: 64px 32px;
 }
 
 @media (min-width: 600px) {
@@ -12,9 +12,6 @@
 @media (min-width: 1000px) {
   .rooms-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-  .rooms-grid .room-tile__image {
-    aspect-ratio: 4 / 5;
+    gap: 80px clamp(32px, 4vw, 64px);
   }
 }

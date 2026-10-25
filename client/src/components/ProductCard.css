@@ -18,7 +18,7 @@
   aspect-ratio: 4 / 5;
   border-radius: var(--radius);
   overflow: hidden;
-  background: #E9E4DA;
+  background: #E8E0D2;
 }
 
 .product-card__image .image-slot {
@@ -61,7 +61,7 @@
   gap: 6px;
   padding: 5px 9px;
   border-radius: var(--radius-sm);
-  background: rgba(24, 29, 22, 0.72);
+  background: rgba(20, 17, 13, 0.72);
   color: var(--cream);
   font-size: 12px;
   font-weight: 600;
@@ -89,11 +89,10 @@
 
 .product-card__name {
   font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 50, 'opsz' 48;
   font-size: 21px;
-  font-weight: 420;
+  font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.002em;
 }
 
 .product-card__material {

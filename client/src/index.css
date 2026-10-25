@@ -1,19 +1,24 @@
-:root {
-  /* Brand palette. The original names (--navy, --gold…) are kept because the
-     CMS stylesheet reads them too; the newer names describe what they are. */
-  --navy: #232A20;          /* forest ink — the brand's dark */
-  --navy-2: #2C3428;
-  --gold: #D6B88E;          /* oak — the brand's accent */
-  --gold-deep: #7A5A33;     /* oak dark enough for text on linen (5.6:1) */
-  --bg: #F4F1EB;            /* linen — page background */
-  --paper: #FBF9F5;         /* lifted surfaces: form fields, panels */
+:root,
+.wysiwyg-frame {
+  /* Bella Casa, taken from the logo: warm black and champagne gold on
+     ivory. The original token names (--navy, --gold…) are kept because the
+     CMS reads them too; the CMS's live-preview frame (.wysiwyg-frame) gets
+     these public values so it shows the site as it really looks. */
+  --navy: #16130F;          /* espresso black — the logo's ground */
+  --navy-2: #221E19;
+  --gold: #C9A66B;          /* champagne gold — the logo's metal (8:1 on black) */
+  --gold-deep: #7D5C34;     /* gold dark enough for text on ivory (5.4:1) */
+  --gold-sheen: linear-gradient(120deg, #E8CC97 0%, #B98A4F 48%, #E3C285 100%);
+  --bg: #F5F0E8;            /* ivory — page background */
+  --paper: #FBF8F3;         /* lifted surfaces: form fields, panels */
+  --sand: #ECE4D6;          /* the logo sofa's linen, for quiet panels */
   --white: #FFFFFF;
-  --text: #232A20;
-  --muted: #6B6457;         /* secondary text, AA on linen (5.2:1) */
-  --muted-2: #5F584C;
-  --border: #E2DACB;
-  --hairline: rgba(35, 42, 32, 0.14);
-  --cream: #F3EBDD;         /* light text on the dark wall tones */
+  --text: #1A1714;
+  --muted: #6B6358;         /* secondary text, AA on ivory (5.2:1) */
+  --muted-2: #5E574D;
+  --border: #E2D8C8;
+  --hairline: rgba(26, 23, 20, 0.14);
+  --cream: #F1E9DB;         /* light text on black and on the wall tones */
   --clay: #A4472E;          /* sale price only */
 
   /* Each room is painted its own wall colour (see lib/brand.js ROOM_TONES).
@@ -21,13 +26,13 @@
   --tone-walnut: #6B4A33;
   --tone-sage: #4D5B45;
   --tone-lake: #3D5560;
-  --tone-ink: #2C3428;
+  --tone-ink: #2A2622;
   --tone-ochre: #8A5E26;
   --tone-olive: #5A5833;
 
-  --shadow-sm: 0 1px 2px rgba(35, 42, 32, 0.06);
-  --shadow-md: 0 10px 30px rgba(35, 42, 32, 0.10), 0 2px 6px rgba(35, 42, 32, 0.05);
-  --shadow-lg: 0 30px 80px rgba(20, 24, 18, 0.28), 0 8px 20px rgba(20, 24, 18, 0.12);
+  --shadow-sm: 0 1px 2px rgba(22, 19, 15, 0.06);
+  --shadow-md: 0 10px 30px rgba(22, 19, 15, 0.10), 0 2px 6px rgba(22, 19, 15, 0.05);
+  --shadow-lg: 0 30px 80px rgba(10, 8, 6, 0.32), 0 8px 20px rgba(10, 8, 6, 0.14);
 
   --radius: 4px;
   --radius-sm: 2px;
@@ -36,20 +41,21 @@
   --page-max: 1280px;
   --gutter: clamp(20px, 5vw, 64px);
   --nav-h: 64px;
-  --section-y: clamp(64px, 9vw, 128px);
+  --section-y: clamp(72px, 10vw, 140px);
 
-  /* Type */
-  --font-serif: 'Fraunces Variable', Georgia, serif;
+  /* Type: Cormorant for display — a classic Roman like the logo's
+     wordmark — and Instrument Sans for reading and spaced-caps labels. */
+  --font-serif: 'Cormorant Variable', 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-wordmark: 'Fraunces Variable', Georgia, serif;
+  --font-wordmark: 'Cormorant Variable', Georgia, serif;
 
   --text-xs: 12px;
   --text-sm: 14px;
   --text-base: 16px;
   --text-lg: 18px;
-  --display-sm: clamp(26px, 3vw, 34px);
-  --display-md: clamp(34px, 4.6vw, 56px);
-  --display-lg: clamp(44px, 7.4vw, 104px);
+  --display-sm: clamp(30px, 3.4vw, 40px);
+  --display-md: clamp(40px, 5.4vw, 68px);
+  --display-lg: clamp(52px, 8.4vw, 124px);
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -87,6 +93,9 @@ body {
   font-size: var(--text-base);
   line-height: 1.55;
   color: var(--text);
+  /* Cormorant's default figures are old-style; phone numbers and prices
+     read better with lining ones. */
+  font-variant-numeric: lining-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -97,7 +106,7 @@ body.is-locked {
 }
 
 ::selection {
-  background: rgba(214, 184, 142, 0.45);
+  background: rgba(201, 166, 107, 0.45);
 }
 
 #root {
@@ -156,7 +165,7 @@ img {
 .footer :focus-visible,
 .home-page__hero :focus-visible,
 .room-hero :focus-visible,
-.room-tile:focus-visible,
+.home-gallery :focus-visible,
 .contact-form-panel :focus-visible {
   outline-color: var(--gold);
 }
@@ -176,7 +185,7 @@ img {
   width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C8B79A;
+  background: #CDBB9C;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-track {
@@ -187,9 +196,8 @@ img {
 .wordmark {
   display: block;
   font-family: var(--font-wordmark);
-  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 72;
-  font-weight: 450;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.009em;
   line-height: 1;
   white-space: nowrap;
 }

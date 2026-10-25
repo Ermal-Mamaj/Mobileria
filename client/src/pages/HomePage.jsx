@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
-import RoomTile from '../components/RoomTile.jsx';
+import RoomArch from '../components/RoomArch.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import ContactForm from '../components/ContactForm.jsx';
 import Icon from '../components/Icon.jsx';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import { useApiGet } from '../lib/hooks.js';
-import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
+import { BRAND, LOGO_FULL, LOGO_MARK, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
   gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn,
 } from '../lib/motion.js';
@@ -23,7 +23,7 @@ export default function HomePage() {
   const { data: saleProducts } = useApiGet('/products?sale=1', []);
   const heroRef = useRef(null);
   const factsRef = useRef(null);
-  const roomsRef = useRef(null);
+  const galleryRef = useRef(null);
   const bandRef = useRef(null);
   const productsRef = useRef(null);
   const contactRef = useRef(null);
@@ -31,9 +31,10 @@ export default function HomePage() {
   const headlineLines = (home.hero_headline || '').split('\n');
   const showSale = settings.sale_section_enabled && saleProducts.length > 0;
 
-  // Hero: once the curtain lifts, the photo settles from a deep zoom while
-  // the headline rises word by word, then the label and buttons follow.
-  // Scrolling away drifts the photo down and lifts the copy off.
+  // Hero: once the curtain lifts, the gold circle draws itself around the
+  // arch (the logo's circle), the photo rises into the arch, the seal turns
+  // in, and the headline comes up word by word. Scrolling turns the circle
+  // and drifts the photo inside its frame.
   useGSAP(() => {
     if (!home.hero_headline) return;
     const mm = gsap.matchMedia();
@@ -41,18 +42,23 @@ export default function HomePage() {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' });
       const tl = gsap.timeline({ paused: true });
-      tl.from(q('.home-page__hero-image'), { scale: 1.32, duration: 2.4, ease: 'expo.out' }, 0)
-        .from(q('.home-page__hero-gradient'), { autoAlpha: 0, duration: 1.2 }, 0)
-        .from(q('.eyebrow__rule'), { scaleX: 0, transformOrigin: 'left center', duration: 1, ease: 'expo.inOut' }, 0.15)
-        .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, x: -16, duration: 0.8 }, 0.45)
-        .from(split.words, { yPercent: 120, duration: 1.25, ease: 'expo.out', stagger: 0.075 }, 0.25)
-        .from(q('.home-page__hero-actions > *'), { autoAlpha: 0, y: 28, duration: 0.9, stagger: 0.1 }, 0.85)
-        .from(q('.home-page__hero-scroll'), { autoAlpha: 0, y: 16, duration: 0.8 }, 1.2);
+      tl.fromTo(q('.home-page__hero-arc .ring'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2, ease: 'expo.inOut' }, 0)
+        .from(q('.home-page__hero-arc .dot'), { autoAlpha: 0, scale: 0, transformOrigin: 'center', duration: 0.6 }, 1.7)
+        .from(q('.home-page__hero-media'), { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' }, 0.25)
+        .from(q('.home-page__hero-image'), { scale: 1.35, duration: 2.2, ease: 'expo.out' }, 0.35)
+        .from(q('.home-page__hero-seal'), { scale: 0, rotate: -120, duration: 1.2, ease: 'back.out(1.6)' }, 1.1)
+        .from(q('.eyebrow__rule'), { scaleX: 0, transformOrigin: 'left center', duration: 1, ease: 'expo.inOut' }, 0.3)
+        .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, x: -16, duration: 0.8 }, 0.55)
+        .from(split.words, { yPercent: 120, duration: 1.25, ease: 'expo.out', stagger: 0.07 }, 0.4)
+        .from(q('.home-page__hero-actions > *'), { autoAlpha: 0, y: 28, duration: 0.9, stagger: 0.1 }, 1)
+        .from(q('.home-page__hero-scroll'), { autoAlpha: 0, y: 16, duration: 0.8 }, 1.3);
       whenIntroDone().then(() => tl.play());
 
       const scrub = { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true };
-      gsap.to(q('.home-page__hero-media'), { yPercent: 24, ease: 'none', scrollTrigger: scrub });
-      gsap.to(q('.home-page__hero-copy'), { yPercent: -18, autoAlpha: 0, ease: 'none', scrollTrigger: { ...scrub, end: 'bottom 25%' } });
+      gsap.to(q('.home-page__hero-image'), { yPercent: 10, ease: 'none', scrollTrigger: scrub });
+      gsap.to(q('.home-page__hero-arc'), { rotate: 120, ease: 'none', scrollTrigger: scrub });
+      gsap.to(q('.home-page__hero-seal'), { rotate: 180, ease: 'none', scrollTrigger: scrub });
+      gsap.to(q('.home-page__hero-copy'), { yPercent: -14, autoAlpha: 0.2, ease: 'none', scrollTrigger: { ...scrub, end: 'bottom 30%' } });
     });
     return () => mm.revert();
   }, { scope: heroRef, dependencies: [home.hero_headline], revertOnUpdate: true });
@@ -81,47 +87,41 @@ export default function HomePage() {
     return () => mm.revert();
   }, { scope: factsRef, dependencies: [categories.length], revertOnUpdate: true });
 
-  // Rooms: heading rises out of its mask, tiles wipe open one after another.
+  // Rooms gallery: on desktop the section holds still while the arches slide
+  // past sideways, a gold line keeping count; on phones it's a swipe strip.
+  // Either way the arches rise into place the first time they're seen.
   useGSAP(() => {
     if (!categories.length) return;
     const mm = gsap.matchMedia();
-    mm.add(MOTION_OK, () => {
-      const q = gsap.utils.selector(roomsRef);
-      splitReveal(q('.section-heading')[0]);
-      riseIn(q('.see-all-link'), { y: 16 });
-      wipeIn(q('.room-tile'), { inner: '.room-tile__image', stagger: 0.14 });
-      refreshTriggers();
-    });
-    return () => mm.revert();
-  }, { scope: roomsRef, dependencies: [categories.length], revertOnUpdate: true });
-
-  // Quote band: on desktop the band pins while its words light up in turn;
-  // on phones the words light up as the band scrolls past.
-  useGSAP(() => {
-    if (!home.quote_text) return;
-    const mm = gsap.matchMedia();
-    mm.add({ ok: MOTION_OK, desktop: '(min-width: 900px)' }, (ctx) => {
+    mm.add({ ok: MOTION_OK, desktop: '(min-width: 1000px)' }, (ctx) => {
       if (!ctx.conditions.ok) return;
-      const q = gsap.utils.selector(bandRef);
-      const { desktop } = ctx.conditions;
-      scrubWords(q('.brand-band__text')[0], desktop
-        ? { trigger: bandRef.current, start: 'top top', end: '+=90%', pin: true }
-        : { start: 'top 80%', end: 'bottom 50%' });
-      // The logo beside the quote comes forward as the words light up.
-      gsap.fromTo(q('.brand-band__logo'), { scale: 0.82, rotate: -4, autoAlpha: 0.15, yPercent: 8 }, {
-        scale: 1, rotate: 0, autoAlpha: 1, yPercent: 0, ease: 'none',
-        scrollTrigger: desktop
-          ? { trigger: bandRef.current, start: 'top 60%', end: '+=120%', scrub: true }
-          : { trigger: bandRef.current, start: 'top 85%', end: 'center center', scrub: true },
+      const q = gsap.utils.selector(galleryRef);
+      const track = q('.home-gallery__track')[0];
+      splitReveal(q('.section-heading')[0]);
+      if (ctx.conditions.desktop) {
+        const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+        const pinned = { trigger: galleryRef.current, start: 'top top', end: () => `+=${distance()}`, invalidateOnRefresh: true };
+        gsap.to(track, {
+          x: () => -distance(),
+          ease: 'none',
+          scrollTrigger: { ...pinned, pin: true, pinSpacing: true, scrub: 0.6 },
+        });
+        gsap.fromTo(q('.home-gallery__progress span'), { scaleX: 0 }, {
+          scaleX: 1, ease: 'none', scrollTrigger: { ...pinned, scrub: true },
+        });
+      }
+      gsap.from(q('.room-arch__frame'), {
+        clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', stagger: 0.1,
+        scrollTrigger: { trigger: galleryRef.current, start: 'top 70%', once: true },
       });
-      gsap.from(q('.brand-band .eyebrow'), {
-        autoAlpha: 0, x: -24, duration: 0.9,
-        scrollTrigger: { trigger: bandRef.current, start: desktop ? 'top top' : 'top 60%', once: true },
+      gsap.from(q('.room-arch__caption'), {
+        autoAlpha: 0, y: 24, duration: 1, stagger: 0.1, delay: 0.5,
+        scrollTrigger: { trigger: galleryRef.current, start: 'top 70%', once: true },
       });
       refreshTriggers();
     });
     return () => mm.revert();
-  }, { scope: bandRef, dependencies: [home.quote_text], revertOnUpdate: true });
+  }, { scope: galleryRef, dependencies: [categories.length], revertOnUpdate: true });
 
   // Products: headings rise, photos wipe open, details follow.
   useGSAP(() => {
@@ -136,6 +136,34 @@ export default function HomePage() {
     });
     return () => mm.revert();
   }, { scope: productsRef, dependencies: [featured.length, showSale], revertOnUpdate: true });
+
+  // Quote band: on desktop the band pins while its words light up in turn,
+  // and the logo beside it comes forward; on phones it all plays as the band
+  // scrolls past.
+  useGSAP(() => {
+    if (!home.quote_text) return;
+    const mm = gsap.matchMedia();
+    mm.add({ ok: MOTION_OK, desktop: '(min-width: 900px)' }, (ctx) => {
+      if (!ctx.conditions.ok) return;
+      const q = gsap.utils.selector(bandRef);
+      const { desktop } = ctx.conditions;
+      scrubWords(q('.brand-band__text')[0], desktop
+        ? { trigger: bandRef.current, start: 'top top', end: '+=90%', pin: true }
+        : { start: 'top 80%', end: 'bottom 50%' });
+      gsap.fromTo(q('.brand-band__logo'), { scale: 0.82, rotate: -4, autoAlpha: 0.15, yPercent: 8 }, {
+        scale: 1, rotate: 0, autoAlpha: 1, yPercent: 0, ease: 'none',
+        scrollTrigger: desktop
+          ? { trigger: bandRef.current, start: 'top 60%', end: '+=120%', scrub: true }
+          : { trigger: bandRef.current, start: 'top 85%', end: 'center center', scrub: true },
+      });
+      gsap.from(q('.brand-band .eyebrow'), {
+        autoAlpha: 0, x: -24, duration: 0.9,
+        scrollTrigger: { trigger: bandRef.current, start: desktop ? 'top top' : 'top 60%', once: true },
+      });
+      refreshTriggers();
+    });
+    return () => mm.revert();
+  }, { scope: bandRef, dependencies: [home.quote_text], revertOnUpdate: true });
 
   // Contact: heading by line, then the direct links and the form rise in.
   useGSAP(() => {
@@ -157,38 +185,49 @@ export default function HomePage() {
     <div className="home-page app-shell">
       <NavHeader />
 
-      <section className="home-page__hero" aria-label="Bella Casa" ref={heroRef}>
-        <div className="home-page__hero-media">
-          <ImageSlot src={home.hero_image_url} placeholder="Foto" alt="" dark priority className="home-page__hero-image" />
-        </div>
-        <div className="home-page__hero-gradient" />
-        <div className="home-page__hero-copy">
-          <div className="eyebrow eyebrow--gold">
-            <span className="eyebrow__rule" />
-            <span>{home.hero_eyebrow || 'MOBILIE PËR ÇDO DHOMË'}</span>
+      <section className="home-page__hero" aria-label={BRAND} ref={heroRef}>
+        <div className="home-page__hero-inner">
+          <div className="home-page__hero-copy">
+            <div className="eyebrow eyebrow--gold">
+              <span className="eyebrow__rule" />
+              <span>{home.hero_eyebrow || 'MOBILIE PËR ÇDO DHOMË'}</span>
+            </div>
+            <h1 className="home-page__hero-headline">
+              {headlineLines.map((line, i) => (
+                <Fragment key={i}>
+                  {line}
+                  {i < headlineLines.length - 1 && <br />}
+                </Fragment>
+              ))}
+            </h1>
+            <div className="home-page__hero-actions">
+              <Magnet padding={60} magnetStrength={4}>
+                <button
+                  type="button"
+                  className="btn-gold"
+                  onClick={() => scrollToElement(galleryRef.current)}
+                >
+                  {home.hero_cta || 'Shiko ambientet'}
+                  <Icon name="arrow" className="btn-arrow" />
+                </button>
+              </Magnet>
+              <Magnet padding={60} magnetStrength={4}>
+                <Link to="/contact" className="btn-ghost">Na kontaktoni</Link>
+              </Magnet>
+            </div>
           </div>
-          <h1 className="home-page__hero-headline">
-            {headlineLines.map((line, i) => (
-              <Fragment key={i}>
-                {line}
-                {i < headlineLines.length - 1 && <br />}
-              </Fragment>
-            ))}
-          </h1>
-          <div className="home-page__hero-actions">
-            <Magnet padding={60} magnetStrength={4}>
-              <button
-                type="button"
-                className="btn-gold"
-                onClick={() => scrollToElement(roomsRef.current, -40)}
-              >
-                {home.hero_cta || 'Shiko ambientet'}
-                <Icon name="arrow" className="btn-arrow" />
-              </button>
-            </Magnet>
-            <Magnet padding={60} magnetStrength={4}>
-              <Link to="/contact" className="btn-ghost">Na kontaktoni</Link>
-            </Magnet>
+
+          <div className="home-page__hero-visual">
+            <svg className="home-page__hero-arc" viewBox="0 0 100 100" aria-hidden="true">
+              <circle className="ring" cx="50" cy="50" r="49.6" pathLength="1" />
+              <circle className="dot" cx="50" cy="0.4" r="0.9" />
+            </svg>
+            <div className="home-page__hero-media">
+              <ImageSlot src={home.hero_image_url} placeholder="Foto" alt="" dark priority className="home-page__hero-image" />
+            </div>
+            <div className="home-page__hero-seal" aria-hidden="true">
+              <img src={LOGO_MARK} alt="" width="34" height="42" />
+            </div>
           </div>
         </div>
         <div className="home-page__hero-scroll" aria-hidden="true">
@@ -216,33 +255,22 @@ export default function HomePage() {
         </section>
       )}
 
-      <section className="home-page__section home-rooms-section" ref={roomsRef} aria-labelledby="home-rooms-title">
-        <div className="section-heading-row">
-          <h2 className="section-heading" id="home-rooms-title">Zgjidh sipas Ambientit</h2>
-          <Link to="/categories" className="see-all-link">
-            Të gjitha ambientet <Icon name="arrow" />
-          </Link>
-        </div>
-
-        <div className={`home-rooms ${categories.length >= 4 ? 'is-editorial' : ''}`}>
-          {categories.slice(0, 4).map((cat, i) => (
-            <RoomTile key={cat.id} category={cat} index={i} />
-          ))}
-        </div>
-      </section>
-
-      <div className="brand-band" ref={bandRef}>
-        <div className="brand-band__content brand-band__layout">
-          <div>
-            <p className="brand-band__text">{home.quote_text}</p>
-            <div className="eyebrow eyebrow--gold">
-              <span className="eyebrow__rule" />
-              <span>{home.quote_label}</span>
-            </div>
+      {categories.length > 0 && (
+        <section className="home-gallery" ref={galleryRef} aria-labelledby="home-rooms-title">
+          <div className="home-gallery__head">
+            <h2 className="section-heading" id="home-rooms-title">Zgjidh sipas Ambientit</h2>
+            <Link to="/categories" className="see-all-link">
+              Të gjitha ambientet <Icon name="arrow" />
+            </Link>
           </div>
-          <img src={LOGO_FULL} alt={BRAND} className="brand-band__logo" loading="lazy" width="720" height="704" />
-        </div>
-      </div>
+          <div className="home-gallery__track">
+            {categories.map((cat, i) => (
+              <RoomArch key={cat.id} category={cat} index={i} className="home-gallery__item" />
+            ))}
+          </div>
+          <div className="home-gallery__progress" aria-hidden="true"><span /></div>
+        </section>
+      )}
 
       <div ref={productsRef}>
         {featured.length > 0 && (
@@ -273,6 +301,19 @@ export default function HomePage() {
             </div>
           </section>
         )}
+      </div>
+
+      <div className="brand-band" ref={bandRef}>
+        <div className="brand-band__content brand-band__layout">
+          <div>
+            <p className="brand-band__text">{home.quote_text}</p>
+            <div className="eyebrow eyebrow--gold">
+              <span className="eyebrow__rule" />
+              <span>{home.quote_label}</span>
+            </div>
+          </div>
+          <img src={LOGO_FULL} alt={BRAND} className="brand-band__logo" loading="lazy" width="720" height="704" />
+        </div>
       </div>
 
       <section id="contactForm" className="home-page__section home-contact" ref={contactRef} aria-labelledby="home-contact-title">
