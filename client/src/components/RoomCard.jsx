@@ -10,7 +10,7 @@ import './RoomCard.css';
 export default function RoomCard({ category, index }) {
   const count = Number(category.product_count) || 0;
   return (
-    <Link to={`/rooms/${category.slug}`} className={`room-card tone-${roomTone(index)}`} data-cursor="Hap">
+    <Link to={`/rooms/${category.slug}`} className={`room-card tone-${roomTone(index)}`}>
       <div className="room-card__media">
         <ImageSlot src={category.hero_image_url} placeholder="Foto" alt="" dark />
       </div>

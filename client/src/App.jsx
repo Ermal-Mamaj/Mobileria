@@ -6,7 +6,6 @@ import RoomPage from './pages/RoomPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import Curtain from './components/Curtain.jsx';
-import CursorLabel from './components/CursorLabel.jsx';
 import WhatsAppFloat from './components/WhatsAppFloat.jsx';
 import { scrollToTop, startSmoothScroll, stopSmoothScroll } from './lib/motion.js';
 
@@ -34,7 +33,6 @@ function App() {
     <>
       <ScrollToTop />
       <Curtain />
-      <CursorLabel />
       <WhatsAppFloat />
       <Routes>
         <Route path="/" element={<HomePage />} />
