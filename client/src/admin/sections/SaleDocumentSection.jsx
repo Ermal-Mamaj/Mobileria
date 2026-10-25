@@ -234,33 +234,29 @@ export default function SaleDocumentSection() {
         </header>
 
         <section className="fatura__parties">
-          <div className="fatura__party">
-            <div className="fatura__box">
-              <span className="fatura__label">Emri i shitësit</span>
-              <Field value={value('seller_name')} onChange={(v) => setField('seller_name', v)} onBlur={() => persist()} />
-            </div>
-            <div className="fatura__box">
-              <span className="fatura__label">NUI i shitësit</span>
-              <Field value={value('seller_nui')} placeholder="—" onChange={(v) => setField('seller_nui', v)} onBlur={() => persist()} />
-            </div>
-            <div className="fatura__box">
-              <span className="fatura__label">Adresa e shitësit</span>
-              <Field value={value('seller_address')} placeholder="—" onChange={(v) => setField('seller_address', v)} onBlur={() => persist()} />
-            </div>
+          <div className="fatura__box">
+            <span className="fatura__label">Emri i shitësit</span>
+            <Field value={value('seller_name')} onChange={(v) => setField('seller_name', v)} onBlur={() => persist()} />
           </div>
-          <div className="fatura__party">
-            <div className="fatura__box">
-              <span className="fatura__label">NUI i blerësit</span>
-              <Field value={value('buyer_nui')} placeholder="—" onChange={(v) => setField('buyer_nui', v)} onBlur={() => persist()} />
-            </div>
-            <div className="fatura__box">
-              <span className="fatura__label">Emri i blerësit</span>
-              <Field value={value('buyer_name')} onChange={(v) => setField('buyer_name', v)} onBlur={() => persist()} />
-            </div>
-            <div className="fatura__box">
-              <span className="fatura__label">Adresa e blerësit</span>
-              <Field value={value('buyer_address')} placeholder="—" onChange={(v) => setField('buyer_address', v)} onBlur={() => persist()} />
-            </div>
+          <div className="fatura__box">
+            <span className="fatura__label">Emri i blerësit</span>
+            <Field value={value('buyer_name')} onChange={(v) => setField('buyer_name', v)} onBlur={() => persist()} />
+          </div>
+          <div className="fatura__box">
+            <span className="fatura__label">NUI i shitësit</span>
+            <Field value={value('seller_nui')} placeholder="—" onChange={(v) => setField('seller_nui', v)} onBlur={() => persist()} />
+          </div>
+          <div className="fatura__box">
+            <span className="fatura__label">NUI i blerësit</span>
+            <Field value={value('buyer_nui')} placeholder="—" onChange={(v) => setField('buyer_nui', v)} onBlur={() => persist()} />
+          </div>
+          <div className="fatura__box">
+            <span className="fatura__label">Adresa e shitësit</span>
+            <Field value={value('seller_address')} placeholder="—" onChange={(v) => setField('seller_address', v)} onBlur={() => persist()} />
+          </div>
+          <div className="fatura__box">
+            <span className="fatura__label">Adresa e blerësit</span>
+            <Field value={value('buyer_address')} placeholder="—" onChange={(v) => setField('buyer_address', v)} onBlur={() => persist()} />
           </div>
         </section>
 
