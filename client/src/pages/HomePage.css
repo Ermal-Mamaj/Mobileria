@@ -1,390 +1,595 @@
-.home-page {
-  display: flex;
-  flex-direction: column;
-}
+/* The hero, quote band and contact heading are also rendered by the CMS's
+   live-preview editor (admin/sections/HomeSection.jsx) with these same class
+   names, so the owner edits on the real design. Rules that only make sense on
+   the live page (full-screen height, the load sequence, sitting under the
+   nav) are scoped to `.home-page`. */
 
+/* ── Hero: one big room photo filling the whole hero, the copy at its lower
+   left. The photo is shaded only where the nav and the copy sit, so the
+   room itself stays bright. ─────────────────────────────────────────── */
 .home-page__hero {
-  height: clamp(340px, 78vw, 400px);
   position: relative;
   overflow: hidden;
   background: var(--navy);
+  color: var(--cream);
 }
 
-/* Two layers so the transforms don't fight: the wrapper carries the
-   scroll parallax, the image itself carries the slow zoom. Bleeding the
-   wrapper past the hero edges keeps the parallax from exposing a gap. */
+.home-page .home-page__hero {
+  /* Slide up under the transparent nav so the photo starts at the very top. */
+  margin-top: calc(-1 * var(--nav-h));
+}
+
 .home-page__hero-media {
   position: absolute;
-  inset: -6% -2%;
-  transform: translate3d(0, var(--hero-shift, 0px), 0);
-  will-change: transform;
+  /* Taller than the hero so the scroll drift never shows an edge. */
+  inset: -2% 0 -20%;
 }
 
-.home-page__hero-image {
+.home-page__hero-media .home-page__hero-image {
   position: absolute;
   inset: 0;
-  /* Lifts the room out from under the scrim — without it the furniture,
-     which is the whole point of the shot, reads as a dark smudge. */
-  filter: brightness(1.16) saturate(1.06);
-  animation: hero-drift 28s ease-in-out infinite alternate;
-  will-change: transform;
+  width: 100%;
+  height: 100%;
 }
 
-/* A very slow push-in. It should read as the room breathing, not as a
-   slideshow — if you can consciously see it move, it's too fast. */
-@keyframes hero-drift {
-  from {
-    transform: scale(1.03);
-  }
-  to {
-    transform: scale(1.15) translate3d(-2%, -1.5%, 0);
-  }
-}
-
-/* Vignette: darkens the corners so the eye falls to the copy and the
-   hero gains a little depth. */
-.home-page__hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 90% at 65% 40%, transparent 38%, rgba(14, 17, 11, 0.38) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.home-page__hero-copy > * {
-  animation: hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-}
-.home-page__hero-copy > *:nth-child(1) { animation-delay: 0.1s; }
-.home-page__hero-copy > *:nth-child(2) { animation-delay: 0.24s; }
-.home-page__hero-copy > *:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-page__hero-image,
-  .home-page__hero-copy > * {
-    animation: none;
-  }
-  .home-page__hero-media {
-    transform: none;
-  }
-}
-
-/* The scrim has to guarantee legibility for *any* hero photo the client
-   uploads, including bright ones — so it stays heavy where the copy sits
-   rather than only tinting the bottom edge. */
 .home-page__hero-gradient {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to right, rgba(18, 22, 15, 0.72) 0%, rgba(18, 22, 15, 0.4) 45%, rgba(18, 22, 15, 0.14) 100%),
-    linear-gradient(to top, rgba(18, 22, 15, 0.88) 0%, rgba(18, 22, 15, 0.45) 55%, rgba(18, 22, 15, 0.25) 100%);
   pointer-events: none;
+  background:
+    linear-gradient(to right, rgba(14, 12, 9, 0.7) 0%, rgba(14, 12, 9, 0.38) 34%, rgba(14, 12, 9, 0) 60%),
+    linear-gradient(to top, rgba(14, 12, 9, 0.7) 0%, rgba(14, 12, 9, 0.2) 34%, rgba(14, 12, 9, 0) 55%),
+    linear-gradient(to bottom, rgba(14, 12, 9, 0.45) 0%, rgba(14, 12, 9, 0) 20%);
 }
 
-/* Warm gold glow anchored near the CTA, so the empty hero reads as lit. */
-.home-page__hero::after {
-  content: '';
-  position: absolute;
-  left: -10%;
-  bottom: -20%;
-  width: 75%;
-  height: 55%;
-  background: radial-gradient(circle, rgba(214, 184, 142, 0.18) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
+.home-page__hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  min-height: 560px;
+  padding: calc(var(--nav-h) + 48px) var(--gutter) clamp(88px, 11vh, 132px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.home-page .home-page__hero-inner {
+  min-height: max(620px, 100svh);
 }
 
 .home-page__hero-copy {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 34px;
-  z-index: 2;
+  max-width: 720px;
+}
+
+/* A gold rule leads the label; --rule lets it draw in from the left. */
+.home-page__hero .eyebrow {
+  color: var(--cream);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.home-page__hero .eyebrow__rule {
+  background: var(--gold);
+  transform: scaleX(var(--rule, 1));
+  transform-origin: left center;
 }
 
 .home-page__hero-headline {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: clamp(38px, 11vw, 44px);
+  font-size: clamp(42px, 11vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  margin-bottom: clamp(28px, 3.6vw, 44px);
+  text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.3);
+}
+
+.home-page__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  .home-page__hero-headline {
+    font-size: clamp(64px, 7.4vw, 120px);
+  }
+}
+
+/* Scroll cue at the hero's foot: a line that keeps drawing downward. */
+.home-page__hero-scroll {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(88px, 11vh, 132px);
+  z-index: 2;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  writing-mode: vertical-rl;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--white);
-  line-height: 1.06;
-  letter-spacing: 0.3px;
-  margin-bottom: 22px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(241, 233, 219, 0.7);
 }
 
-.home-page__section {
-  padding: 36px 20px 8px;
-}
-
-.home-page__section--tight {
-  padding: 8px 20px 0;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 8px;
-}
-
-.category-grid .category-card__image {
-  height: 112px;
-}
-
-.brand-band {
-  margin: 30px 0;
-  padding: 44px 28px;
-  background:
-    radial-gradient(120% 100% at 100% 0%, #2A3226 0%, var(--navy) 60%);
+.home-page__hero-scroll-line {
   position: relative;
+  width: 1px;
+  height: 64px;
+  overflow: hidden;
+  background: rgba(241, 233, 219, 0.2);
+}
+
+.home-page__hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  animation: hero-scroll-line 2.2s var(--ease-out) infinite;
+}
+
+@keyframes hero-scroll-line {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+
+@media (min-width: 900px) {
+  .home-page__hero-scroll {
+    display: flex;
+  }
+}
+
+/* ── Facts strip: three figures under the hero, each a way in. ─────── */
+.home-facts {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 96px) var(--gutter) 0;
+  display: grid;
+  gap: 0;
+}
+
+.home-facts__item {
+  display: grid;
+  gap: 10px;
+  padding: 28px 0;
+  border-top: 1px solid var(--gold);
+  text-decoration: none;
+}
+
+.home-facts__num {
+  font-family: var(--font-serif);
+  font-size: clamp(72px, 10vw, 144px);
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.018em;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--text);
+}
+
+.home-facts__num--word {
+  font-size: clamp(48px, 6vw, 88px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  padding-bottom: clamp(10px, 2vw, 28px);
+}
+
+.home-facts__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--muted-2);
+  transition: color var(--dur-ui) var(--ease-out), gap var(--dur-ui) var(--ease-out);
+}
+
+.home-facts__label .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--gold-deep);
+}
+
+.home-facts__item:hover .home-facts__label {
+  color: var(--text);
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .home-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+  .home-facts__item {
+    align-content: end;
+    padding: 32px 0 0;
+  }
+}
+
+/* ── Sections ──────────────────────────────────────────────── */
+.home-page__section {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: var(--section-y) var(--gutter) 0;
+}
+
+.home-sale-section .section-heading {
+  color: var(--clay);
+}
+
+/* ── Rooms gallery: arches on black. Phones and tablets swipe; from desktop
+   the section holds still while the row slides sideways with the scroll. ── */
+.home-gallery {
+  position: relative;
+  margin-top: var(--section-y);
+  padding: clamp(64px, 8vw, 104px) 0 clamp(56px, 7vw, 88px);
+  background: var(--navy);
+  color: var(--cream);
   overflow: hidden;
 }
 
-/* Thin gold hairlines top & bottom to frame the editorial band. */
-.brand-band::before {
-  content: '';
-  position: absolute;
-  left: 28px;
-  right: 28px;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(214, 184, 142, 0.4), transparent);
+.home-gallery__head {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto clamp(36px, 5vw, 64px);
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.brand-band__quote-mark {
-  font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: 96px;
-  line-height: 0.6;
-  color: rgba(214, 184, 142, 0.26);
-  position: absolute;
-  top: 30px;
-  left: 20px;
+.home-gallery .section-heading {
+  color: var(--cream);
+  margin: 0;
+}
+
+.home-gallery .see-all-link,
+.home-gallery .room-arch__meta {
+  color: var(--gold);
+}
+
+.home-gallery__track {
+  display: flex;
+  gap: clamp(24px, 3vw, 48px);
+  padding: 4px var(--gutter) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: none;
+  /* Same Chrome quirk as the product rail: positioned photos in off-screen
+     cards would otherwise widen the page on phones. */
+  contain: paint;
+}
+
+.home-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.home-gallery__item {
+  flex: 0 0 min(70vw, 300px);
+  scroll-snap-align: start;
+}
+
+.home-gallery__progress {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .home-page .home-gallery {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .home-gallery__track {
+    width: max-content;
+    overflow: visible;
+    contain: none;
+    /* Start in line with the page container; leave room to finish. */
+    padding: 0 calc(var(--gutter) * 2) 0 max(var(--gutter), calc((100vw - var(--page-max)) / 2));
+  }
+  .home-gallery__item {
+    /* Sized from the screen height too, so a whole arch and its caption
+       always fit while the section is pinned. */
+    flex-basis: min(24vw, 360px, calc((100vh - 380px) * 0.72));
+  }
+  .home-gallery__progress {
+    display: block;
+    max-width: calc(var(--page-max) + 2 * var(--gutter));
+    width: 100%;
+    margin: clamp(32px, 4vw, 56px) auto 0;
+    padding: 0 var(--gutter);
+  }
+  .home-gallery__progress::before,
+  .home-gallery__progress span {
+    content: '';
+    display: block;
+    height: 1px;
+  }
+  .home-gallery__progress::before {
+    background: rgba(241, 233, 219, 0.15);
+  }
+  .home-gallery__progress span {
+    margin-top: -1px;
+    background: var(--gold);
+    transform-origin: left center;
+  }
+}
+
+/* ── New designs and sale: a warm latte band between the black gallery and
+   the black quote, so the products sit on colour, not blank paper. ──── */
+.home-products {
+  padding-bottom: var(--section-y);
+}
+
+.home-products .product-card__image {
+  background: #CDBEA6;
+}
+
+.home-products .product-card__badge {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.home-products .product-card__badge.is-sale {
+  background: var(--clay);
+}
+
+/* Products: a swipeable rail on phones and tablets, a grid on desktop. */
+.product-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(220px, 72%);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gutter);
+  margin: -6px calc(-1 * var(--gutter)) 0;
+  padding: 6px var(--gutter) 8px;
+  scrollbar-width: none;
+  /* Without this Chrome counts the off-screen cards' positioned photos
+     towards the page width, and phones get a sideways scroll. */
+  contain: paint;
+}
+
+.product-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.product-rail > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 600px) {
+  .product-rail {
+    grid-auto-columns: minmax(240px, 40%);
+  }
+}
+
+@media (min-width: 1000px) {
+  .product-rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+    gap: 48px 24px;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    contain: none;
+  }
+  /* The lead piece spans two columns at the same height as its row, so a
+     wide piece (a sofa, a table) shows whole instead of cropped tall. */
+  .product-rail.is-featured > :first-child {
+    grid-column: span 2;
+  }
+  .product-rail.is-featured > :first-child .product-card__image {
+    aspect-ratio: auto;
+    flex: 1 1 0;
+    min-height: 0;
+  }
+  /* Studio shots stand the piece on the floor: keep the lower half in view. */
+  .product-rail.is-featured > :first-child .image-slot {
+    object-position: 50% 62%;
+  }
+  .product-rail.is-featured > :first-child .product-card__name {
+    font-size: 28px;
+  }
+}
+
+/* ── Quote band ────────────────────────────────────────────── */
+/* On desktop the band pins while its words light up, so it fills the
+   screen with the quote centred. */
+@media (min-width: 900px) {
+  .home-page .brand-band {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  .home-page .brand-band__content {
+    width: 100%;
+  }
+}
+
+.brand-band {
+  position: relative;
+  background: var(--navy);
+  color: var(--cream);
+  overflow: hidden;
 }
 
 .brand-band__content {
   position: relative;
-  z-index: 2;
-  padding-top: 16px;
+  z-index: 1;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 140px) var(--gutter);
+}
+
+.brand-band__quote-mark {
+  position: absolute;
+  top: clamp(-20px, -2vw, 0px);
+  right: var(--gutter);
+  font-family: var(--font-serif);
+  font-size: clamp(220px, 30vw, 420px);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.14;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Quote on the left, the Bella Casa logo on the right. */
+.brand-band__layout {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+.brand-band__logo {
+  display: block;
+  width: min(260px, 70%);
+  height: auto;
+  justify-self: center;
+}
+
+@media (min-width: 900px) {
+  .brand-band__layout {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(48px, 6vw, 96px);
+  }
+  .brand-band__logo {
+    width: min(440px, 100%);
+    justify-self: end;
+  }
 }
 
 .brand-band__text {
   font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: clamp(21px, 9.6px + 3.57vw, 26px);
-  font-weight: 500;
-  color: var(--white);
-  line-height: 1.38;
-  margin-bottom: 20px;
+  font-size: clamp(32px, 4.8vw, 62px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.12;
+  letter-spacing: -0.009em;
+  max-width: 24ch;
+  margin-bottom: 32px;
+  text-wrap: balance;
 }
 
-.product-carousel {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding: 4px 20px 30px;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 20px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.product-card {
-  flex: 0 0 176px;
-  scroll-snap-align: start;
-  border-radius: 6px;
+/* ── Contact: the showroom photo behind, darkened on the left where the
+   words sit; the form on an ivory card. ──────────────────────────────── */
+.home-contact-band {
+  position: relative;
   overflow: hidden;
-  background: var(--white);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  /* NOTE: deliberately no height:100% here. Percentage heights resolve to
-     auto when the parent (.product-carousel) has no explicit height of its
-     own — which silently disables the browser's default flex/grid stretch
-     behavior entirely, and was the actual cause of cards ending up
-     different heights. Leaving this out is what lets stretch work. */
+  background: var(--navy);
+  color: var(--cream);
 }
 
-.product-card:hover {
-  transform: translateY(-4px);
+.home-contact-band__media {
+  position: absolute;
+  inset: -10% 0;
+}
+
+.home-contact-band__media .image-slot {
+  position: absolute;
+  inset: 0;
+}
+
+.home-contact-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to right, rgba(14, 12, 9, 0.9) 0%, rgba(14, 12, 9, 0.7) 45%, rgba(14, 12, 9, 0.45) 100%);
+}
+
+.home-contact {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 40px;
+  padding-bottom: var(--section-y);
+}
+
+.home-contact .section-heading {
+  color: var(--cream);
+}
+
+.home-contact .section-intro {
+  color: rgba(241, 233, 219, 0.82);
+}
+
+.home-contact__direct {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+  margin-top: 32px;
+  border-top: 1px solid rgba(241, 233, 219, 0.2);
+}
+
+.home-contact__direct a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(241, 233, 219, 0.2);
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  transition: padding-left var(--dur-ui) var(--ease-out);
+}
+
+.home-contact__direct a:hover {
+  padding-left: 6px;
+}
+
+.home-contact__direct .icon {
+  width: 22px;
+  height: 22px;
+  color: var(--gold);
+}
+
+.home-contact__direct span {
+  display: grid;
+}
+
+.home-contact__direct small {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(241, 233, 219, 0.7);
+}
+
+.home-contact__form {
+  background: var(--bg);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: clamp(24px, 4vw, 48px);
   box-shadow: var(--shadow-lg);
 }
 
-.product-card__image {
-  height: 154px;
-  position: relative;
-  flex-shrink: 0;
+.home-contact :focus-visible {
+  outline-color: var(--gold);
 }
 
-.product-card__badge {
-  position: absolute;
-  top: 11px;
-  left: 11px;
-  background: var(--navy);
-  color: var(--gold);
-  padding: 4px 11px;
-  border-radius: 20px;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  z-index: 2;
-  box-shadow: 0 4px 10px rgba(18, 22, 15, 0.25);
-}
-
-.product-card__body {
-  padding: 14px;
-  /* Stretches to fill whatever space is left below the (fixed-height)
-     image, and lays its own children in a column so the button can be
-     pushed to the bottom independently of how many lines the name or
-     material take up. */
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  /* Sized to comfortably fit the worst realistic case (2-line name, a
-     material line, and a wrapping sale price + discount badge) so cards
-     land on the same size by default — not just when they happen to be
-     stretched against a taller sibling in the same row. Measured against
-     real worst-case content before picking this number. */
-  min-height: 212px;
-}
-
-.product-card__name {
-  font-family: var(--font-serif);
-  font-size-adjust: 0.45;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.05;
-  margin-bottom: 4px;
-  /* Long names get 2 lines max, then truncate — keeps card heights from
-     varying wildly between products instead of just being consistent
-     about where the button sits. */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.product-card__material {
-  font-size: 10.5px;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.product-card__price {
-  margin-bottom: 12px;
-}
-
-.product-card__badge--sale {
-  background: #B5603F;
-  color: #fff;
-}
-
-.product-card__body .btn-outline {
-  /* The actual fix: whatever space the name/material didn't use gets
-     absorbed here, so the button always sits flush with the card's
-     bottom edge no matter how much text is above it. */
-  margin-top: auto;
+.home-contact__form :focus-visible {
+  outline-color: var(--gold-deep);
 }
 
 @media (min-width: 900px) {
-  .home-page__hero {
-    height: 560px;
-  }
-  .home-page__hero-copy {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: min(100% - 96px, 1184px);
-    bottom: 64px;
-  }
-  .home-page__hero-headline {
-    font-size: 60px;
-    max-width: 640px;
-  }
-  .home-page__section {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 64px 48px 12px;
-  }
-  .home-page__section--tight {
-    padding: 12px 48px 0;
-  }
-  .category-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-  }
-  .category-grid .category-card__image {
-    height: 190px;
-  }
-  .brand-band {
-    padding: 64px 48px;
-  }
-  .brand-band::before {
-    left: 48px;
-    right: 48px;
-  }
-  .brand-band__quote-mark {
-    left: max(20px, calc(50% - 612px));
-    top: 40px;
-    font-size: 120px;
-  }
-  .brand-band__content {
-    max-width: 1184px;
-    margin: 0 auto;
-  }
-  .brand-band__text {
-    font-size: 34px;
-    max-width: 720px;
-  }
-  .product-carousel {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    overflow: visible;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 10px 48px 48px;
-    width: 100%;
-  }
-  .product-card {
-    flex: initial;
-  }
-  .product-card__image {
-    height: 200px;
-  }
-  #contactForm.home-page__section {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 440px;
-    column-gap: 64px;
-    align-items: start;
-    padding-bottom: 88px;
-  }
-  #contactForm .contact-form,
-  #contactForm .contact-form__success {
-    grid-column: 2;
-    grid-row: 1 / span 3;
+  .home-contact {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(48px, 7vw, 112px);
+    align-items: center;
   }
 }

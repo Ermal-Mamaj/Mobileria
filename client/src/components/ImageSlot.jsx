@@ -4,12 +4,12 @@ import './ImageSlot.css';
 // It must load eagerly: lazy-loading the largest visible element would delay
 // the very thing the visitor is waiting for. Everything else (grid tiles,
 // gallery, images further down the page) defers until it's near the viewport.
-export default function ImageSlot({ src, placeholder = 'Foto', className = '', dark = false, priority = false }) {
+export default function ImageSlot({ src, placeholder = 'Foto', alt, className = '', dark = false, priority = false }) {
   if (src) {
     return (
       <img
         src={src}
-        alt={placeholder}
+        alt={alt ?? placeholder}
         decoding="async"
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}

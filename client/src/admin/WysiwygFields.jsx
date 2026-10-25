@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uploadImage } from '../lib/blobUpload.js';
 
 // Inline-editable text that visually matches whatever heading/paragraph
@@ -15,6 +15,29 @@ export function EditableText({ value, onSave, placeholder, className = '', as = 
   useEffect(() => {
     if (document.activeElement !== inputRef.current) setLocal(value || '');
   }, [value]);
+
+  // A textarea grows with its text, so a long paragraph set in the page's
+  // large type is never cut off inside a fixed-height box.
+  // Measured again once the web fonts arrive (the serif sets wider than its
+  // fallback) and whenever the window is resized.
+  useLayoutEffect(() => {
+    const el = inputRef.current;
+    if (as !== 'textarea' || !el) return;
+    const fit = () => {
+      el.style.height = 'auto';
+      // scrollHeight leaves out the borders, which border-box height counts.
+      const borders = el.offsetHeight - el.clientHeight;
+      el.style.height = `${el.scrollHeight + borders}px`;
+    };
+    fit();
+    let live = true;
+    document.fonts?.ready.then(() => live && fit());
+    window.addEventListener('resize', fit);
+    return () => {
+      live = false;
+      window.removeEventListener('resize', fit);
+    };
+  }, [as, local]);
 
   function handleBlur() {
     if (local !== (value || '')) onSave(local);

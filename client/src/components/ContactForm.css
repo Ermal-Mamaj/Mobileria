@@ -1,0 +1,122 @@
+.contact-form {
+  display: grid;
+  gap: 18px;
+}
+
+.contact-form__row {
+  display: grid;
+  gap: 18px;
+}
+
+.contact-form__field {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-form__field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 14px;
+  outline: none;
+  transition: border-color var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 128px;
+  line-height: 1.5;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #8E877A;
+}
+
+.contact-form input:hover,
+.contact-form textarea:hover {
+  border-color: #CDBFA8;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.35);
+}
+
+.contact-form button[type='submit'] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.contact-form__error {
+  font-size: 14px;
+  color: var(--clay);
+}
+
+/* On a dark panel the fields stay light so typing reads clearly. */
+.contact-form.is-dark label {
+  color: var(--cream);
+}
+
+.contact-form.is-dark input,
+.contact-form.is-dark textarea {
+  border-color: transparent;
+}
+
+.contact-form.is-dark .contact-form__error {
+  color: #F0B4A0;
+}
+
+.contact-form__success {
+  display: grid;
+  gap: 6px;
+  padding: 22px 24px;
+  border-left: 2px solid var(--gold-deep);
+  background: var(--paper);
+  font-size: 16px;
+  color: var(--muted-2);
+  animation: contact-success-in 300ms var(--ease-out);
+}
+
+.contact-form__success strong {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.contact-form__success.is-dark {
+  background: rgba(243, 235, 221, 0.06);
+  border-left-color: var(--gold);
+  color: rgba(243, 235, 221, 0.82);
+}
+
+.contact-form__success.is-dark strong {
+  color: var(--cream);
+}
+
+@keyframes contact-success-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+@media (min-width: 600px) {
+  .contact-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .contact-form button[type='submit'] {
+    width: auto;
+    justify-self: start;
+  }
+}

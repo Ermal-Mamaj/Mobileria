@@ -90,68 +90,74 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className="page-body wysiwyg-section-bg">
-          <EditableText
-            as="textarea"
-            rows={3}
-            value={form.paragraph_1}
-            onSave={(v) => edit('paragraph_1', v)}
-            placeholder="Paragrafi i parë..."
-            className="wysiwyg-field--paragraph about-paragraph"
-          />
-          <EditableText
-            as="textarea"
-            rows={3}
-            value={form.paragraph_2}
-            onSave={(v) => edit('paragraph_2', v)}
-            placeholder="Paragrafi i dytë..."
-            className="wysiwyg-field--paragraph about-paragraph"
-          />
-
-          <h2 className="about-subheading">Vlerat Tona</h2>
-          <div className="value-list">
-            {values.map((v, i) => (
-              <div className="value-item wysiwyg-value-item" key={i}>
-                <div className="value-item__icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2733" strokeWidth="2">
-                    {VALUE_ICONS[i % VALUE_ICONS.length]}
-                  </svg>
-                </div>
-                <div className="wysiwyg-value-item__body">
-                  <EditableText
-                    value={v.title}
-                    onSave={(val) => editValue(i, 'title', val)}
-                    placeholder="Titulli"
-                    className="wysiwyg-field--value-title value-item__title"
-                  />
-                  <EditableText
-                    value={v.description}
-                    onSave={(val) => editValue(i, 'description', val)}
-                    placeholder="Përshkrimi"
-                    className="wysiwyg-field--value-desc value-item__description"
-                  />
-                </div>
-                <button type="button" className="wysiwyg-value-remove" onClick={() => removeValue(i)} aria-label="Hiq vlerën">×</button>
-              </div>
-            ))}
-          </div>
-          <button type="button" className="admin-btn-secondary" onClick={addValue}>+ Shto Vlerë</button>
-
-          <div className="about-quote wysiwyg-quote">
+        <div className="band-latte">
+          <div className="page-body about-body">
             <EditableText
               as="textarea"
-              rows={2}
-              value={form.quote_text}
-              onSave={(v) => edit('quote_text', v)}
-              placeholder="Teksti i citatit..."
-              className="wysiwyg-field--quote about-quote__text"
+              rows={3}
+              value={form.paragraph_1}
+              onSave={(v) => edit('paragraph_1', v)}
+              placeholder="Paragrafi i parë..."
+              className="wysiwyg-field--paragraph about-paragraph"
             />
             <EditableText
-              value={form.quote_author}
-              onSave={(v) => edit('quote_author', v)}
-              placeholder="Ekipi i Bella Casa"
-              className="wysiwyg-field--author about-quote__author"
+              as="textarea"
+              rows={3}
+              value={form.paragraph_2}
+              onSave={(v) => edit('paragraph_2', v)}
+              placeholder="Paragrafi i dytë..."
+              className="wysiwyg-field--paragraph about-paragraph"
             />
+          </div>
+        </div>
+
+        <div className="band-dark about-values-band">
+          <div className="page-body">
+            <h2 className="about-subheading">Vlerat Tona</h2>
+            <div className="value-list">
+              {values.map((v, i) => (
+                <div className="value-item wysiwyg-value-item" key={i}>
+                  <div className="value-item__icon">
+                    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
+                      {VALUE_ICONS[i % VALUE_ICONS.length]}
+                    </svg>
+                  </div>
+                  <div className="wysiwyg-value-item__body">
+                    <EditableText
+                      value={v.title}
+                      onSave={(val) => editValue(i, 'title', val)}
+                      placeholder="Titulli"
+                      className="wysiwyg-field--value-title value-item__title"
+                    />
+                    <EditableText
+                      value={v.description}
+                      onSave={(val) => editValue(i, 'description', val)}
+                      placeholder="Përshkrimi"
+                      className="wysiwyg-field--value-desc value-item__description"
+                    />
+                  </div>
+                  <button type="button" className="wysiwyg-value-remove" onClick={() => removeValue(i)} aria-label="Hiq vlerën">×</button>
+                </div>
+              ))}
+            </div>
+            <button type="button" className="admin-btn-secondary" onClick={addValue}>+ Shto Vlerë</button>
+
+            <div className="about-quote wysiwyg-quote">
+              <EditableText
+                as="textarea"
+                rows={2}
+                value={form.quote_text}
+                onSave={(v) => edit('quote_text', v)}
+                placeholder="Teksti i citatit..."
+                className="wysiwyg-field--quote about-quote__text"
+              />
+              <EditableText
+                value={form.quote_author}
+                onSave={(v) => edit('quote_author', v)}
+                placeholder="Ekipi i Bella Casa"
+                className="wysiwyg-field--author about-quote__author"
+              />
+            </div>
           </div>
         </div>
       </div>

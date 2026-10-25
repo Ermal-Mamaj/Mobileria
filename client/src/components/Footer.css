@@ -1,123 +1,114 @@
 .footer {
   background: var(--navy);
-  padding: 32px 24px 34px;
-  /* Clear the home-indicator / gesture bar on notched phones. */
-  padding-bottom: calc(34px + env(safe-area-inset-bottom));
-  padding-left: max(24px, env(safe-area-inset-left));
-  padding-right: max(24px, env(safe-area-inset-right));
-  border-top: 1px solid rgba(214, 184, 142, 0.15);
+  color: var(--cream);
 }
 
-.footer__left {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-}
-
-.footer__brand {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+.footer__inner {
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(56px, 8vw, 104px) var(--gutter) clamp(40px, 5vw, 64px);
+  display: grid;
+  gap: 48px;
 }
 
 .footer__logo {
-  height: 76px;
+  height: 64px;
   width: auto;
   display: block;
 }
 
-.footer__rows {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* The full Bella Casa logo (emblem + wordmark). */
+.footer__logo.is-full {
+  width: clamp(200px, 22vw, 280px);
+  height: auto;
 }
 
-.footer__row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.85);
+.footer__line {
+  margin-top: 14px;
+  color: rgba(243, 235, 221, 0.7);
+  font-size: var(--text-base);
 }
 
-.footer__row--link {
-  text-decoration: none;
-  cursor: pointer;
-  align-self: flex-start;
-  padding: 9px 14px;
-  border-radius: 999px;
-  background: rgba(214, 184, 142, 0.1);
-  border: 1px solid rgba(214, 184, 142, 0.3);
-  color: var(--gold);
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px 24px;
+}
+
+.footer__heading {
+  font-size: 12px;
   font-weight: 600;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
 }
 
-.footer__row-arrow {
-  margin-left: 2px;
+.footer__col ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
 }
 
-.footer__row--link:hover {
-  background: rgba(214, 184, 142, 0.18);
-  border-color: rgba(214, 184, 142, 0.5);
-}
-
-/* :active (not just :hover) matters here since most visitors are on
-   mobile, where hover never fires — this is what gives a tap its
-   visible "yes, that registered, I'm a button" feedback. */
-.footer__row--link:active {
-  background: rgba(214, 184, 142, 0.24);
-  transform: scale(0.97);
-}
-
-.footer__copyright {
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.4);
-  margin-top: 22px;
-  letter-spacing: 0.3px;
+.footer__link,
+.footer__text {
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(243, 235, 221, 0.82);
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 .footer__link {
-  color: rgba(255, 255, 255, 0.55);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  transition: color var(--dur-ui) var(--ease-out);
 }
 
 .footer__link:hover {
+  color: var(--cream);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(201, 166, 107, 0.6);
+}
+
+.footer__link--icon {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.footer__link--icon .icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
   color: var(--gold);
 }
 
+.footer__link--icon .footer__ext {
+  width: 13px;
+  height: 13px;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.footer__bottom {
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 20px var(--gutter) calc(24px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(243, 235, 221, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 24px;
+  font-size: 13px;
+  color: rgba(243, 235, 221, 0.6);
+}
+
 @media (min-width: 900px) {
-  .footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 40px max(48px, calc((100% - 1280px) / 2)) 34px;
+  .footer__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
   }
-  /* The wrapper only exists for the mobile-only "hug the right" treatment
-     below. At desktop width it steps out of the way entirely so .footer__brand
-     and .footer__rows become direct flex children of .footer again — this is
-     what actually reproduces the original layout's spacing (brand pinned to
-     the far left, rows pinned to the far right via space-between across the
-     full footer width), not just "brand and rows next to each other". */
-  .footer__left {
-    display: contents;
-  }
-  .footer__rows {
-    flex-direction: row;
-    align-items: center;
-    gap: 28px;
-  }
-  .footer__row--link {
-    align-self: center;
-  }
-  .footer__copyright {
-    width: 100%;
-    text-align: left;
-    max-width: none;
-    margin-top: 12px;
+  .footer__cols {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   }
 }

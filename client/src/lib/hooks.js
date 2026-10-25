@@ -43,3 +43,18 @@ export function useApiGet(path, fallback) {
 
   return { data, loading };
 }
+
+// The title and description index.html ships with, used for Home.
+const DEFAULT_TITLE = document.title;
+const descriptionTag = document.querySelector('meta[name="description"]');
+const DEFAULT_DESCRIPTION = descriptionTag?.getAttribute('content') || '';
+
+// Sets the browser tab title ("Dhoma e Gjumit — Bella Casa") and the page
+// description for search results and shared links. With no title it puts
+// back the site's defaults.
+export function usePageTitle(title, description) {
+  useEffect(() => {
+    document.title = title ? `${title} — Bella Casa` : DEFAULT_TITLE;
+    descriptionTag?.setAttribute('content', description || DEFAULT_DESCRIPTION);
+  }, [title, description]);
+}

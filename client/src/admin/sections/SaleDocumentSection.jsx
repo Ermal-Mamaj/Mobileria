@@ -3,16 +3,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { useConfirm } from '../useConfirm.jsx';
 import { formatDate, formatMoney, saleNumber } from '../salesUtils.js';
-import { BRAND, BRAND_LINE } from '../../lib/brand.js';
+import { BRAND, BRAND_LINE, LOGO_MARK } from '../../lib/brand.js';
 
 // The shop's mark on printed documents: the uploaded logo when there is one,
-// otherwise the name set in the brand face on an ink tile.
+// otherwise the Bella Casa monogram on an ink tile.
 export function BrandTile({ settings, className = '' }) {
   return (
     <div className={`doc-brand__tile ${className}`}>
-      {settings?.logo_url
-        ? <img src={settings.logo_url} alt={BRAND} />
-        : <span className="doc-brand__wordmark">{BRAND}</span>}
+      <img src={settings?.logo_url || LOGO_MARK} alt={BRAND} />
     </div>
   );
 }

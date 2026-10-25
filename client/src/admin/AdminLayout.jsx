@@ -4,14 +4,17 @@ import { adminAuth } from '../lib/api.js';
 import { useAdminAuth } from './AdminAuth.jsx';
 import { useUnsavedChanges } from './UnsavedChangesContext.jsx';
 import { useConfirm } from './useConfirm.jsx';
+import { usePageTitle } from '../lib/hooks.js';
+import { BRAND, LOGO_MARK } from '../lib/brand.js';
+import Icon from '../components/Icon.jsx';
 
 const TABS = [
-  { to: '/bellacasa-cms', label: 'Paneli', icon: '📊', end: true },
-  { to: '/bellacasa-cms/collections', label: 'Koleksionet', icon: '🗂️' },
-  { to: '/bellacasa-cms/sales', label: 'Shitjet', icon: '🧾' },
-  { to: '/bellacasa-cms/pages', label: 'Përmbajtja e Faqeve', icon: '📄' },
-  { to: '/bellacasa-cms/messages', label: 'Mesazhet', icon: '📬' },
-  { to: '/bellacasa-cms/settings', label: 'Cilësimet', icon: '⚙️' },
+  { to: '/bellacasa-cms', label: 'Paneli', icon: 'grid', end: true },
+  { to: '/bellacasa-cms/collections', label: 'Koleksionet', icon: 'layers' },
+  { to: '/bellacasa-cms/sales', label: 'Shitjet', icon: 'receipt' },
+  { to: '/bellacasa-cms/pages', label: 'Përmbajtja e Faqeve', icon: 'file' },
+  { to: '/bellacasa-cms/messages', label: 'Mesazhet', icon: 'mail' },
+  { to: '/bellacasa-cms/settings', label: 'Cilësimet', icon: 'gear' },
 ];
 
 export default function AdminLayout({ children }) {
@@ -20,6 +23,7 @@ export default function AdminLayout({ children }) {
   const { confirm, modal } = useConfirm();
   const navigate = useNavigate();
   const [sessionLost, setSessionLost] = useState(false);
+  usePageTitle('CMS');
 
   // Any API call that finds the session gone raises this. Signing in again
   // happens in a new tab; when this tab gets focus back and the session is
@@ -64,8 +68,11 @@ export default function AdminLayout({ children }) {
       {/* Sidebar — visible on desktop, collapses to a top bar on mobile */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar__brand">
-          <h1 className="admin-sidebar__title">Bella Casa</h1>
-          <span className="admin-sidebar__subtitle">CMS</span>
+          <img src={LOGO_MARK} alt="" className="admin-sidebar__mark" width="30" height="37" />
+          <div>
+            <h1 className="admin-sidebar__title">{BRAND}</h1>
+            <span className="admin-sidebar__subtitle">CMS</span>
+          </div>
         </div>
 
         <nav className="admin-sidebar__nav">
@@ -77,7 +84,7 @@ export default function AdminLayout({ children }) {
               onClick={(e) => handleNavClick(e, tab.to)}
               className={({ isActive }) => `admin-nav-item ${isActive ? 'is-active' : ''}`}
             >
-              <span className="admin-nav-item__icon">{tab.icon}</span>
+              <Icon name={tab.icon} className="admin-nav-item__icon" />
               <span className="admin-nav-item__label">{tab.label}</span>
             </NavLink>
           ))}
@@ -94,7 +101,10 @@ export default function AdminLayout({ children }) {
 
       {/* Mobile top bar — hidden on desktop where sidebar takes over */}
       <header className="admin-topbar">
-        <h1 className="admin-topbar__title">Bella Casa</h1>
+        <h1 className="admin-topbar__title">
+          <img src={LOGO_MARK} alt="" className="admin-topbar__mark" width="22" height="27" />
+          {BRAND}
+        </h1>
         <div className="admin-topbar__right">
           <span className="admin-topbar__user">{username}</span>
           <button type="button" className="admin-btn-secondary admin-btn--sm" onClick={logout}>Dil</button>
@@ -111,7 +121,7 @@ export default function AdminLayout({ children }) {
             onClick={(e) => handleNavClick(e, tab.to)}
             className={({ isActive }) => `admin-layout__tab ${isActive ? 'is-active' : ''}`}
           >
-            <span className="admin-tab-icon">{tab.icon}</span>
+            <Icon name={tab.icon} className="admin-tab-icon" />
             <span className="admin-tab-label">{tab.label}</span>
           </NavLink>
         ))}

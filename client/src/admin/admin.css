@@ -1,35 +1,48 @@
-/* Bella Casa — CMS tokens, the same olive, champagne and paper as the public site. */
-:root {
-  --navy: #232A20;
-  --navy-2: #2C3428;
-  --gold: #D6B88E;
-  --gold-deep: #8C6A40;
-  --bg: #F4F1EB;
+/* Bella Casa — CMS tokens: the public site's warm black, champagne gold and
+   ivory. Set on the CMS's own containers rather than :root, so opening the
+   CMS never repaints the public site in the same tab. */
+.admin-login,
+.admin-layout {
+  accent-color: #7D5C34;
+  --navy: #16130F;
+  --navy-2: #221E19;
+  --gold: #C9A66B;
+  --gold-deep: #7D5C34;
+  --bg: #F5F0E8;
   --white: #FFFFFF;
-  --text: #262A24;
-  --muted: #8E877A;
-  --muted-2: #66604F;
-  --border: #E5DED2;
-  --shadow-sm: 0 2px 8px rgba(38, 42, 36, 0.05), 0 1px 2px rgba(38, 42, 36, 0.04);
+  --text: #1A1714;
+  --muted: #6B6358;
+  --muted-2: #5E574D;
+  --border: #E2D8C8;
+  --shadow-sm: 0 2px 8px rgba(26, 23, 20, 0.05), 0 1px 2px rgba(26, 23, 20, 0.04);
   --radius: 6px;
-  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-serif: 'Cormorant Variable', Georgia, serif;
   --font-body: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
+  color: var(--text);
 }
 
 .admin-login {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 28px;
   background: var(--navy);
-  padding: 24px;
+  padding: 32px 24px;
+}
+
+.admin-login__logo {
+  width: min(220px, 56vw);
+  height: auto;
 }
 
 .admin-login__card {
   width: 100%;
-  max-width: 340px;
-  background: var(--white);
-  border-radius: 16px;
+  max-width: 360px;
+  background: var(--bg);
+  border-radius: 6px;
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
@@ -39,8 +52,9 @@
 
 .admin-login__title {
   font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 600;
+  line-height: 1.1;
   color: var(--text);
 }
 
@@ -63,13 +77,15 @@
 }
 
 .admin-login__card button {
-  padding: 12px;
+  padding: 14px;
   background: var(--navy);
   color: var(--gold);
   border: none;
-  border-radius: 8px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 4px;
 }
@@ -90,7 +106,7 @@
 
 .admin-layout {
   min-height: 100vh;
-  background: #F7F5F0;
+  background: #F5F0E8;
 }
 
 /* --- Desktop sidebar (hidden on mobile) --- */
@@ -109,10 +125,21 @@
 }
 
 .admin-topbar__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
   margin: 0;
+}
+
+.admin-topbar__mark {
+  height: 28px;
+  width: auto;
 }
 
 .admin-topbar__right {
@@ -155,7 +182,7 @@
   gap: 4px;
 }
 
-.admin-tab-icon { font-size: 14px; }
+.admin-tab-icon { width: 17px; height: 17px; }
 .admin-tab-label { display: none; }
 
 @media (min-width: 480px) {
@@ -204,26 +231,39 @@
   }
 
   .admin-sidebar__brand {
-    padding: 28px 24px 20px;
+    padding: 28px 22px 26px;
+    margin-bottom: 10px;
     display: flex;
-    align-items: baseline;
-    gap: 8px;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(241, 233, 219, 0.08);
+  }
+
+  .admin-sidebar__mark {
+    height: 38px;
+    width: auto;
+    flex-shrink: 0;
   }
 
   .admin-sidebar__title {
     font-family: var(--font-serif);
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1.1;
     color: var(--gold);
     margin: 0;
   }
 
   .admin-sidebar__subtitle {
-    font-size: 11px;
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(241, 233, 219, 0.45);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.3em;
   }
 
   .admin-sidebar__nav {
@@ -235,11 +275,12 @@
   }
 
   .admin-nav-item {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 11px 14px;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 13.5px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.65);
@@ -253,15 +294,25 @@
   }
 
   .admin-nav-item.is-active {
-    background: rgba(214, 184, 142, 0.12);
+    background: rgba(201, 166, 107, 0.1);
     color: var(--gold);
     font-weight: 600;
   }
 
+  /* A gold bar marks the open section. */
+  .admin-nav-item.is-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    bottom: 9px;
+    width: 2px;
+    background: var(--gold);
+  }
+
   .admin-nav-item__icon {
-    font-size: 17px;
-    width: 22px;
-    text-align: center;
+    width: 18px;
+    height: 18px;
   }
 
   .admin-sidebar__footer {
@@ -284,7 +335,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(214, 184, 142, 0.18);
+    background: rgba(201, 166, 107, 0.18);
     color: var(--gold);
     font-weight: 700;
     font-size: 13px;
@@ -368,7 +419,7 @@
 
 .admin-panel__heading {
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text);
   margin-top: 12px;
@@ -553,7 +604,7 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(30, 36, 26, 0.72);
+  background: rgba(22, 19, 15, 0.72);
   color: #fff;
   font-size: 1rem;
   line-height: 1;
@@ -572,7 +623,7 @@
   padding: 2px 9px;
   border-radius: 999px;
   background: var(--gold, #ebc84c);
-  color: #232A20;
+  color: #16130F;
   font-size: 12px;
   font-weight: 700;
   vertical-align: middle;
@@ -676,7 +727,7 @@
   width: 72px;
   height: 72px;
   border-radius: 8px;
-  background: #F7F5F0;
+  background: #F5F0E8;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -779,7 +830,7 @@ button {
 
 .dash__title {
   font-family: var(--font-serif);
-  font-size: 24px;
+  font-size: 29px;
   font-weight: 600;
   color: var(--text);
   margin: 0;
@@ -860,7 +911,7 @@ button {
 /* Low-stock alert panel */
 .dash-alert-panel {
   background: #F6EEDD;
-  border: 1px solid #DDC48E;
+  border: 1px solid #D8B98A;
   border-radius: 12px;
   padding: 18px;
 }
@@ -899,7 +950,7 @@ button {
   height: 36px;
   border-radius: 6px;
   overflow: hidden;
-  background: #F7F5F0;
+  background: #F5F0E8;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1002,7 +1053,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(30, 36, 26, 0.5);
+  background: rgba(22, 19, 15, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1106,7 +1157,7 @@ button {
 .stock-modal__stepper button {
   height: 36px;
   border: 0;
-  background: #F7F5F0;
+  background: #F5F0E8;
   color: var(--text);
   font-size: 17px;
   cursor: pointer;
@@ -1357,7 +1408,7 @@ button {
   height: 56px;
   border-radius: 8px;
   overflow: hidden;
-  background: #F7F5F0;
+  background: #F5F0E8;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1462,7 +1513,7 @@ button {
 
 .prod-add-btn:hover {
   border-color: var(--gold-deep);
-  background: rgba(140, 106, 64, 0.04);
+  background: rgba(125, 92, 52, 0.04);
 }
 
 
@@ -1561,7 +1612,7 @@ button {
   height: 44px;
   border-radius: 8px;
   overflow: hidden;
-  background: #F7F5F0;
+  background: #F5F0E8;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1674,16 +1725,23 @@ button {
 /* Base editable field — resets to blend into whatever typography it sits
    inside, then gains a visible dashed outline on hover/focus so it's
    discoverable as editable without disturbing the page's real look. */
-.wysiwyg-field {
-  display: block;
-  width: 100%;
+/* The type reset sits in :where() (no specificity) so a page class on the
+   same field — e.g. `brand-band__text`, `about-quote__text` — keeps its own
+   font, size and colour, and the field reads exactly like the live page. */
+:where(.wysiwyg-field) {
   font: inherit;
   color: inherit;
   text-align: inherit;
   line-height: inherit;
   letter-spacing: inherit;
-  background: rgba(214, 184, 142, 0.07);
-  border: 1.5px dashed rgba(140, 106, 64, 0.55);
+  text-transform: inherit;
+}
+
+.wysiwyg-field {
+  display: block;
+  width: 100%;
+  background: rgba(201, 166, 107, 0.07);
+  border: 1.5px dashed rgba(125, 92, 52, 0.55);
   border-radius: 6px;
   padding: 3px 6px;
   margin: -3px -6px;
@@ -1692,9 +1750,15 @@ button {
   transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
 }
 
+/* A grown textarea never scrolls itself, so the mouse wheel always moves
+   the page instead of getting caught inside a field. */
+textarea.wysiwyg-field {
+  overflow: hidden;
+}
+
 .wysiwyg-field:hover {
   border-color: var(--gold-deep);
-  background: rgba(214, 184, 142, 0.14);
+  background: rgba(201, 166, 107, 0.14);
 }
 
 .wysiwyg-field:focus {
@@ -1705,7 +1769,7 @@ button {
 
 /* --- Hero (dark background — needs light-mode hover/focus colors) --- */
 .wysiwyg-hero .wysiwyg-field:hover {
-  border-color: rgba(214, 184, 142, 0.6);
+  border-color: rgba(201, 166, 107, 0.6);
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -1725,7 +1789,6 @@ button {
 
 .wysiwyg-field--headline {
   min-height: 2.2em;
-  font-family: inherit;
 }
 
 .wysiwyg-field--btn {
@@ -1796,7 +1859,7 @@ button {
 }
 
 .wysiwyg-image--dark .wysiwyg-image__empty {
-  background: #2F3A2B;
+  background: #221E19;
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -1806,7 +1869,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(30, 36, 26, 0.55);
+  background: rgba(22, 19, 15, 0.55);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -1826,9 +1889,9 @@ button {
   position: absolute;
   bottom: 10%;
   right: 6%;
-  background: rgba(30, 36, 26, 0.82);
+  background: rgba(22, 19, 15, 0.82);
   color: var(--gold);
-  border: 1px solid rgba(214, 184, 142, 0.5);
+  border: 1px solid rgba(201, 166, 107, 0.5);
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 11px;
@@ -1889,7 +1952,7 @@ button {
 .confirm-modal__backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(30, 36, 26, 0.5);
+  background: rgba(22, 19, 15, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2011,7 +2074,7 @@ button {
 
 .bulk-upload__btn:hover:not(:disabled) {
   border-color: var(--gold-deep);
-  background: rgba(140, 106, 64, 0.04);
+  background: rgba(125, 92, 52, 0.04);
 }
 
 .bulk-upload__btn:disabled {
@@ -2198,7 +2261,7 @@ button {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 12px 30px rgba(30, 36, 26, 0.16);
+  box-shadow: 0 12px 30px rgba(22, 19, 15, 0.16);
   max-height: 300px;
   overflow-y: auto;
 }
@@ -2213,7 +2276,7 @@ button {
 }
 
 .sale-picker__option.is-active {
-  background: rgba(214, 184, 142, 0.16);
+  background: rgba(201, 166, 107, 0.16);
 }
 
 .sale-picker__name {
@@ -2348,7 +2411,7 @@ button {
   color: #1a1a1a;
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(30, 36, 26, 0.08);
+  box-shadow: 0 10px 30px rgba(22, 19, 15, 0.08);
   padding: 36px 40px;
   font-family: var(--font-body);
   font-size: 12.5px;
@@ -2363,7 +2426,7 @@ button {
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 18px;
-  border-bottom: 2px solid #232A20;
+  border-bottom: 2px solid #16130F;
   margin-bottom: 18px;
 }
 
@@ -2377,7 +2440,7 @@ button {
   width: 72px;
   height: 72px;
   border-radius: 10px;
-  background: #232A20;
+  background: #16130F;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2391,17 +2454,6 @@ button {
   object-fit: contain;
 }
 
-.doc-brand__wordmark {
-  color: #F4F1EB;
-  font-family: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  text-align: left;
-  width: 100%;
-}
-
 .doc-brand__contact {
   display: flex;
   flex-direction: column;
@@ -2411,8 +2463,8 @@ button {
 
 .doc-brand__contact strong {
   font-family: var(--font-serif);
-  font-size: 20px;
-  color: #232A20;
+  font-size: 24px;
+  color: #16130F;
   letter-spacing: 1px;
 }
 
@@ -2422,8 +2474,8 @@ button {
 
 .doc-title h1 {
   font-family: var(--font-serif);
-  font-size: 22px;
-  color: #232A20;
+  font-size: 26px;
+  color: #16130F;
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2528,12 +2580,12 @@ button {
 }
 
 .doc-totals__grand {
-  border-top: 2px solid #232A20;
+  border-top: 2px solid #16130F;
   padding-top: 6px;
   margin-top: 4px;
   font-size: 1rem;
   font-weight: 800;
-  color: #232A20;
+  color: #16130F;
 }
 
 .doc-signatures {
@@ -2639,7 +2691,7 @@ button {
   flex-wrap: wrap;
   gap: 10px 14px;
   background: #F6EEDD;
-  border: 1px solid #DDC48E;
+  border: 1px solid #D8B98A;
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 12.5px;
@@ -2677,7 +2729,7 @@ button {
   color: inherit;
   background: transparent;
   border: none;
-  border-bottom: 1.5px dashed rgba(140, 106, 64, 0.75);
+  border-bottom: 1.5px dashed rgba(125, 92, 52, 0.75);
   border-radius: 0;
   padding: 2px 4px;
   outline: none;
@@ -2686,7 +2738,7 @@ button {
 
 .fatura-input:hover,
 .fatura-input:focus {
-  background: rgba(214, 184, 142, 0.14);
+  background: rgba(201, 166, 107, 0.14);
   border-bottom-color: var(--gold-deep);
 }
 
@@ -2718,10 +2770,6 @@ button {
   width: 52px;
   height: 52px;
   padding: 6px;
-}
-
-.fatura__logo .doc-brand__wordmark {
-  font-size: 13px;
 }
 
 .fatura__title h1 {
@@ -3025,4 +3073,19 @@ button {
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
+}
+
+/* On the live-preview's dark band the light button would vanish. */
+.band-dark .admin-btn-secondary {
+  background: transparent;
+  color: var(--cream);
+  border-color: rgba(241, 233, 219, 0.45);
+}
+
+
+/* Dashboard stat tiles carry line icons (components/Icon.jsx). */
+.dash-stat__icon .icon {
+  width: 22px;
+  height: 22px;
+  color: #F1E9DB;
 }

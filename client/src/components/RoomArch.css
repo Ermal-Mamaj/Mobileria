@@ -1,0 +1,113 @@
+/* --tone comes from the `tone-<name>` class (styles/common.css). */
+.room-arch {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.room-arch__frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  /* Room for the gold line drawn just outside the photo. */
+  margin: 10px 10px 0;
+}
+
+/* 999px top corners collapse to a perfect semicircle on any width. */
+.room-arch__photo {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  background: var(--tone, var(--tone-ink));
+  /* Keeps the rounded clip crisp while the photo scales inside it. */
+  isolation: isolate;
+}
+
+/* The gold arch: open at the foot, like the ring around the logo's sofa. */
+.room-arch__line {
+  position: absolute;
+  inset: -9px -9px 0;
+  border: 1px solid var(--gold);
+  border-bottom: none;
+  border-radius: 999px 999px 0 0;
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-out), inset 500ms var(--ease-out);
+}
+
+.room-arch__photo .image-slot {
+  position: absolute;
+  inset: 0;
+  transition: transform 900ms var(--ease-out);
+}
+
+.room-arch:hover .room-arch__line {
+  opacity: 1;
+  inset: -6px -6px 0;
+}
+
+.room-arch:hover .room-arch__photo .image-slot {
+  transform: scale(1.05);
+}
+
+.band-latte .room-arch__line {
+  border-color: var(--gold-deep);
+}
+
+.room-arch__caption {
+  display: grid;
+  gap: 8px;
+}
+
+.room-arch__name {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 2.6vw, 36px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+}
+
+.room-arch__tagline {
+  font-size: 15px;
+  line-height: 1.55;
+  opacity: 0.78;
+  max-width: 34ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.room-arch__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  transition: gap var(--dur-ui) var(--ease-out);
+}
+
+.room-arch__meta .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.room-arch:hover .room-arch__meta {
+  gap: 14px;
+}
+
+.room-arch:focus-visible {
+  outline: none;
+}
+
+.room-arch:focus-visible .room-arch__photo {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}

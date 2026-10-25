@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../lib/api.js';
 import { EditableText, EditableImage } from '../WysiwygFields.jsx';
 import { useUnsavedChanges } from '../UnsavedChangesContext.jsx';
+import { LOGO_FULL } from '../../lib/brand.js';
 import '../../pages/HomePage.css';
 
 export default function HomeSection() {
@@ -69,58 +70,62 @@ export default function HomeSection() {
             />
           </div>
           <div className="home-page__hero-gradient" />
-          <div className="home-page__hero-copy">
-            <div className="eyebrow eyebrow--gold">
-              <span className="eyebrow__rule" />
-              <EditableText
-                value={form.hero_eyebrow}
-                onSave={(v) => edit('hero_eyebrow', v)}
-                placeholder="MOBILIE PËR ÇDO DHOMË"
-                className="wysiwyg-field--eyebrow"
-              />
-            </div>
-            <div className="home-page__hero-headline wysiwyg-headline-wrap">
-              <EditableText
-                as="textarea"
-                rows={2}
-                value={form.hero_headline}
-                onSave={(v) => edit('hero_headline', v)}
-                placeholder="Titulli kryesor..."
-                className="wysiwyg-field--headline"
-              />
-            </div>
-            <div className="btn-gold wysiwyg-btn-wrap">
-              <EditableText
-                value={form.hero_cta}
-                onSave={(v) => edit('hero_cta', v)}
-                placeholder="Shiko ambientet"
-                className="wysiwyg-field--btn"
-              />
+          <div className="home-page__hero-inner">
+            <div className="home-page__hero-copy">
+              <div className="eyebrow eyebrow--gold">
+                <span className="eyebrow__rule" />
+                <EditableText
+                  value={form.hero_eyebrow}
+                  onSave={(v) => edit('hero_eyebrow', v)}
+                  placeholder="MOBILIE PËR ÇDO DHOMË"
+                  className="wysiwyg-field--eyebrow"
+                />
+              </div>
+              <div className="home-page__hero-headline wysiwyg-headline-wrap">
+                <EditableText
+                  as="textarea"
+                  rows={2}
+                  value={form.hero_headline}
+                  onSave={(v) => edit('hero_headline', v)}
+                  placeholder="Titulli kryesor..."
+                  className="wysiwyg-field--headline"
+                />
+              </div>
+              <div className="btn-gold wysiwyg-btn-wrap">
+                <EditableText
+                  value={form.hero_cta}
+                  onSave={(v) => edit('hero_cta', v)}
+                  placeholder="Shiko ambientet"
+                  className="wysiwyg-field--btn"
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Quote / brand band */}
         <div className="brand-band">
-          <div className="brand-band__quote-mark">&ldquo;</div>
-          <div className="brand-band__content">
-            <EditableText
-              as="textarea"
-              rows={2}
-              value={form.quote_text}
-              onSave={(v) => edit('quote_text', v)}
-              placeholder="Teksti i citatit..."
-              className="wysiwyg-field--quote brand-band__text"
-            />
-            <div className="eyebrow eyebrow--gold">
-              <span className="eyebrow__rule" />
+          <div className="brand-band__content brand-band__layout">
+            <div>
               <EditableText
-                value={form.quote_label}
-                onSave={(v) => edit('quote_label', v)}
-                placeholder="BELLA CASA"
-                className="wysiwyg-field--eyebrow"
+                as="textarea"
+                rows={2}
+                value={form.quote_text}
+                onSave={(v) => edit('quote_text', v)}
+                placeholder="Teksti i citatit..."
+                className="wysiwyg-field--quote brand-band__text"
               />
+              <div className="eyebrow eyebrow--gold">
+                <span className="eyebrow__rule" />
+                <EditableText
+                  value={form.quote_label}
+                  onSave={(v) => edit('quote_label', v)}
+                  placeholder="BELLA CASA"
+                  className="wysiwyg-field--eyebrow"
+                />
+              </div>
             </div>
+            <img src={LOGO_FULL} alt="" className="brand-band__logo" />
           </div>
         </div>
 
