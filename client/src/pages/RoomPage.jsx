@@ -93,9 +93,9 @@ export default function RoomPage() {
     };
   }, [selected, photos.length, close]);
 
-  // Hero: the gold ring draws around the arch, the photo rises into it and
-  // settles from a zoom, the room name comes up word by word, the rest
-  // follows; then the photo drifts inside its frame as the page scrolls.
+  // Hero: the room photo settles from a slow zoom, the room name comes up
+  // word by word and the rest follows; then the photo drifts as the page
+  // scrolls.
   useGSAP(() => {
     if (!category?.name) return;
     const mm = gsap.matchMedia();
@@ -103,14 +103,12 @@ export default function RoomPage() {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.room-hero__title')[0], { type: 'lines,words', mask: 'lines' });
       const tl = gsap.timeline({ paused: true, onComplete: () => split.revert() });
-      tl.fromTo(q('.room-hero__arc .ring'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: 'expo.inOut' }, 0)
-        .from(q('.room-hero__media'), { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut' }, 0.1)
-        .from(q('.room-hero__image'), { scale: 1.3, duration: 2, ease: 'expo.out' }, 0.2)
+      tl.from(q('.room-hero__image'), { scale: 1.2, duration: 2.6, ease: 'expo.out' }, 0)
         .from(q('.room-hero__crumbs'), { autoAlpha: 0, y: 14, duration: 0.7 }, 0.35)
         .from(split.words, { yPercent: 120, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, 0.45)
         .from(q('.room-hero__tagline, .room-hero__count'), { autoAlpha: 0, y: 20, duration: 0.9, stagger: 0.1 }, 0.8);
       whenIntroDone().then(() => tl.play());
-      parallax(q('.room-hero__image')[0], { trigger: heroRef.current, yPercent: 8, start: 'top top' });
+      parallax(q('.room-hero__media')[0], { trigger: heroRef.current, yPercent: 10, start: 'top top' });
     });
     return () => mm.revert();
   }, { scope: heroRef, dependencies: [slug, category?.name], revertOnUpdate: true });
@@ -138,6 +136,9 @@ export default function RoomPage() {
       <NavHeader />
 
       <section className={`room-hero tone-${tone}`} ref={heroRef}>
+        <div className="room-hero__media">
+          <ImageSlot src={category?.hero_image_url} placeholder="Foto" alt="" dark priority className="room-hero__image" />
+        </div>
         <div className="room-hero__panel">
           <nav className="room-hero__crumbs" aria-label="Ku jeni">
             <Link to="/categories">Ambientet</Link>
@@ -150,16 +151,9 @@ export default function RoomPage() {
             <p className="room-hero__count">{products.length} {products.length === 1 ? 'produkt' : 'produkte'}</p>
           )}
         </div>
-        <div className="room-hero__visual">
-          <svg className="room-hero__arc" viewBox="0 0 100 100" aria-hidden="true">
-            <circle className="ring" cx="50" cy="50" r="49.6" pathLength="1" />
-          </svg>
-          <div className="room-hero__media">
-            <ImageSlot src={category?.hero_image_url} placeholder="Foto" alt="" dark priority className="room-hero__image" />
-          </div>
-        </div>
       </section>
 
+      <div className="band-latte room-band">
       <div className="room-products" ref={gridRef}>
         {products.length > 0 ? (
           <div className="room-product-grid">
@@ -191,6 +185,7 @@ export default function RoomPage() {
           </div>
         </div>
       </section>
+      </div>
 
       {selected && (
         <div className="room-modal-overlay" onClick={close} data-lenis-prevent>

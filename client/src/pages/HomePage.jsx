@@ -65,26 +65,27 @@ export default function HomePage() {
     return () => mm.revert();
   }, { scope: heroRef, dependencies: [home.hero_headline], revertOnUpdate: true });
 
-  // Facts: the figures count up from zero as the strip comes into view.
+  // Figures at the foot of the hero: once the curtain lifts, the gold line
+  // draws in and the numbers count up from zero.
   useGSAP(() => {
     if (!categories.length) return;
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(factsRef);
+      const tl = gsap.timeline({ paused: true, delay: 0.9 });
+      tl.from(q('.home-facts__item'), { autoAlpha: 0, y: 24, duration: 0.9, stagger: 0.12 }, 0);
       q('[data-count]').forEach((el) => {
         const counter = { value: 0 };
-        gsap.to(counter, {
+        el.textContent = '0';
+        tl.to(counter, {
           value: Number(el.dataset.count),
-          duration: 2,
+          duration: 1.8,
           ease: 'power2.out',
           snap: { value: 1 },
           onUpdate: () => { el.textContent = counter.value; },
-          scrollTrigger: { trigger: factsRef.current, start: 'top 85%', once: true },
-        });
-        el.textContent = '0';
+        }, 0.2);
       });
-      riseIn(q('.home-facts__item'), { y: 40, stagger: 0.12 });
-      refreshTriggers();
+      whenIntroDone().then(() => tl.play());
     });
     return () => mm.revert();
   }, { scope: factsRef, dependencies: [categories.length], revertOnUpdate: true });
@@ -191,7 +192,7 @@ export default function HomePage() {
     <div className="home-page app-shell">
       <NavHeader />
 
-      <section className="home-page__hero" aria-label={BRAND} ref={heroRef}>
+      <section className={`home-page__hero ${categories.length > 0 ? 'has-facts' : ''}`} aria-label={BRAND} ref={heroRef}>
         <div className="home-page__hero-media">
           <ImageSlot src={home.hero_image_url} placeholder="Foto" alt="" dark priority className="home-page__hero-image" />
         </div>
@@ -227,30 +228,33 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        {categories.length > 0 && (
+          <div className="home-facts" ref={factsRef} aria-label="Bella Casa në shifra">
+            <Link to="/categories" className="home-facts__item">
+              <span className="home-facts__num" data-count={categories.length}>{categories.length}</span>
+              <span className="home-facts__label">Ambiente të shtëpisë <Icon name="arrow" /></span>
+            </Link>
+            {productTotal > 0 && (
+              <Link to="/categories" className="home-facts__item">
+                <span className="home-facts__num" data-count={productTotal}>{productTotal}</span>
+                <span className="home-facts__label">Produkte në katalog <Icon name="arrow" /></span>
+              </Link>
+            )}
+            <Link to="/contact" className="home-facts__item">
+              <span className="home-facts__num home-facts__num--word">Me porosi</span>
+              <span className="home-facts__label">
+                  <span className="home-facts__long">Në përmasat dhe ngjyrat që ju duhen</span>
+                  <span className="home-facts__short">Sipas masës suaj</span>
+                  <Icon name="arrow" />
+                </span>
+            </Link>
+          </div>
+        )}
         <div className="home-page__hero-scroll" aria-hidden="true">
           <span>Rrëshqitni</span>
           <span className="home-page__hero-scroll-line" />
         </div>
       </section>
-
-      {categories.length > 0 && (
-        <section className="home-facts" ref={factsRef} aria-label="Bella Casa në shifra">
-          <Link to="/categories" className="home-facts__item">
-            <span className="home-facts__num" data-count={categories.length}>{categories.length}</span>
-            <span className="home-facts__label">Ambiente të shtëpisë <Icon name="arrow" /></span>
-          </Link>
-          {productTotal > 0 && (
-            <Link to="/categories" className="home-facts__item">
-              <span className="home-facts__num" data-count={productTotal}>{productTotal}</span>
-              <span className="home-facts__label">Produkte në katalog <Icon name="arrow" /></span>
-            </Link>
-          )}
-          <Link to="/contact" className="home-facts__item">
-            <span className="home-facts__num home-facts__num--word">Me porosi</span>
-            <span className="home-facts__label">Në përmasat dhe ngjyrat që ju duhen <Icon name="arrow" /></span>
-          </Link>
-        </section>
-      )}
 
       {categories.length > 0 && (
         <section className="home-gallery" ref={galleryRef} aria-labelledby="home-rooms-title">
