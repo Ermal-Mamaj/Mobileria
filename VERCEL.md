@@ -142,3 +142,27 @@ it deploys. It only adds what's missing, so running it again is harmless.
   photos comfortably before it's a concern.
 - **Re-running `npm run migrate`** is safe any time — every statement uses
   `CREATE TABLE IF NOT EXISTS`, so it won't touch existing data.
+
+## Copying test content to the deployment
+
+To make a deployment show exactly what a local test database shows (photos,
+rooms, products, prices, sale items, contact details, socials), copy the
+content across with `server/copy-content.mjs`:
+
+```bash
+cd server
+# dry run: prints what would change, writes nothing
+TARGET_DATABASE_URL="<the Neon connection string>" npm run copy-content
+# copy (one transaction)
+TARGET_DATABASE_URL="<the Neon connection string>" npm run copy-content -- --write
+```
+
+The source is `DATABASE_URL` from `server/.env` (or `SOURCE_DATABASE_URL`).
+Rows are matched by id and overwritten; the copied products' extra photos are
+replaced. Admin accounts, sales, invoices and messages are never touched.
+The Neon connection string is in the Vercel project under Storage → the Neon
+database → `.env.local`, or in the Neon dashboard.
+
+Preview deployments and production share this database, so the copied
+content shows on both. Replace it from the CMS when the real content is ready.
+
