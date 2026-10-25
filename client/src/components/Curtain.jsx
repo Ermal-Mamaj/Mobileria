@@ -5,38 +5,19 @@ import { beginIntro, endIntro, gsap, MOTION_OK, refreshTriggers, useGSAP } from 
 import './Curtain.css';
 
 const isCms = (path) => path.startsWith('/bellacasa-cms');
-const SEEN_KEY = 'bellacasa-intro-seen';
-
-// The logo opening plays once per visit (browser tab session); reloads and
-// later pages skip it.
-function introSeen() {
-  try {
-    return sessionStorage.getItem(SEEN_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function markIntroSeen() {
-  try {
-    sessionStorage.setItem(SEEN_KEY, '1');
-  } catch {
-    // Storage blocked: the opening may simply play again next time.
-  }
-}
 
 // Set once the opening has actually played, so React re-running effects
 // (Strict Mode in development) can't skip it or play it twice.
-let introPlayed = introSeen();
+let introPlayed = false;
 // The path the curtain last ran for, and whether the visitor has moved to
-// another page yet; the first page of a visit never gets the page wipe.
+// another page yet; the page the site opens on never gets the page wipe.
 let lastPath = null;
 let navigated = false;
 
-// An ink panel over the page. On a visit's first page the Bella Casa logo
-// opens out of a circle and the panel lifts as soon as fonts and logo are in
-// (about 1.5s in all); after that it sweeps away on every page change, so
-// moving between rooms feels like turning a page.
+// An ink panel over the page. Every time the site is opened or reloaded, the
+// Bella Casa logo opens out of a circle and the panel lifts as soon as fonts
+// and logo are in (about 1.5s in all); after that it sweeps away on every
+// page change, so moving between rooms feels like turning a page.
 export default function Curtain() {
   const { pathname } = useLocation();
   const panelRef = useRef(null);
@@ -68,7 +49,6 @@ export default function Curtain() {
         ready.then(() => {
           if (cancelled) return;
           introPlayed = true;
-          markIntroSeen();
           gsap.timeline({ delay: Math.max(0, tl.duration() - tl.time() - 0.2) })
             .to(logo, { yPercent: -10, autoAlpha: 0, duration: 0.4, ease: 'expo.in' })
             .to(panel, { yPercent: -100, duration: 0.8, ease: 'expo.inOut' }, '-=0.15')

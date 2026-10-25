@@ -7,18 +7,16 @@
   margin: 0 auto;
   padding: 0 var(--gutter);
   display: grid;
-  gap: 64px 32px;
+  gap: clamp(16px, 2vw, 28px);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .rooms-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-@media (min-width: 1000px) {
-  .rooms-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 80px clamp(32px, 4vw, 64px);
+  /* An odd last room spans the row as a wide panorama. */
+  .rooms-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    aspect-ratio: 21 / 9;
   }
 }
