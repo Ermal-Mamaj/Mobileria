@@ -94,24 +94,6 @@
   color: var(--gold);
 }
 
-/* A square or portrait photo: from tablet up it stands whole on the right as
-   a soft-cornered panel, the wall colour filling the rest. */
-@media (min-width: 800px) {
-  .room-hero.is-tall::before {
-    background: none;
-  }
-  .room-hero.is-tall .room-hero__media {
-    inset: 48px max(var(--gutter), calc((100vw - var(--page-max)) / 2)) 48px auto;
-    width: min(44%, 560px);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-  }
-  .room-hero.is-tall .room-hero__panel > * {
-    max-width: min(520px, 46vw);
-  }
-}
-
 /* ── Products ──────────────────────────────────────────────── */
 .room-products {
   width: 100%;

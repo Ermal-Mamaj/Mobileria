@@ -20,7 +20,8 @@ export default function CursorLabel() {
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (!el || !fine || prefersReducedMotion()) return undefined;
 
-    gsap.set(el, { xPercent: -50, yPercent: -50, scale: 0, autoAlpha: 0 });
+    // Sits just below-right of the pointer, so it never covers what's under it.
+    gsap.set(el, { xPercent: 0, yPercent: 0, x: 0, y: 0, scale: 0, autoAlpha: 0, transformOrigin: '0% 0%' });
     const toX = gsap.quickTo(el, 'x', { duration: 0.45, ease: 'power3' });
     const toY = gsap.quickTo(el, 'y', { duration: 0.45, ease: 'power3' });
     let current = null;
@@ -37,15 +38,15 @@ export default function CursorLabel() {
       current = target;
       if (target) {
         setLabel(target.dataset.cursor);
-        gsap.to(el, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(1.8)', overwrite: 'auto' });
+        gsap.to(el, { scale: 1, autoAlpha: 1, duration: 0.25, ease: 'power3.out', overwrite: 'auto' });
       } else {
         gsap.to(el, { scale: 0, autoAlpha: 0, duration: 0.25, ease: 'power2.in', overwrite: 'auto' });
       }
     };
     const onMove = (e) => {
       pointer = { x: e.clientX, y: e.clientY };
-      toX(e.clientX);
-      toY(e.clientY);
+      toX(e.clientX + 16);
+      toY(e.clientY + 18);
       update();
     };
     const onLeave = () => {

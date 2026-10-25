@@ -38,18 +38,6 @@ export default function RoomPage() {
   const ctaRef = useRef(null);
 
   const photos = photosOf(selected);
-  // A wide room photo fills the whole header; a square or portrait one would
-  // be blown up and cropped there, so it stands whole beside the title.
-  const [heroFit, setHeroFit] = useState('wide');
-  useEffect(() => {
-    const src = category?.hero_image_url;
-    if (!src) return undefined;
-    let live = true;
-    const img = new Image();
-    img.onload = () => live && setHeroFit(img.naturalWidth / img.naturalHeight >= 1.35 ? 'wide' : 'tall');
-    img.src = src;
-    return () => { live = false; };
-  }, [category?.hero_image_url]);
   // The room keeps the wall colour it has everywhere else (its place in the
   // CMS list); the next room is offered at the bottom of the page.
   const position = categories.findIndex((c) => c.slug === slug);
@@ -120,11 +108,10 @@ export default function RoomPage() {
         .from(split.words, { yPercent: 120, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, 0.45)
         .from(q('.room-hero__tagline, .room-hero__count'), { autoAlpha: 0, y: 20, duration: 0.9, stagger: 0.1 }, 0.8);
       whenIntroDone().then(() => tl.play());
-      // The standing panel keeps still; only a full-width photo drifts.
-      if (heroFit === 'wide') parallax(q('.room-hero__media')[0], { trigger: heroRef.current, yPercent: 10, start: 'top top' });
+      parallax(q('.room-hero__media')[0], { trigger: heroRef.current, yPercent: 10, start: 'top top' });
     });
     return () => mm.revert();
-  }, { scope: heroRef, dependencies: [slug, category?.name, heroFit], revertOnUpdate: true });
+  }, { scope: heroRef, dependencies: [slug, category?.name], revertOnUpdate: true });
 
   // Products wipe open in rows; the "can't find it" band rises after them.
   useGSAP(() => {
@@ -148,7 +135,7 @@ export default function RoomPage() {
     <div className="app-shell">
       <NavHeader />
 
-      <section className={`room-hero tone-${tone} is-${heroFit}`} ref={heroRef}>
+      <section className={`room-hero tone-${tone}`} ref={heroRef}>
         <div className="room-hero__media">
           <ImageSlot src={category?.hero_image_url} placeholder="Foto" alt="" dark priority className="room-hero__image" />
         </div>
