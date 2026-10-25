@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from './AdminAuth.jsx';
 import { adminAuth } from '../lib/api.js';
-// The CMS keeps its own type (Fraunces); the public site is set in Cormorant.
-import '@fontsource-variable/fraunces/full.css';
+import { usePageTitle } from '../lib/hooks.js';
+import { BRAND, LOGO_FULL } from '../lib/brand.js';
 import './admin.css';
 
 function LoginForm() {
   const { checked, loggedIn, login, setup } = useAdminAuth();
+  usePageTitle('Hyrja në CMS');
   const [needsSetup, setNeedsSetup] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,8 +46,9 @@ function LoginForm() {
 
   return (
     <div className="admin-login">
+      <img src={LOGO_FULL} alt={BRAND} className="admin-login__logo" width="720" height="704" />
       <form className="admin-login__card" onSubmit={handleSubmit}>
-        <h1 className="admin-login__title">Bella Casa</h1>
+        <h1 className="admin-login__title">Hyrja në CMS</h1>
         <p className="admin-login__subtitle">
           {needsSetup
             ? 'Mirë se vini! Krijoni llogarinë e administratorit. Këtë e bëni vetëm një herë.'

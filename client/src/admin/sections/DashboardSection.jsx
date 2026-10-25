@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import Icon from '../../components/Icon.jsx';
 import { api } from '../../lib/api.js';
 
 function StatCard({ icon, label, value, color = 'var(--navy)', sub }) {
   return (
     <div className="dash-stat">
-      <div className="dash-stat__icon" style={{ background: color }}>{icon}</div>
+      <div className="dash-stat__icon" style={{ background: color }}><Icon name={icon} /></div>
       <div className="dash-stat__body">
         <span className="dash-stat__value">{value ?? '–'}</span>
         <span className="dash-stat__label">{label}</span>
@@ -55,28 +56,28 @@ export default function DashboardSection() {
 
       <div className="dash-stats-grid">
         <StatCard
-          icon="📦"
+          icon="box"
           label="Produkte Gjithsej"
           value={stats.total_products}
-          color="#232A20"
+          color="#16130F"
         />
         <StatCard
-          icon="🏷️"
+          icon="tag"
           label="Në Zbritje"
           value={stats.on_sale}
-          color="#8C6A40"
+          color="#7D5C34"
         />
         <StatCard
-          icon="📬"
+          icon="mail"
           label="Mesazhe të Palexuara"
           value={stats.unread_messages}
-          color={stats.unread_messages > 0 ? '#C94B3F' : '#2F7A3D'}
+          color={stats.unread_messages > 0 ? '#A4472E' : '#2A2622'}
         />
         <StatCard
-          icon="📊"
+          icon="layers"
           label="Njësi në Stok"
           value={stats.total_stock_units}
-          color="#3F5A6B"
+          color="#3D5560"
           sub={stats.out_of_stock > 0 ? `${stats.out_of_stock} produkte pa stok` : null}
         />
       </div>

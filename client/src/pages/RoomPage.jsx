@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import PriceTag from '../components/PriceTag.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import Icon from '../components/Icon.jsx';
-import { useApiGet } from '../lib/hooks.js';
+import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { roomTone, telUrl, whatsappUrl } from '../lib/brand.js';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import {
@@ -29,6 +29,8 @@ export default function RoomPage() {
   const { data: settings } = useApiGet('/site-settings', {});
   const [selected, setSelected] = useState(null);
   const [index, setIndex] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requested = searchParams.get('p');
   const closeRef = useRef(null);
   const openerRef = useRef(null);
   const heroRef = useRef(null);
@@ -42,16 +44,35 @@ export default function RoomPage() {
   const tone = roomTone(position);
   const next = position >= 0 && categories.length > 1 ? categories[(position + 1) % categories.length] : null;
 
+  // The open product is part of the link (/rooms/bedroom?p=12), so a
+  // product clicked on Home opens straight away here, and a link to it can
+  // be shared. `replace` keeps the Back button for leaving the page.
   function open(product, e) {
     openerRef.current = e?.currentTarget || null;
     setSelected(product);
     setIndex(0);
+    setSearchParams({ p: String(product.id) }, { replace: true });
   }
 
-  function close() {
+  const close = useCallback(() => {
     setSelected(null);
+    setSearchParams({}, { replace: true });
     openerRef.current?.focus();
-  }
+  }, [setSearchParams]);
+
+  useEffect(() => {
+    if (!requested || !products.length) return;
+    const product = products.find((p) => String(p.id) === requested);
+    if (product) {
+      setSelected(product);
+      setIndex(0);
+    }
+  }, [requested, products]);
+
+  usePageTitle(
+    selected ? `${selected.name} · ${category?.name || ''}` : category?.name,
+    category?.tagline,
+  );
 
   // Arrow keys page the photos, Escape closes. Bound only while the sheet is
   // up; the page behind it stays still and focus moves into the sheet.
@@ -70,7 +91,7 @@ export default function RoomPage() {
       unlockScroll();
       window.removeEventListener('keydown', onKey);
     };
-  }, [selected, photos.length]);
+  }, [selected, photos.length, close]);
 
   // Hero: the gold ring draws around the arch, the photo rises into it and
   // settles from a zoom, the room name comes up word by word, the rest

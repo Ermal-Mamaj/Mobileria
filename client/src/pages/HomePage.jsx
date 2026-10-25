@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard.jsx';
 import ContactForm from '../components/ContactForm.jsx';
 import Icon from '../components/Icon.jsx';
 import Magnet from '../components/reactbits/Magnet.jsx';
-import { useApiGet } from '../lib/hooks.js';
+import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
   gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn,
@@ -17,6 +17,7 @@ import './HomePage.css';
 
 export default function HomePage() {
   const { data: home } = useApiGet('/content/home', {});
+  usePageTitle();
   const { data: settings } = useApiGet('/site-settings', {});
   const { data: categories } = useApiGet('/categories', []);
   const { data: featured } = useApiGet('/products?featured=1', []);
@@ -279,7 +280,7 @@ export default function HomePage() {
             </div>
             <div className={`product-rail ${featuredLead ? 'is-featured' : ''}`}>
               {featuredShown.map((p) => (
-                <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}`} showRoom />
+                <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}?p=${p.id}`} showRoom />
               ))}
             </div>
           </section>
@@ -292,7 +293,7 @@ export default function HomePage() {
             </div>
             <div className="product-rail" style={{ '--cols': Math.min(saleProducts.length, 4) }}>
               {saleProducts.map((p) => (
-                <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}`} showRoom />
+                <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}?p=${p.id}`} showRoom />
               ))}
             </div>
           </section>

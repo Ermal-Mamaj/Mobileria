@@ -7,6 +7,7 @@ import AboutPage from './pages/AboutPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import Curtain from './components/Curtain.jsx';
 import CursorLabel from './components/CursorLabel.jsx';
+import WhatsAppFloat from './components/WhatsAppFloat.jsx';
 import { scrollToTop, startSmoothScroll, stopSmoothScroll } from './lib/motion.js';
 
 // The CMS is only ever loaded by one person, but it was bundled into the single
@@ -34,6 +35,7 @@ function App() {
       <ScrollToTop />
       <Curtain />
       <CursorLabel />
+      <WhatsAppFloat />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<CategoriesPage />} />

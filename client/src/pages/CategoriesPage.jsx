@@ -3,12 +3,13 @@ import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import PageBanner from '../components/PageBanner.jsx';
 import RoomArch from '../components/RoomArch.jsx';
-import { useApiGet } from '../lib/hooks.js';
+import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP, wipeIn } from '../lib/motion.js';
 import './CategoriesPage.css';
 
 export default function CategoriesPage() {
   const { data: categories } = useApiGet('/categories', []);
+  usePageTitle('Ambientet', 'Mobilie për çdo ambient të shtëpisë: dhoma e ndenjes, e gjumit, kuzhina, dhoma e ngrënies, zyra dhe më shumë.');
   const { data: home } = useApiGet('/content/home', {});
   const ref = useRef(null);
 

@@ -4,13 +4,14 @@ import Footer from '../components/Footer.jsx';
 import ContactForm from '../components/ContactForm.jsx';
 import PageBanner from '../components/PageBanner.jsx';
 import Icon from '../components/Icon.jsx';
-import { useApiGet } from '../lib/hooks.js';
+import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import { mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP } from '../lib/motion.js';
 import './ContactPage.css';
 
 export default function ContactPage() {
   const { data: settings } = useApiGet('/site-settings', {});
+  usePageTitle('Na Kontaktoni', 'Telefononi, shkruani në WhatsApp ose vizitoni sallonin Bella Casa.');
   const { data: about } = useApiGet('/content/about', {});
   const { data: home } = useApiGet('/content/home', {});
   const ref = useRef(null);

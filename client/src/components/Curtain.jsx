@@ -5,21 +5,46 @@ import { beginIntro, endIntro, gsap, MOTION_OK, refreshTriggers, useGSAP } from 
 import './Curtain.css';
 
 const isCms = (path) => path.startsWith('/bellacasa-cms');
+const SEEN_KEY = 'bellacasa-intro-seen';
+
+// The logo opening plays once per visit (browser tab session); reloads and
+// later pages skip it.
+function introSeen() {
+  try {
+    return sessionStorage.getItem(SEEN_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function markIntroSeen() {
+  try {
+    sessionStorage.setItem(SEEN_KEY, '1');
+  } catch {
+    // Storage blocked: the opening may simply play again next time.
+  }
+}
 
 // Set once the opening has actually played, so React re-running effects
 // (Strict Mode in development) can't skip it or play it twice.
-let introPlayed = false;
+let introPlayed = introSeen();
+// The path the curtain last ran for, and whether the visitor has moved to
+// another page yet; the first page of a visit never gets the page wipe.
+let lastPath = null;
+let navigated = false;
 
-// An ink panel over the page. On the first visit the Bella Casa logo opens
-// out of a circle and the panel lifts once fonts and logo are in (at most
-// ~2.6s); after that it sweeps away on every page change, so moving between
-// rooms feels like turning a page.
+// An ink panel over the page. On a visit's first page the Bella Casa logo
+// opens out of a circle and the panel lifts as soon as fonts and logo are in
+// (about 1.5s in all); after that it sweeps away on every page change, so
+// moving between rooms feels like turning a page.
 export default function Curtain() {
   const { pathname } = useLocation();
   const panelRef = useRef(null);
 
   useGSAP(() => {
     const panel = panelRef.current;
+    if (lastPath !== null && lastPath !== pathname) navigated = true;
+    lastPath = pathname;
     if (isCms(pathname)) {
       gsap.set(panel, { autoAlpha: 0 });
       return undefined;
@@ -28,33 +53,37 @@ export default function Curtain() {
     let cancelled = false;
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
-      gsap.set(panel, { autoAlpha: 1, yPercent: 0 });
       if (!introPlayed) {
+        gsap.set(panel, { autoAlpha: 1, yPercent: 0 });
         beginIntro();
         const logo = panel.querySelector('.curtain__logo');
         const ready = Promise.race([
-          Promise.all([document.fonts?.ready, logo.decode?.().catch(() => {}), new Promise((r) => setTimeout(r, 1300))]),
-          new Promise((r) => setTimeout(r, 2600)),
+          Promise.all([document.fonts?.ready, logo.decode?.().catch(() => {}), new Promise((r) => setTimeout(r, 700))]),
+          new Promise((r) => setTimeout(r, 1500)),
         ]);
         const tl = gsap.timeline();
-        tl.fromTo(logo, { clipPath: 'circle(0% at 50% 42%)', scale: 1.12 }, {
-          clipPath: 'circle(75% at 50% 42%)', scale: 1, duration: 1.5, ease: 'expo.inOut',
+        tl.fromTo(logo, { clipPath: 'circle(0% at 50% 42%)', scale: 1.08 }, {
+          clipPath: 'circle(75% at 50% 42%)', scale: 1, duration: 0.9, ease: 'expo.out',
         });
         ready.then(() => {
           if (cancelled) return;
           introPlayed = true;
-          gsap.timeline({ delay: Math.max(0, tl.duration() - tl.time()) })
-            .to(logo, { yPercent: -12, autoAlpha: 0, duration: 0.6, ease: 'expo.in' })
-            .to(panel, { yPercent: -100, duration: 1, ease: 'expo.inOut' }, '-=0.25')
-            .call(endIntro, null, '-=0.55')
+          markIntroSeen();
+          gsap.timeline({ delay: Math.max(0, tl.duration() - tl.time() - 0.2) })
+            .to(logo, { yPercent: -10, autoAlpha: 0, duration: 0.4, ease: 'expo.in' })
+            .to(panel, { yPercent: -100, duration: 0.8, ease: 'expo.inOut' }, '-=0.15')
+            .call(endIntro, null, '-=0.45')
             .set(panel, { autoAlpha: 0 })
             .call(refreshTriggers);
         });
-      } else {
+      } else if (navigated) {
+        gsap.set(panel, { autoAlpha: 1, yPercent: 0 });
         gsap.set(panel.querySelector('.curtain__inner'), { autoAlpha: 0 });
         gsap.timeline({ delay: 0.05 })
-          .to(panel, { yPercent: -100, duration: 0.8, ease: 'expo.inOut' })
+          .to(panel, { yPercent: -100, duration: 0.7, ease: 'expo.inOut' })
           .set(panel, { autoAlpha: 0 });
+      } else {
+        gsap.set(panel, { autoAlpha: 0 });
       }
     });
     mm.add('(prefers-reduced-motion: reduce)', () => {

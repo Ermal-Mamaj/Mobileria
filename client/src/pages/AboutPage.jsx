@@ -4,7 +4,7 @@ import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ImageSlot from '../components/ImageSlot.jsx';
 import Icon from '../components/Icon.jsx';
-import { useApiGet } from '../lib/hooks.js';
+import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import {
   gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, scrubWords, splitReveal, useGSAP,
@@ -21,6 +21,7 @@ const VALUE_ICONS = [
 // which shows them with these same classes.
 export default function AboutPage() {
   const { data: about } = useApiGet('/content/about', {});
+  usePageTitle('Rreth Nesh', about.paragraph_1);
   const values = about.values_json || [];
   const heroRef = useRef(null);
   const bodyRef = useRef(null);
