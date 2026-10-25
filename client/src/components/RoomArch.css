@@ -49,8 +49,10 @@
   inset: -6px -6px 0;
 }
 
-.room-arch:hover .room-arch__photo .image-slot {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .room-arch:hover .room-arch__photo .image-slot {
+    transform: scale(1.05);
+  }
 }
 
 .band-latte .room-arch__line {

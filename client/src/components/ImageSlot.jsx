@@ -13,6 +13,7 @@ export default function ImageSlot({ src, placeholder = 'Foto', alt, className = 
         decoding="async"
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
+        draggable={false}
         className={`image-slot image-slot--filled ${dark ? 'image-slot--filled-dark' : ''} ${className}`}
       />
     );

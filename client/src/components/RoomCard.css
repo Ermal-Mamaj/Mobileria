@@ -24,8 +24,10 @@
   transition: transform 900ms var(--ease-out);
 }
 
-.room-card:hover .room-card__media .image-slot {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .room-card:hover .room-card__media .image-slot {
+    transform: scale(1.05);
+  }
 }
 
 .room-card::before {
