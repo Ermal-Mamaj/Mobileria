@@ -123,3 +123,17 @@
     padding-top: 12px;
   }
 }
+
+/* On the latte band the empty photo frame and badges darken to stay clear. */
+.band-latte .product-card__image {
+  background: #CDBEA6;
+}
+
+.band-latte .product-card__badge {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.band-latte .product-card__badge.is-sale {
+  background: var(--clay);
+}

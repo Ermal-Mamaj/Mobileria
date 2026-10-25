@@ -166,6 +166,7 @@ export default function RoomPage() {
         </div>
       </section>
 
+      <div className="band-latte room-band">
       <div className="room-products" ref={gridRef}>
         {products.length > 0 ? (
           <div className="room-product-grid">
@@ -197,6 +198,7 @@ export default function RoomPage() {
           </div>
         </div>
       </section>
+      </div>
 
       {selected && (
         <div className="room-modal-overlay" onClick={close} data-lenis-prevent>

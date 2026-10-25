@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
 import { whatsappUrl } from '../lib/brand.js';
@@ -11,7 +12,18 @@ import './WhatsAppFloat.css';
 export default function WhatsAppFloat() {
   const { pathname } = useLocation();
   const { data: settings } = useApiGet('/site-settings', {});
-  if (!settings?.whatsapp || pathname.startsWith('/bellacasa-cms')) return null;
+  // On Home the hero already has its own buttons and figures along its
+  // foot, so the button waits until the page is scrolled.
+  const onHome = pathname === '/';
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    if (!onHome) return undefined;
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.5);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onHome]);
+  if ((onHome && !scrolled) || !settings?.whatsapp || pathname.startsWith('/bellacasa-cms')) return null;
 
   return (
     <a

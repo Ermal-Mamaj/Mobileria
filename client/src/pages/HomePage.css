@@ -144,72 +144,108 @@
   }
 }
 
-/* ── Facts strip: three figures under the hero, each a way in. ─────── */
+/* ── Figures at the foot of the hero: a slim bar behind a gold line, so the
+   page runs straight from the photo into the rooms gallery. ──────────── */
+.home-page__hero.has-facts .home-page__hero-inner {
+  padding-bottom: 40px;
+}
+
+.home-page .home-page__hero.has-facts .home-page__hero-inner {
+  min-height: max(520px, calc(100svh - 150px));
+}
+
+.home-page__hero.has-facts .home-page__hero-scroll {
+  display: none;
+}
+
 .home-facts {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: calc(var(--page-max) + 2 * var(--gutter));
   margin: 0 auto;
-  padding: clamp(48px, 7vw, 96px) var(--gutter) 0;
+  padding: 0 var(--gutter) clamp(24px, 4vw, 40px);
   display: grid;
-  gap: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .home-facts__item {
   display: grid;
-  gap: 10px;
-  padding: 28px 0;
-  border-top: 1px solid var(--gold);
+  align-content: start;
+  gap: 6px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(201, 166, 107, 0.55);
+  color: var(--cream);
   text-decoration: none;
 }
 
 .home-facts__num {
   font-family: var(--font-serif);
-  font-size: clamp(72px, 10vw, 144px);
-  font-weight: 300;
-  line-height: 0.85;
-  letter-spacing: -0.018em;
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 400;
+  line-height: 0.95;
   font-variant-numeric: lining-nums tabular-nums;
-  color: var(--text);
+  color: var(--gold);
 }
 
 .home-facts__num--word {
-  font-size: clamp(48px, 6vw, 88px);
-  font-weight: 400;
   font-style: italic;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  padding-bottom: clamp(10px, 2vw, 28px);
+  white-space: nowrap;
+}
+
+.home-facts__short {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .home-facts__num--word {
+    font-size: clamp(26px, 7.4vw, 34px);
+    line-height: 1.25;
+  }
+  .home-facts__long {
+    display: none;
+  }
+  .home-facts__short {
+    display: inline;
+  }
 }
 
 .home-facts__label {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: var(--text-base);
+  gap: 8px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--muted-2);
+  line-height: 1.35;
+  color: rgba(241, 233, 219, 0.82);
   transition: color var(--dur-ui) var(--ease-out), gap var(--dur-ui) var(--ease-out);
 }
 
 .home-facts__label .icon {
-  width: 16px;
-  height: 16px;
-  color: var(--gold-deep);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--gold);
 }
 
 .home-facts__item:hover .home-facts__label {
-  color: var(--text);
-  gap: 14px;
+  color: var(--cream);
+  gap: 12px;
 }
 
 @media (min-width: 900px) {
   .home-facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 40px;
   }
-  .home-facts__item {
-    align-content: end;
-    padding: 32px 0 0;
+  .home-facts__label {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 479px) {
+  .home-facts__label .icon {
+    display: none;
   }
 }
 
@@ -229,7 +265,7 @@
    the section holds still while the row slides sideways with the scroll. ── */
 .home-gallery {
   position: relative;
-  margin-top: var(--section-y);
+  border-top: 1px solid rgba(241, 233, 219, 0.08);
   padding: clamp(64px, 8vw, 104px) 0 clamp(56px, 7vw, 88px);
   background: var(--navy);
   color: var(--cream);
@@ -331,18 +367,6 @@
   padding-bottom: var(--section-y);
 }
 
-.home-products .product-card__image {
-  background: #CDBEA6;
-}
-
-.home-products .product-card__badge {
-  background: var(--navy);
-  color: var(--cream);
-}
-
-.home-products .product-card__badge.is-sale {
-  background: var(--clay);
-}
 
 /* Products: a swipeable rail on phones and tablets, a grid on desktop. */
 .product-rail {
