@@ -92,7 +92,7 @@ export default function AboutPage() {
         <div className="about-visit">
           <p>Mobiliet duken më mirë nga afër. Ejani në sallon, ose na shkruani se çfarë po kërkoni.</p>
           <div className="about-visit__actions">
-            <Magnet padding={50} magnetStrength={4}>
+            <Magnet padding={32} magnetStrength={12} maxOffset={5}>
               <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
             </Magnet>
             <Link to="/categories" className="btn-outline">Shiko ambientet</Link>

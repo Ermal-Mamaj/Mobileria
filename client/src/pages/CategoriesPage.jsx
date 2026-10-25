@@ -16,7 +16,7 @@ export default function CategoriesPage() {
       const q = gsap.utils.selector(ref);
       introHeadline(q('.page-intro__title')[0]);
       gsap.from(q('.page-intro__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
-      gsap.from(q('.page-intro'), { '--rule': 0, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
+      gsap.fromTo(q('.page-intro'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
       if (categories.length) {
         wipeIn(q('.room-arch__frame'), { stagger: 0.12 });
         riseIn(q('.room-arch__caption'), { y: 24, stagger: 0.12 });

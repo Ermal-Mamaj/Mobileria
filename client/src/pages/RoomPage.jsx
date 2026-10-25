@@ -81,7 +81,7 @@ export default function RoomPage() {
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.room-hero__title')[0], { type: 'lines,words', mask: 'lines' });
-      const tl = gsap.timeline({ paused: true });
+      const tl = gsap.timeline({ paused: true, onComplete: () => split.revert() });
       tl.fromTo(q('.room-hero__arc .ring'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.8, ease: 'expo.inOut' }, 0)
         .from(q('.room-hero__media'), { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut' }, 0.1)
         .from(q('.room-hero__image'), { scale: 1.3, duration: 2, ease: 'expo.out' }, 0.2)
@@ -158,7 +158,7 @@ export default function RoomPage() {
             <p className="room-cta__text">Shumë mobilie i punojmë me porosi — në përmasat, ngjyrat dhe materialet që i duhen shtëpisë suaj.</p>
           </div>
           <div className="room-cta__actions">
-            <Magnet padding={50} magnetStrength={4}>
+            <Magnet padding={32} magnetStrength={12} maxOffset={5}>
               <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
             </Magnet>
             {next && next.slug !== slug && (

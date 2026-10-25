@@ -21,6 +21,7 @@ export default function HomePage() {
   const { data: categories } = useApiGet('/categories', []);
   const { data: featured } = useApiGet('/products?featured=1', []);
   const { data: saleProducts } = useApiGet('/products?sale=1', []);
+  const { data: about } = useApiGet('/content/about', {});
   const heroRef = useRef(null);
   const factsRef = useRef(null);
   const galleryRef = useRef(null);
@@ -46,10 +47,10 @@ export default function HomePage() {
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' });
-      const tl = gsap.timeline({ paused: true });
+      const tl = gsap.timeline({ paused: true, onComplete: () => split.revert() });
       tl.from(q('.home-page__hero-image'), { scale: 1.22, duration: 3, ease: 'expo.out' }, 0)
         .from(q('.home-page__hero-gradient'), { autoAlpha: 0, duration: 1.4 }, 0)
-        .from(q('.eyebrow'), { '--rule': 0, duration: 1.1, ease: 'expo.inOut' }, 0.3)
+        .fromTo(q('.eyebrow'), { '--rule': 0 }, { '--rule': 1, duration: 1.1, ease: 'expo.inOut' }, 0.3)
         .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, y: 10, duration: 0.8 }, 0.5)
         .from(split.words, { yPercent: 120, duration: 1.25, ease: 'expo.out', stagger: 0.07 }, 0.4)
         .from(q('.home-page__hero-actions > *'), { autoAlpha: 0, y: 28, duration: 0.9, stagger: 0.1 }, 1)
@@ -171,6 +172,10 @@ export default function HomePage() {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(contactRef);
+      gsap.fromTo(q('.home-contact-band__media'), { yPercent: -8 }, {
+        yPercent: 8, ease: 'none',
+        scrollTrigger: { trigger: contactRef.current, start: 'top bottom', end: 'bottom top', scrub: true },
+      });
       splitReveal(q('.section-heading')[0]);
       riseIn([...q('.section-intro'), ...q('.home-contact__direct li'), ...q('.home-contact__form')], { y: 32, stagger: 0.08 });
       refreshTriggers();
@@ -205,7 +210,7 @@ export default function HomePage() {
               ))}
             </h1>
             <div className="home-page__hero-actions">
-              <Magnet padding={60} magnetStrength={4}>
+              <Magnet padding={32} magnetStrength={12} maxOffset={5}>
                 <button
                   type="button"
                   className="btn-gold"
@@ -215,7 +220,7 @@ export default function HomePage() {
                   <Icon name="arrow" className="btn-arrow" />
                 </button>
               </Magnet>
-              <Magnet padding={60} magnetStrength={4}>
+              <Magnet padding={32} magnetStrength={12} maxOffset={5}>
                 <Link to="/contact" className="btn-ghost">Na kontaktoni</Link>
               </Magnet>
             </div>
@@ -307,43 +312,48 @@ export default function HomePage() {
         </div>
       </div>
 
-      <section id="contactForm" className="home-page__section home-contact" ref={contactRef} aria-labelledby="home-contact-title">
-        <div className="home-contact__intro">
-          <h2 className="section-heading" id="home-contact-title">{home.contact_heading || 'Le të krijojmë diçka të veçantë.'}</h2>
-          <p className="section-intro">{home.contact_intro}</p>
-
-          {(settings.phone || settings.whatsapp || directions) && (
-            <ul className="home-contact__direct">
-              {settings.phone && (
-                <li>
-                  <a href={telUrl(settings.phone)}>
-                    <Icon name="phone" />
-                    <span><small>Telefononi</small>{settings.phone}</span>
-                  </a>
-                </li>
-              )}
-              {settings.whatsapp && (
-                <li>
-                  <a href={whatsappUrl(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
-                    <Icon name="whatsapp" />
-                    <span><small>Shkruani në</small>WhatsApp</span>
-                  </a>
-                </li>
-              )}
-              {directions && (
-                <li>
-                  <a href={mapsUrl(directions)} target="_blank" rel="noopener noreferrer">
-                    <Icon name="pin" />
-                    <span><small>Vizitoni sallonin</small>Merr drejtimin</span>
-                  </a>
-                </li>
-              )}
-            </ul>
-          )}
+      <section id="contactForm" className="home-contact-band" ref={contactRef} aria-labelledby="home-contact-title">
+        <div className="home-contact-band__media" aria-hidden="true">
+          <ImageSlot src={about.hero_image_url || home.hero_image_url} placeholder="Foto" alt="" dark />
         </div>
+        <div className="home-page__section home-contact">
+          <div className="home-contact__intro">
+            <h2 className="section-heading" id="home-contact-title">{home.contact_heading || 'Le të krijojmë diçka të veçantë.'}</h2>
+            <p className="section-intro">{home.contact_intro}</p>
 
-        <div className="home-contact__form">
-          <ContactForm />
+            {(settings.phone || settings.whatsapp || directions) && (
+              <ul className="home-contact__direct">
+                {settings.phone && (
+                  <li>
+                    <a href={telUrl(settings.phone)}>
+                      <Icon name="phone" />
+                      <span><small>Telefononi</small>{settings.phone}</span>
+                    </a>
+                  </li>
+                )}
+                {settings.whatsapp && (
+                  <li>
+                    <a href={whatsappUrl(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
+                      <Icon name="whatsapp" />
+                      <span><small>Shkruani në</small>WhatsApp</span>
+                    </a>
+                  </li>
+                )}
+                {directions && (
+                  <li>
+                    <a href={mapsUrl(directions)} target="_blank" rel="noopener noreferrer">
+                      <Icon name="pin" />
+                      <span><small>Vizitoni sallonin</small>Merr drejtimin</span>
+                    </a>
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+
+          <div className="home-contact__form">
+            <ContactForm />
+          </div>
         </div>
       </section>
 

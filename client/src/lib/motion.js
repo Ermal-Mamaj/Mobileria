@@ -129,6 +129,8 @@ export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', sta
         delay,
         paused: !trigger,
         scrollTrigger: trigger ? { trigger: el, start, once: true } : undefined,
+        // The line masks would otherwise keep clipping descenders.
+        onComplete: () => self.revert(),
       });
       return tween;
     },
@@ -209,7 +211,10 @@ export function parallax(el, { trigger, yPercent = 15, start = 'top bottom', end
 export function introHeadline(el, { delay = 0.1, stagger = 0.08 } = {}) {
   if (!el || !el.textContent.trim()) return null;
   const split = SplitText.create(el, { type: 'lines,words', mask: 'lines' });
-  const tween = gsap.from(split.words, { yPercent: 120, duration: 1.2, ease: 'expo.out', stagger, delay, paused: true });
+  const tween = gsap.from(split.words, {
+    yPercent: 120, duration: 1.2, ease: 'expo.out', stagger, delay, paused: true,
+    onComplete: () => split.revert(),
+  });
   whenIntroDone().then(() => tween.play());
   return tween;
 }

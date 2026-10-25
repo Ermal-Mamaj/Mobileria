@@ -20,7 +20,7 @@ export default function ContactPage() {
       const q = gsap.utils.selector(ref);
       introHeadline(q('.page-intro__title')[0]);
       gsap.from(q('.page-intro__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
-      gsap.from(q('.page-intro'), { '--rule': 0, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
+      gsap.fromTo(q('.page-intro'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
       if (!settings.id) return;
       gsap.from(q('.contact-channel'), { autoAlpha: 0, x: -40, duration: 1, stagger: 0.1, delay: 0.6 });
       gsap.from(q('.contact-form-panel'), { autoAlpha: 0, y: 60, duration: 1.2, ease: 'expo.out', delay: 0.7 });
