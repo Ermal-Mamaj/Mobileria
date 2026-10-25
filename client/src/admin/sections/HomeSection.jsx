@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../lib/api.js';
 import { EditableText, EditableImage } from '../WysiwygFields.jsx';
 import { useUnsavedChanges } from '../UnsavedChangesContext.jsx';
-import { LOGO_FULL, LOGO_MARK } from '../../lib/brand.js';
+import { LOGO_FULL } from '../../lib/brand.js';
 import '../../pages/HomePage.css';
 
 export default function HomeSection() {
@@ -61,6 +61,15 @@ export default function HomeSection() {
       <div className="wysiwyg-frame">
         {/* Hero */}
         <div className="home-page__hero wysiwyg-hero">
+          <div className="home-page__hero-media">
+            <EditableImage
+              value={form.hero_image_url}
+              onSave={(url) => edit('hero_image_url', url)}
+              className="home-page__hero-image"
+              dark
+            />
+          </div>
+          <div className="home-page__hero-gradient" />
           <div className="home-page__hero-inner">
             <div className="home-page__hero-copy">
               <div className="eyebrow eyebrow--gold">
@@ -88,23 +97,6 @@ export default function HomeSection() {
                   onSave={(v) => edit('hero_cta', v)}
                   placeholder="Shiko ambientet"
                   className="wysiwyg-field--btn"
-                />
-              </div>
-            </div>
-            {/* The hero photo stands in the arch, as on the live page. */}
-            <div className="home-page__hero-visual">
-              <svg className="home-page__hero-arc" viewBox="0 0 100 100" aria-hidden="true">
-                <circle className="ring" cx="50" cy="50" r="49.6" pathLength="1" />
-              </svg>
-              <div className="home-page__hero-seal" aria-hidden="true">
-                <img src={LOGO_MARK} alt="" />
-              </div>
-              <div className="home-page__hero-media">
-                <EditableImage
-                  value={form.hero_image_url}
-                  onSave={(url) => edit('hero_image_url', url)}
-                  className="home-page__hero-image"
-                  dark
                 />
               </div>
             </div>

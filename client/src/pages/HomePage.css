@@ -4,9 +4,9 @@
    the live page (full-screen height, the load sequence, sitting under the
    nav) are scoped to `.home-page`. */
 
-/* ── Hero: copy on the left; on the right the photo stands in an arch with
-   the logo's gold circle drawn around it and the BC seal at its foot. Any
-   photo the owner uploads is cropped into the same shape. ────────────── */
+/* ── Hero: one big room photo, edge to edge, the copy centred near its foot
+   between two gold rules — a showroom window. A soft dark grade at the top
+   and bottom keeps the nav and the headline legible on any photo. ─────── */
 .home-page__hero {
   position: relative;
   overflow: hidden;
@@ -15,133 +15,126 @@
 }
 
 .home-page .home-page__hero {
-  /* Slide up under the transparent nav so the black runs to the very top. */
+  /* Slide up under the transparent nav so the photo starts at the very top. */
   margin-top: calc(-1 * var(--nav-h));
+}
+
+.home-page__hero-media {
+  position: absolute;
+  /* Taller than the hero so the scroll drift never shows an edge. */
+  inset: -2% 0 -20%;
+}
+
+.home-page__hero-media .home-page__hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.home-page__hero-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(14, 12, 9, 0.9) 0%, rgba(14, 12, 9, 0.62) 30%, rgba(14, 12, 9, 0.28) 52%, rgba(14, 12, 9, 0) 72%),
+    linear-gradient(to bottom, rgba(14, 12, 9, 0.5) 0%, rgba(14, 12, 9, 0) 22%),
+    radial-gradient(120% 90% at 50% 40%, rgba(14, 12, 9, 0) 55%, rgba(14, 12, 9, 0.35) 100%);
 }
 
 .home-page__hero-inner {
   position: relative;
+  z-index: 2;
   width: 100%;
   max-width: calc(var(--page-max) + 2 * var(--gutter));
   margin: 0 auto;
-  padding: calc(var(--nav-h) + 28px) var(--gutter) clamp(56px, 8vw, 104px);
-  display: grid;
-  gap: clamp(32px, 5vw, 56px);
-  align-items: center;
+  min-height: 560px;
+  padding: calc(var(--nav-h) + 48px) var(--gutter) clamp(88px, 11vh, 132px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .home-page .home-page__hero-inner {
-  min-height: max(640px, 100svh);
+  min-height: max(620px, 100svh);
 }
 
 .home-page__hero-copy {
-  position: relative;
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* The label sits between two gold rules, like "— FURNITURE —" in the logo;
+   --rule lets them open out from the middle. */
+.home-page__hero .eyebrow {
+  justify-content: center;
+  color: var(--cream);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.home-page__hero .eyebrow__rule,
+.home-page__hero .eyebrow::after {
+  background: var(--gold);
+}
+
+.home-page__hero .eyebrow__rule,
+.home-page__hero .eyebrow::after {
+  transform: scaleX(var(--rule, 1));
+}
+
+.home-page__hero .eyebrow__rule {
+  transform-origin: right center;
+}
+
+.home-page__hero .eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.8;
+  flex-shrink: 0;
+  transform-origin: left center;
 }
 
 .home-page__hero-headline {
   font-family: var(--font-serif);
-  font-size: clamp(36px, 11vw, 60px);
+  font-size: clamp(42px, 11vw, 64px);
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.012em;
+  line-height: 1;
+  letter-spacing: -0.01em;
   color: var(--cream);
-  margin-bottom: clamp(28px, 3.6vw, 48px);
+  margin-bottom: clamp(28px, 3.6vw, 44px);
   text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
 }
 
 .home-page__hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
 }
 
-.home-page__hero-visual {
-  position: relative;
-  order: -1;
-  justify-self: center;
-  width: min(74vw, 340px);
-  aspect-ratio: 4 / 5;
-  margin-top: 28px;
-}
-
-/* 999px top corners collapse to a perfect semicircle on any width. */
-.home-page__hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 999px 999px 0 0;
-  background: var(--navy-2);
-  isolation: isolate;
-}
-
-.home-page__hero-media .home-page__hero-image {
-  position: absolute;
-  /* Taller than the arch so the scroll drift never shows an edge. */
-  inset: -8% 0 auto;
-  width: 100%;
-  height: 116%;
-}
-
-/* The gold ring, concentric with the arch's top and 14% wider, so it reads
-   as the circle of the logo; its lower part passes behind the photo. */
-.home-page__hero-arc {
-  position: absolute;
-  left: -14%;
-  top: -11.2%;
-  width: 128%;
-  height: auto;
-  aspect-ratio: 1;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.home-page__hero-arc .ring {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 0.22;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-  opacity: 0.8;
-}
-
-/* A bead on the ring that travels round as the page scrolls. */
-.home-page__hero-arc .dot {
-  fill: var(--gold);
-}
-
-.home-page__hero-seal {
-  position: absolute;
-  left: -9%;
-  bottom: 12%;
-  z-index: 2;
-  width: clamp(64px, 7vw, 92px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--navy);
-  border: 1px solid rgba(201, 166, 107, 0.6);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-}
-
-.home-page__hero-seal img {
-  width: 42%;
-  height: auto;
+@media (min-width: 900px) {
+  .home-page__hero-headline {
+    font-size: clamp(64px, 7.4vw, 120px);
+  }
 }
 
 /* Scroll cue at the hero's foot: a line that keeps drawing downward. */
 .home-page__hero-scroll {
   position: absolute;
-  left: 50%;
-  bottom: 24px;
+  right: var(--gutter);
+  bottom: clamp(88px, 11vh, 132px);
   z-index: 2;
   display: none;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  transform: translateX(-50%);
+  writing-mode: vertical-rl;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -152,7 +145,7 @@
 .home-page__hero-scroll-line {
   position: relative;
   width: 1px;
-  height: 44px;
+  height: 64px;
   overflow: hidden;
   background: rgba(241, 233, 219, 0.2);
 }
@@ -171,19 +164,6 @@
 }
 
 @media (min-width: 900px) {
-  .home-page__hero-headline {
-    font-size: clamp(56px, 6.6vw, 104px);
-  }
-  .home-page__hero-inner {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    padding-top: calc(var(--nav-h) + 48px);
-  }
-  .home-page__hero-visual {
-    order: 0;
-    justify-self: end;
-    width: min(100%, 440px, calc((100svh - var(--nav-h) - 160px) * 0.8));
-    margin: 0 clamp(16px, 4vw, 64px) 0 0;
-  }
   .home-page__hero-scroll {
     display: flex;
   }
@@ -374,6 +354,31 @@
   }
 }
 
+/* ── New designs and sale: a warm latte band between the black gallery and
+   the black quote, so the products sit on colour, not blank paper. ──── */
+.home-products {
+  --muted: #544D44;
+  --muted-2: #544D44;
+  --gold-deep: #6B4C28;
+  --clay: #8E3A24;
+  --hairline: rgba(26, 23, 20, 0.2);
+  background: #DDCFBA;
+  padding-bottom: var(--section-y);
+}
+
+.home-products .product-card__image {
+  background: #CDBEA6;
+}
+
+.home-products .product-card__badge {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.home-products .product-card__badge.is-sale {
+  background: var(--clay);
+}
+
 /* Products: a swipeable rail on phones and tablets, a grid on desktop. */
 .product-rail {
   display: grid;
@@ -415,13 +420,22 @@
     padding: 0;
     contain: none;
   }
+  /* The lead piece takes a 2 x 2 block; its photo fills the height. */
+  .product-rail.is-featured > :first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .product-rail.is-featured > :first-child .product-card__image {
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .product-rail.is-featured > :first-child .product-card__name {
+    font-size: 32px;
+  }
 }
 
 /* ── Quote band ────────────────────────────────────────────── */
-.home-page .brand-band {
-  margin-top: var(--section-y);
-}
-
 /* On desktop the band pins while its words light up, so it fills the
    screen with the quote centred. */
 @media (min-width: 900px) {

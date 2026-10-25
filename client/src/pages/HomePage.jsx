@@ -9,7 +9,7 @@ import ContactForm from '../components/ContactForm.jsx';
 import Icon from '../components/Icon.jsx';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import { useApiGet } from '../lib/hooks.js';
-import { BRAND, LOGO_FULL, LOGO_MARK, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
+import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
   gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn,
 } from '../lib/motion.js';
@@ -30,11 +30,16 @@ export default function HomePage() {
 
   const headlineLines = (home.hero_headline || '').split('\n');
   const showSale = settings.sale_section_enabled && saleProducts.length > 0;
+  // New designs open with one piece shown large beside four smaller ones
+  // (or eight); the count is trimmed so the grid always closes neatly.
+  const featuredLead = featured.length >= 5;
+  const featuredShown = featuredLead
+    ? featured.slice(0, 1 + 4 * Math.floor((Math.min(featured.length, 9) - 1) / 4))
+    : featured;
 
-  // Hero: once the curtain lifts, the gold circle draws itself around the
-  // arch (the logo's circle), the photo rises into the arch, the seal turns
-  // in, and the headline comes up word by word. Scrolling turns the circle
-  // and drifts the photo inside its frame.
+  // Hero: once the curtain lifts, the photo settles from a slow zoom, the
+  // gold rules open out from the label and the headline rises word by word.
+  // Scrolling drifts the photo down behind the copy, which lifts away.
   useGSAP(() => {
     if (!home.hero_headline) return;
     const mm = gsap.matchMedia();
@@ -42,23 +47,18 @@ export default function HomePage() {
       const q = gsap.utils.selector(heroRef);
       const split = SplitText.create(q('.home-page__hero-headline')[0], { type: 'lines,words', mask: 'lines' });
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo(q('.home-page__hero-arc .ring'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2, ease: 'expo.inOut' }, 0)
-        .from(q('.home-page__hero-arc .dot'), { autoAlpha: 0, scale: 0, transformOrigin: 'center', duration: 0.6 }, 1.7)
-        .from(q('.home-page__hero-media'), { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' }, 0.25)
-        .from(q('.home-page__hero-image'), { scale: 1.35, duration: 2.2, ease: 'expo.out' }, 0.35)
-        .from(q('.home-page__hero-seal'), { scale: 0, rotate: -120, duration: 1.2, ease: 'back.out(1.6)' }, 1.1)
-        .from(q('.eyebrow__rule'), { scaleX: 0, transformOrigin: 'left center', duration: 1, ease: 'expo.inOut' }, 0.3)
-        .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, x: -16, duration: 0.8 }, 0.55)
+      tl.from(q('.home-page__hero-image'), { scale: 1.22, duration: 3, ease: 'expo.out' }, 0)
+        .from(q('.home-page__hero-gradient'), { autoAlpha: 0, duration: 1.4 }, 0)
+        .from(q('.eyebrow'), { '--rule': 0, duration: 1.1, ease: 'expo.inOut' }, 0.3)
+        .from(q('.eyebrow > span:last-child'), { autoAlpha: 0, y: 10, duration: 0.8 }, 0.5)
         .from(split.words, { yPercent: 120, duration: 1.25, ease: 'expo.out', stagger: 0.07 }, 0.4)
         .from(q('.home-page__hero-actions > *'), { autoAlpha: 0, y: 28, duration: 0.9, stagger: 0.1 }, 1)
         .from(q('.home-page__hero-scroll'), { autoAlpha: 0, y: 16, duration: 0.8 }, 1.3);
       whenIntroDone().then(() => tl.play());
 
       const scrub = { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true };
-      gsap.to(q('.home-page__hero-image'), { yPercent: 10, ease: 'none', scrollTrigger: scrub });
-      gsap.to(q('.home-page__hero-arc'), { rotate: 120, ease: 'none', scrollTrigger: scrub });
-      gsap.to(q('.home-page__hero-seal'), { rotate: 180, ease: 'none', scrollTrigger: scrub });
-      gsap.to(q('.home-page__hero-copy'), { yPercent: -14, autoAlpha: 0.2, ease: 'none', scrollTrigger: { ...scrub, end: 'bottom 30%' } });
+      gsap.to(q('.home-page__hero-media'), { yPercent: 18, ease: 'none', scrollTrigger: scrub });
+      gsap.to(q('.home-page__hero-copy'), { yPercent: -30, autoAlpha: 0, ease: 'none', scrollTrigger: { ...scrub, end: 'bottom 35%' } });
     });
     return () => mm.revert();
   }, { scope: heroRef, dependencies: [home.hero_headline], revertOnUpdate: true });
@@ -186,6 +186,10 @@ export default function HomePage() {
       <NavHeader />
 
       <section className="home-page__hero" aria-label={BRAND} ref={heroRef}>
+        <div className="home-page__hero-media">
+          <ImageSlot src={home.hero_image_url} placeholder="Foto" alt="" dark priority className="home-page__hero-image" />
+        </div>
+        <div className="home-page__hero-gradient" />
         <div className="home-page__hero-inner">
           <div className="home-page__hero-copy">
             <div className="eyebrow eyebrow--gold">
@@ -214,19 +218,6 @@ export default function HomePage() {
               <Magnet padding={60} magnetStrength={4}>
                 <Link to="/contact" className="btn-ghost">Na kontaktoni</Link>
               </Magnet>
-            </div>
-          </div>
-
-          <div className="home-page__hero-visual">
-            <svg className="home-page__hero-arc" viewBox="0 0 100 100" aria-hidden="true">
-              <circle className="ring" cx="50" cy="50" r="49.6" pathLength="1" />
-              <circle className="dot" cx="50" cy="0.4" r="0.9" />
-            </svg>
-            <div className="home-page__hero-media">
-              <ImageSlot src={home.hero_image_url} placeholder="Foto" alt="" dark priority className="home-page__hero-image" />
-            </div>
-            <div className="home-page__hero-seal" aria-hidden="true">
-              <img src={LOGO_MARK} alt="" width="34" height="42" />
             </div>
           </div>
         </div>
@@ -272,7 +263,7 @@ export default function HomePage() {
         </section>
       )}
 
-      <div ref={productsRef}>
+      <div className="home-products" ref={productsRef}>
         {featured.length > 0 && (
           <section className="home-page__section" aria-labelledby="home-new-title">
             <div className="section-heading-row">
@@ -281,8 +272,8 @@ export default function HomePage() {
                 Shiko të gjitha <Icon name="arrow" />
               </Link>
             </div>
-            <div className="product-rail">
-              {featured.map((p) => (
+            <div className={`product-rail ${featuredLead ? 'is-featured' : ''}`}>
+              {featuredShown.map((p) => (
                 <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}`} showRoom />
               ))}
             </div>
