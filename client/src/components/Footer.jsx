@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
-import { BRAND, BRAND_LINE, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
+import { BRAND, BRAND_LINE, LOGO_FULL, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
-import { gsap, MOTION_OK, riseIn, SplitText, useGSAP } from '../lib/motion.js';
+import { gsap, MOTION_OK, riseIn, useGSAP } from '../lib/motion.js';
 import './Footer.css';
 
 // Everything here comes from the CMS: rooms from Categories, the rest from
@@ -13,20 +13,16 @@ export default function Footer() {
   const { data: categories } = useApiGet('/categories', []);
   const ref = useRef(null);
 
-  // The closing flourish: the big wordmark rises letter by letter as the
-  // footer comes up, and the columns follow.
+  // The closing flourish: the logo wipes up out of the dark as the footer
+  // comes up, and the columns follow.
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(ref);
-      const word = q('.footer__logo--text')[0];
-      if (word) {
-        const split = SplitText.create(word, { type: 'chars', mask: 'chars' });
-        gsap.from(split.chars, {
-          yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: 0.04,
-          scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
-        });
-      }
+      gsap.fromTo(q('.footer__logo'), { clipPath: 'inset(100% 0% 0% 0%)', yPercent: 12 }, {
+        clipPath: 'inset(0% 0% 0% 0%)', yPercent: 0, duration: 1.4, ease: 'expo.out',
+        scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
+      });
       riseIn([...q('.footer__line'), ...q('.footer__col')], { y: 30, stagger: 0.08, start: 'top 95%' });
     });
     return () => mm.revert();
@@ -44,11 +40,14 @@ export default function Footer() {
     <footer className="footer" ref={ref}>
       <div className="footer__inner">
         <div className="footer__brand">
-          {settings?.logo_url ? (
-            <img src={settings.logo_url} alt={BRAND} className="footer__logo" />
-          ) : (
-            <span className="wordmark footer__logo--text">{BRAND}</span>
-          )}
+          <img
+            src={settings?.logo_url || LOGO_FULL}
+            alt={BRAND}
+            className={`footer__logo ${settings?.logo_url ? '' : 'is-full'}`}
+            loading="lazy"
+            width="720"
+            height="704"
+          />
           <p className="footer__line">{BRAND_LINE}</p>
         </div>
 

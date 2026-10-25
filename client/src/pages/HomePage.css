@@ -116,30 +116,72 @@
   }
 }
 
-/* ── Room-name marquee (React Bits ScrollVelocity): drifts on its own and
-   speeds up, leaning into the direction, as the page is scrolled. ──────── */
-.home-marquee {
-  padding: clamp(40px, 6vw, 80px) 0 0;
-  overflow: hidden;
+/* ── Facts strip: three figures under the hero, each a way in. ─────── */
+.home-facts {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 96px) var(--gutter) 0;
+  display: grid;
+  gap: 0;
+}
+
+.home-facts__item {
+  display: grid;
+  gap: 10px;
+  padding: 28px 0;
+  border-top: 1px solid var(--hairline);
+  text-decoration: none;
+}
+
+.home-facts__num {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 100, 'opsz' 144;
+  font-size: clamp(64px, 9vw, 128px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--text);
 }
 
-.home-marquee__placeholder {
-  height: calc(2 * 1.12 * clamp(44px, 8vw, 128px));
-}
-
-.home-marquee .rb-scroller {
-  font-family: var(--font-serif);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
-  font-size: clamp(44px, 8vw, 128px);
-  font-weight: 320;
-  line-height: 1.12;
+.home-facts__num--word {
+  font-size: clamp(44px, 5.6vw, 80px);
+  line-height: 1.05;
   letter-spacing: -0.03em;
-  filter: none;
+  padding-bottom: clamp(10px, 2vw, 28px);
 }
 
-.home-marquee .rb-parallax + .rb-parallax .rb-scroller {
+.home-facts__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--muted-2);
+  transition: color var(--dur-ui) var(--ease-out), gap var(--dur-ui) var(--ease-out);
+}
+
+.home-facts__label .icon {
+  width: 16px;
+  height: 16px;
   color: var(--gold-deep);
+}
+
+.home-facts__item:hover .home-facts__label {
+  color: var(--text);
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .home-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+  .home-facts__item {
+    align-content: end;
+    padding: 32px 0 0;
+  }
 }
 
 /* ── Sections ──────────────────────────────────────────────── */
@@ -279,6 +321,31 @@
   opacity: 0.14;
   pointer-events: none;
   user-select: none;
+}
+
+/* Quote on the left, the Bella Casa logo on the right. */
+.brand-band__layout {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+.brand-band__logo {
+  display: block;
+  width: min(260px, 70%);
+  height: auto;
+  justify-self: center;
+}
+
+@media (min-width: 900px) {
+  .brand-band__layout {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(48px, 6vw, 96px);
+  }
+  .brand-band__logo {
+    width: min(440px, 100%);
+    justify-self: end;
+  }
 }
 
 .brand-band__text {

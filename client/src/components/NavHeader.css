@@ -67,6 +67,44 @@
   display: block;
 }
 
+/* The BC monogram from the logo, with the name set like the logo's
+   wordmark: serif capitals, widely spaced. */
+.nav-header__brand {
+  gap: 12px;
+}
+
+.nav-header__mark {
+  display: block;
+  height: 40px;
+  width: auto;
+  transition: transform 400ms var(--ease-out);
+}
+
+.nav-header__brand:hover .nav-header__mark {
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.nav-header__name {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 0, 'opsz' 36;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--gold);
+}
+
+@media (min-width: 900px) {
+  .nav-header__mark {
+    height: 46px;
+  }
+  .nav-header__name {
+    font-size: 19px;
+  }
+}
+
 /* ── Desktop links ─────────────────────────────────────────── */
 .nav-header__links {
   display: none;

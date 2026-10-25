@@ -17,6 +17,12 @@
   display: block;
 }
 
+/* The full Bella Casa logo (emblem + wordmark). */
+.footer__logo.is-full {
+  width: clamp(200px, 22vw, 280px);
+  height: auto;
+}
+
 .footer__line {
   margin-top: 14px;
   color: rgba(243, 235, 221, 0.7);

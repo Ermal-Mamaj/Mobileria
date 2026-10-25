@@ -1,4 +1,4 @@
-﻿import { Fragment, lazy, Suspense, useRef } from 'react';
+﻿import { Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
@@ -9,15 +9,11 @@ import ContactForm from '../components/ContactForm.jsx';
 import Icon from '../components/Icon.jsx';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import { useApiGet } from '../lib/hooks.js';
-import { BRAND_LINE, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
+import { BRAND, LOGO_FULL, mapsUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import {
   gsap, MOTION_OK, refreshTriggers, riseIn, scrollToElement, scrubWords, splitReveal, SplitText, useGSAP, whenIntroDone, wipeIn,
 } from '../lib/motion.js';
 import './HomePage.css';
-
-// The marquee brings in `motion` (its animation engine); loading it on its
-// own keeps that off the path to the first paint.
-const ScrollVelocity = lazy(() => import('../components/reactbits/ScrollVelocity.jsx'));
 
 export default function HomePage() {
   const { data: home } = useApiGet('/content/home', {});
@@ -26,6 +22,7 @@ export default function HomePage() {
   const { data: featured } = useApiGet('/products?featured=1', []);
   const { data: saleProducts } = useApiGet('/products?sale=1', []);
   const heroRef = useRef(null);
+  const factsRef = useRef(null);
   const roomsRef = useRef(null);
   const bandRef = useRef(null);
   const productsRef = useRef(null);
@@ -60,6 +57,30 @@ export default function HomePage() {
     return () => mm.revert();
   }, { scope: heroRef, dependencies: [home.hero_headline], revertOnUpdate: true });
 
+  // Facts: the figures count up from zero as the strip comes into view.
+  useGSAP(() => {
+    if (!categories.length) return;
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      const q = gsap.utils.selector(factsRef);
+      q('[data-count]').forEach((el) => {
+        const counter = { value: 0 };
+        gsap.to(counter, {
+          value: Number(el.dataset.count),
+          duration: 2,
+          ease: 'power2.out',
+          snap: { value: 1 },
+          onUpdate: () => { el.textContent = counter.value; },
+          scrollTrigger: { trigger: factsRef.current, start: 'top 85%', once: true },
+        });
+        el.textContent = '0';
+      });
+      riseIn(q('.home-facts__item'), { y: 40, stagger: 0.12 });
+      refreshTriggers();
+    });
+    return () => mm.revert();
+  }, { scope: factsRef, dependencies: [categories.length], revertOnUpdate: true });
+
   // Rooms: heading rises out of its mask, tiles wipe open one after another.
   useGSAP(() => {
     if (!categories.length) return;
@@ -86,9 +107,12 @@ export default function HomePage() {
       scrubWords(q('.brand-band__text')[0], desktop
         ? { trigger: bandRef.current, start: 'top top', end: '+=90%', pin: true }
         : { start: 'top 80%', end: 'bottom 50%' });
-      gsap.fromTo(q('.brand-band__quote-mark'), { rotate: -18, scale: 0.7, yPercent: 20 }, {
-        rotate: 0, scale: 1, yPercent: -10, ease: 'none',
-        scrollTrigger: { trigger: bandRef.current, start: 'top bottom', end: desktop ? '+=180%' : 'bottom top', scrub: true },
+      // The logo beside the quote comes forward as the words light up.
+      gsap.fromTo(q('.brand-band__logo'), { scale: 0.82, rotate: -4, autoAlpha: 0.15, yPercent: 8 }, {
+        scale: 1, rotate: 0, autoAlpha: 1, yPercent: 0, ease: 'none',
+        scrollTrigger: desktop
+          ? { trigger: bandRef.current, start: 'top 60%', end: '+=120%', scrub: true }
+          : { trigger: bandRef.current, start: 'top 85%', end: 'center center', scrub: true },
       });
       gsap.from(q('.brand-band .eyebrow'), {
         autoAlpha: 0, x: -24, duration: 0.9,
@@ -127,7 +151,7 @@ export default function HomePage() {
   }, { scope: contactRef, dependencies: [home.contact_heading, settings.id], revertOnUpdate: true });
 
   const directions = settings.address || settings.address_2;
-  const roomNames = categories.map((c) => c.name);
+  const productTotal = categories.reduce((sum, c) => sum + (Number(c.product_count) || 0), 0);
 
   return (
     <div className="home-page app-shell">
@@ -173,22 +197,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {roomNames.length > 0 && (
-        <div className="home-marquee" aria-hidden="true">
-          <Suspense fallback={<div className="home-marquee__placeholder" />}>
-            <ScrollVelocity
-              texts={[roomNames.join('  ✦  '), BRAND_LINE]}
-              velocity={36}
-              numCopies={4}
-              separator="✦"
-              gap={32}
-              outlineAlternate
-              fadeEdges
-              skewWithVelocity={6}
-              className="home-marquee__text"
-            />
-          </Suspense>
-        </div>
+      {categories.length > 0 && (
+        <section className="home-facts" ref={factsRef} aria-label="Bella Casa në shifra">
+          <Link to="/categories" className="home-facts__item">
+            <span className="home-facts__num" data-count={categories.length}>{categories.length}</span>
+            <span className="home-facts__label">Ambiente të shtëpisë <Icon name="arrow" /></span>
+          </Link>
+          {productTotal > 0 && (
+            <Link to="/categories" className="home-facts__item">
+              <span className="home-facts__num" data-count={productTotal}>{productTotal}</span>
+              <span className="home-facts__label">Produkte në katalog <Icon name="arrow" /></span>
+            </Link>
+          )}
+          <Link to="/contact" className="home-facts__item">
+            <span className="home-facts__num home-facts__num--word">Me porosi</span>
+            <span className="home-facts__label">Në përmasat dhe ngjyrat që ju duhen <Icon name="arrow" /></span>
+          </Link>
+        </section>
       )}
 
       <section className="home-page__section home-rooms-section" ref={roomsRef} aria-labelledby="home-rooms-title">
@@ -207,13 +232,15 @@ export default function HomePage() {
       </section>
 
       <div className="brand-band" ref={bandRef}>
-        <div className="brand-band__quote-mark" aria-hidden="true">&ldquo;</div>
-        <div className="brand-band__content">
-          <p className="brand-band__text">{home.quote_text}</p>
-          <div className="eyebrow eyebrow--gold">
-            <span className="eyebrow__rule" />
-            <span>{home.quote_label}</span>
+        <div className="brand-band__content brand-band__layout">
+          <div>
+            <p className="brand-band__text">{home.quote_text}</p>
+            <div className="eyebrow eyebrow--gold">
+              <span className="eyebrow__rule" />
+              <span>{home.quote_label}</span>
+            </div>
           </div>
+          <img src={LOGO_FULL} alt={BRAND} className="brand-band__logo" loading="lazy" width="720" height="704" />
         </div>
       </div>
 

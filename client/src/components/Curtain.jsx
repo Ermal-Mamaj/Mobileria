@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BRAND } from '../lib/brand.js';
+import { BRAND, LOGO_FULL } from '../lib/brand.js';
 import { beginIntro, endIntro, gsap, MOTION_OK, refreshTriggers, useGSAP } from '../lib/motion.js';
 import './Curtain.css';
 
@@ -10,9 +10,10 @@ const isCms = (path) => path.startsWith('/bellacasa-cms');
 // (Strict Mode in development) can't skip it or play it twice.
 let introPlayed = false;
 
-// An ink panel over the page. On the first visit it carries the wordmark and
-// lifts once the fonts are in (at most ~2.6s); after that it sweeps away on
-// every page change, so moving between rooms feels like turning a page.
+// An ink panel over the page. On the first visit the Bella Casa logo opens
+// out of a circle and the panel lifts once fonts and logo are in (at most
+// ~2.6s); after that it sweeps away on every page change, so moving between
+// rooms feels like turning a page.
 export default function Curtain() {
   const { pathname } = useLocation();
   const panelRef = useRef(null);
@@ -30,22 +31,21 @@ export default function Curtain() {
       gsap.set(panel, { autoAlpha: 1, yPercent: 0 });
       if (!introPlayed) {
         beginIntro();
-        const letters = panel.querySelectorAll('.curtain__letter');
-        const rule = panel.querySelector('.curtain__rule');
+        const logo = panel.querySelector('.curtain__logo');
         const ready = Promise.race([
-          Promise.all([document.fonts?.ready, new Promise((r) => setTimeout(r, 1100))]),
+          Promise.all([document.fonts?.ready, logo.decode?.().catch(() => {}), new Promise((r) => setTimeout(r, 1300))]),
           new Promise((r) => setTimeout(r, 2600)),
         ]);
         const tl = gsap.timeline();
-        tl.from(letters, { yPercent: 110, duration: 0.9, ease: 'expo.out', stagger: 0.035 })
-          .from(rule, { scaleX: 0, duration: 1, ease: 'expo.inOut' }, 0.15);
+        tl.fromTo(logo, { clipPath: 'circle(0% at 50% 42%)', scale: 1.12 }, {
+          clipPath: 'circle(75% at 50% 42%)', scale: 1, duration: 1.5, ease: 'expo.inOut',
+        });
         ready.then(() => {
           if (cancelled) return;
           introPlayed = true;
           gsap.timeline({ delay: Math.max(0, tl.duration() - tl.time()) })
-            .to(letters, { yPercent: -110, duration: 0.6, ease: 'expo.in', stagger: 0.02 })
-            .to(rule, { scaleX: 0, transformOrigin: 'right center', duration: 0.5, ease: 'expo.in' }, '<')
-            .to(panel, { yPercent: -100, duration: 1, ease: 'expo.inOut' }, '-=0.2')
+            .to(logo, { yPercent: -12, autoAlpha: 0, duration: 0.6, ease: 'expo.in' })
+            .to(panel, { yPercent: -100, duration: 1, ease: 'expo.inOut' }, '-=0.25')
             .call(endIntro, null, '-=0.55')
             .set(panel, { autoAlpha: 0 })
             .call(refreshTriggers);
@@ -70,12 +70,7 @@ export default function Curtain() {
   return (
     <div className="curtain" ref={panelRef} aria-hidden="true">
       <div className="curtain__inner">
-        <span className="curtain__word">
-          {BRAND.split('').map((ch, i) => (
-            <span key={i} className="curtain__letter">{ch === ' ' ? '\u00A0' : ch}</span>
-          ))}
-        </span>
-        <span className="curtain__rule" />
+        <img src={LOGO_FULL} alt={BRAND} className="curtain__logo" width="720" height="704" />
       </div>
     </div>
   );

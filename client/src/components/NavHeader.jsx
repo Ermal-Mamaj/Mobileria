@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
-import { BRAND, telUrl, whatsappUrl } from '../lib/brand.js';
+import { BRAND, LOGO_MARK, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
 import { lockScroll, ScrollTrigger, unlockScroll } from '../lib/motion.js';
 import './NavHeader.css';
@@ -72,7 +72,10 @@ export default function NavHeader() {
           {settings?.logo_url ? (
             <img src={settings.logo_url} alt={BRAND} className="nav-header__logo" />
           ) : (
-            <span className="wordmark nav-header__logo--text">{BRAND}</span>
+            <>
+              <img src={LOGO_MARK} alt="" className="nav-header__mark" width="34" height="42" />
+              <span className="nav-header__name">{BRAND}</span>
+            </>
           )}
         </Link>
 

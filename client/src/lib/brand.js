@@ -1,6 +1,11 @@
 export const BRAND = 'Bella Casa';
 export const BRAND_LINE = 'Mobilie për çdo dhomë të shtëpisë';
 
+// The Bella Casa logo, shipped with the site (client/public/brand). A logo
+// uploaded in the CMS (Cilësimet → Logoja) still takes the nav's place.
+export const LOGO_FULL = '/brand/logo-full.webp';
+export const LOGO_MARK = '/brand/logo-mark.png';
+
 // Each room of the house is painted its own wall colour, in this order. The
 // same room keeps the same colour on every page (it follows the room's
 // position in the CMS list), so a visitor learns "the walnut room".

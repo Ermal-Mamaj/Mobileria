@@ -24,11 +24,15 @@ export default function CursorLabel() {
     const toX = gsap.quickTo(el, 'x', { duration: 0.45, ease: 'power3' });
     const toY = gsap.quickTo(el, 'y', { duration: 0.45, ease: 'power3' });
     let current = null;
+    let pointer = null;
 
-    const onMove = (e) => {
-      toX(e.clientX);
-      toY(e.clientY);
-      const target = e.target.closest?.('[data-cursor]');
+    // What's under the mouse, decided from where it is rather than from the
+    // last element it moved over: when the page scrolls under a still mouse
+    // (wheel, Lenis easing) no pointer event fires, so scrolling re-checks.
+    const update = () => {
+      if (!pointer) return;
+      const under = document.elementFromPoint(pointer.x, pointer.y);
+      const target = under?.closest?.('[data-cursor]') || null;
       if (target === current) return;
       current = target;
       if (target) {
@@ -38,18 +42,27 @@ export default function CursorLabel() {
         gsap.to(el, { scale: 0, autoAlpha: 0, duration: 0.25, ease: 'power2.in', overwrite: 'auto' });
       }
     };
+    const onMove = (e) => {
+      pointer = { x: e.clientX, y: e.clientY };
+      toX(e.clientX);
+      toY(e.clientY);
+      update();
+    };
     const onLeave = () => {
       current = null;
+      pointer = null;
       gsap.to(el, { scale: 0, autoAlpha: 0, duration: 0.2, overwrite: 'auto' });
     };
     hideRef.current = onLeave;
 
     window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('pointerdown', onLeave);
     document.documentElement.addEventListener('pointerleave', onLeave);
     return () => {
       hideRef.current = () => {};
       window.removeEventListener('pointerdown', onLeave);
+      window.removeEventListener('scroll', update);
       window.removeEventListener('pointermove', onMove);
       document.documentElement.removeEventListener('pointerleave', onLeave);
     };

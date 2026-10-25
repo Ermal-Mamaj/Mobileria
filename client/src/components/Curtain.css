@@ -12,33 +12,8 @@
   visibility: hidden;
 }
 
-.curtain__inner {
-  display: grid;
-  justify-items: center;
-  gap: 18px;
-}
-
-.curtain__word {
-  display: flex;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-  font-family: var(--font-wordmark);
-  font-variation-settings: 'SOFT' 100, 'opsz' 144;
-  font-size: clamp(56px, 11vw, 140px);
-  font-weight: 320;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--gold);
-}
-
-.curtain__letter {
-  display: inline-block;
-}
-
-.curtain__rule {
+.curtain__logo {
   display: block;
-  width: min(220px, 40vw);
-  height: 1px;
-  background: rgba(214, 184, 142, 0.6);
-  transform-origin: left;
+  width: min(360px, 66vw);
+  height: auto;
 }
