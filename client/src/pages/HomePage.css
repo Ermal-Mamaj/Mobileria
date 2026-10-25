@@ -175,7 +175,7 @@
   align-content: start;
   gap: 6px;
   padding-top: 18px;
-  border-top: 1px solid rgba(201, 166, 107, 0.55);
+  border-top: 1px solid rgba(204, 165, 125, 0.55);
   color: var(--cream);
   text-decoration: none;
 }

@@ -41,7 +41,7 @@
 .room-arch__photo .image-slot {
   position: absolute;
   inset: 0;
-  transition: transform 900ms var(--ease-out);
+  transition: transform 500ms var(--ease-out);
 }
 
 .room-arch:hover .room-arch__line {
@@ -49,10 +49,8 @@
   inset: -6px -6px 0;
 }
 
-@media (hover: hover) {
-  .room-arch:hover .room-arch__photo .image-slot {
-    transform: scale(1.05);
-  }
+.room-arch:hover .room-arch__photo .image-slot {
+  transform: scale(1.03);
 }
 
 .band-latte .room-arch__line {

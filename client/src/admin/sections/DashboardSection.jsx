@@ -59,7 +59,7 @@ export default function DashboardSection() {
           icon="box"
           label="Produkte Gjithsej"
           value={stats.total_products}
-          color="#16130F"
+          color="#1C130F"
         />
         <StatCard
           icon="tag"

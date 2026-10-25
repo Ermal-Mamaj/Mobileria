@@ -67,7 +67,7 @@
   color: var(--cream);
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-color: rgba(201, 166, 107, 0.6);
+  text-decoration-color: rgba(204, 165, 125, 0.6);
 }
 
 .footer__link--icon {

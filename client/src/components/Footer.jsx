@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
 import { BRAND, BRAND_LINE, LOGO_FULL, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
-import { gsap, MOTION_OK, riseIn, useGSAP } from '../lib/motion.js';
+import { gsap, MOTION_OK, riseIn, useGSAP, EASE } from '../lib/motion.js';
 import './Footer.css';
 
 // Everything here comes from the CMS: rooms from Categories, the rest from
@@ -20,7 +20,7 @@ export default function Footer() {
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(ref);
       gsap.fromTo(q('.footer__logo'), { clipPath: 'inset(100% 0% 0% 0%)', yPercent: 12 }, {
-        clipPath: 'inset(0% 0% 0% 0%)', yPercent: 0, duration: 1.4, ease: 'expo.out',
+        clipPath: 'inset(0% 0% 0% 0%)', yPercent: 0, duration: 1.4, ease: EASE.enter,
         scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
       });
       riseIn([...q('.footer__line'), ...q('.footer__col')], { y: 30, stagger: 0.08, start: 'top 95%' });

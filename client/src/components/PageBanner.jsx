@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import ImageSlot from './ImageSlot.jsx';
-import { gsap, introHeadline, MOTION_OK, useGSAP } from '../lib/motion.js';
+import { gsap, introHeadline, MOTION_OK, useGSAP, EASE } from '../lib/motion.js';
 import './PageBanner.css';
 
 // The opening of the plain pages (Ambientet, Na Kontaktoni): a photo the
@@ -16,8 +16,8 @@ export default function PageBanner({ title, text, image }) {
       const q = gsap.utils.selector(ref);
       introHeadline(q('.page-banner__title')[0]);
       gsap.from(q('.page-banner__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
-      gsap.fromTo(q('.page-banner'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: 'expo.inOut', delay: 0.2 });
-      gsap.from(q('.page-banner__media .image-slot'), { scale: 1.18, duration: 2.6, ease: 'expo.out' });
+      gsap.fromTo(q('.page-banner'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: EASE.move, delay: 0.2 });
+      gsap.from(q('.page-banner__media .image-slot'), { scale: 1.1, duration: 2, ease: EASE.enter });
       gsap.to(q('.page-banner__media'), {
         yPercent: 16, ease: 'none',
         scrollTrigger: { trigger: ref.current, start: 'top top', end: 'bottom top', scrub: true },

@@ -7,7 +7,7 @@ import Icon from '../components/Icon.jsx';
 import { useApiGet, usePageTitle } from '../lib/hooks.js';
 import Magnet from '../components/reactbits/Magnet.jsx';
 import {
-  gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, scrubWords, splitReveal, useGSAP,
+  gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, scrubWords, splitReveal, useGSAP, EASE,
 } from '../lib/motion.js';
 import './AboutPage.css';
 
@@ -35,7 +35,7 @@ export default function AboutPage() {
     mm.add(MOTION_OK, () => {
       const h = gsap.utils.selector(heroRef);
       introHeadline(h('.about-hero__title')[0], { stagger: 0.1 });
-      gsap.from(h('.about-hero__image'), { scale: 1.25, duration: 2.2, ease: 'expo.out' });
+      gsap.from(h('.about-hero__image'), { scale: 1.1, duration: 2, ease: EASE.enter });
       gsap.to(h('.about-hero__image'), {
         yPercent: 18, ease: 'none',
         scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true },

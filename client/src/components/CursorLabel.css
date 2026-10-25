@@ -6,9 +6,9 @@
   z-index: 150;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(22, 19, 15, 0.82);
+  background: rgba(28, 19, 15, 0.82);
   color: var(--gold);
-  border: 1px solid rgba(201, 166, 107, 0.45);
+  border: 1px solid rgba(204, 165, 125, 0.45);
   backdrop-filter: blur(6px);
   pointer-events: none;
   visibility: hidden;

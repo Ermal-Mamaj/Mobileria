@@ -27,8 +27,8 @@ img.image-slot {
 
 .image-slot--filled-dark {
   background:
-    repeating-linear-gradient(45deg, rgba(201, 166, 107, 0.035) 0 1px, transparent 1px 12px),
-    radial-gradient(90% 70% at 50% 0%, #2A2520 0%, #16130F 70%);
+    repeating-linear-gradient(45deg, rgba(204, 165, 125, 0.035) 0 1px, transparent 1px 12px),
+    radial-gradient(90% 70% at 50% 0%, #2A2520 0%, #1C130F 70%);
 }
 
 /* Empty state (no photo uploaded yet). Two flavours:
@@ -68,14 +68,14 @@ img.image-slot {
 .image-slot--dark {
   justify-content: flex-start;
   padding-top: 16px;
-  color: rgba(201, 166, 107, 0.5);
+  color: rgba(204, 165, 125, 0.5);
   background:
-    radial-gradient(90% 70% at 50% 0%, #2A2520 0%, #16130F 70%);
+    radial-gradient(90% 70% at 50% 0%, #2A2520 0%, #1C130F 70%);
 }
 
 .image-slot--dark::after {
   background-image:
-    repeating-linear-gradient(45deg, rgba(201, 166, 107, 0.035) 0 1px, transparent 1px 12px);
+    repeating-linear-gradient(45deg, rgba(204, 165, 125, 0.035) 0 1px, transparent 1px 12px);
 }
 
 .image-slot__caption {

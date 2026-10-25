@@ -125,12 +125,21 @@
   transition:
     background-color var(--dur-ui) var(--ease-out),
     color var(--dur-ui) var(--ease-out),
-    border-color var(--dur-ui) var(--ease-out);
+    border-color var(--dur-ui) var(--ease-out),
+    transform 200ms var(--ease-out);
 }
 
 .btn-gold {
   background: var(--gold);
   color: var(--navy);
+}
+
+.btn-gold:active,
+.btn-navy:active,
+.btn-ghost:active,
+.btn-outline:active {
+  transform: scale(0.98);
+  transition-duration: 120ms;
 }
 
 .btn-gold:hover {

@@ -52,7 +52,7 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: var(--gold-deep);
-  box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.35);
+  box-shadow: 0 0 0 3px rgba(204, 165, 125, 0.35);
 }
 
 .contact-form button[type='submit'] {

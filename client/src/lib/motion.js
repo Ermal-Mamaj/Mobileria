@@ -2,14 +2,23 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
+import { CustomEase } from 'gsap/CustomEase';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
 // All of the public site's motion goes through here: GSAP (+ScrollTrigger,
 // SplitText) for the animation, Lenis for the smooth, weighted scroll. The
 // CMS never imports this, so nothing here touches the editor.
-gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
-gsap.defaults({ ease: 'power3.out', duration: 0.8 });
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, useGSAP);
+
+// Bella Casa's motion identity ("Premium": elegant, controlled, never
+// bouncy). One signature curve for nearly everything that arrives, one for
+// things that move across the screen, and three durations.
+CustomEase.create('bc-enter', '0.16, 1, 0.3, 1'); // long, soft deceleration
+CustomEase.create('bc-move', '0.4, 0, 0.2, 1'); // smooth both ends
+export const EASE = { enter: 'bc-enter', move: 'bc-move' };
+export const DUR = { quick: 0.35, standard: 0.6, slow: 1.0 };
+gsap.defaults({ ease: EASE.enter, duration: DUR.standard });
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger, SplitText, useGSAP };
@@ -72,7 +81,7 @@ export function scrollToTop() {
 
 export function scrollToElement(el, offset = 0) {
   if (!el) return;
-  if (lenis) lenis.scrollTo(el, { offset, duration: 1.4 });
+  if (lenis) lenis.scrollTo(el, { offset, duration: 1.2 });
   else el.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -111,9 +120,21 @@ export function whenIntroDone() {
 
 /* ── Reusable reveals ──────────────────────────────────────── */
 
+// The line masks clip everything outside the text line, which cut off the
+// descenders (g, j, p, y, q) until the animation ended, so they popped in
+// late. Padding the mask (and pulling it back with a negative margin, so the
+// layout doesn't move) leaves room for them from the first frame.
+export function padMasks(split) {
+  (split.masks || []).forEach((mask) => {
+    mask.style.paddingBottom = '0.28em';
+    mask.style.marginBottom = '-0.28em';
+  });
+  return split;
+}
+
 // Headline that rises line by line out of masks as it scrolls into view.
 // Pass `trigger: false` to get the timeline back un-triggered (for heroes).
-export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', stagger = 0.09, start = 'top 88%' } = {}) {
+export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', stagger = 0.08, start = 'top 88%' } = {}) {
   if (!el || !el.textContent.trim()) return null;
   let tween = null;
   SplitText.create(el, {
@@ -121,10 +142,11 @@ export function splitReveal(el, { trigger = true, delay = 0, type = 'lines', sta
     mask: 'lines',
     autoSplit: true,
     onSplit(self) {
+      padMasks(self);
       tween = gsap.from(type === 'words' ? self.words : self.lines, {
         yPercent: 110,
-        duration: 1.1,
-        ease: 'expo.out',
+        duration: DUR.slow,
+        ease: EASE.enter,
         stagger,
         delay,
         paused: !trigger,
@@ -159,14 +181,18 @@ export function scrubWords(el, { trigger, start = 'top 80%', end = 'bottom 45%',
 
 // Fade-and-rise for groups (cards, rows), batched so a row arrives together
 // with a stagger instead of one trigger per element.
-export function riseIn(targets, { y = 48, stagger = 0.09, start = 'top 90%' } = {}) {
+export function riseIn(targets, { y = 24, stagger = 0.08, start = 'top 90%' } = {}) {
   const els = gsap.utils.toArray(targets);
   if (!els.length) return;
   gsap.set(els, { autoAlpha: 0, y });
   ScrollTrigger.batch(els, {
     start,
     once: true,
-    onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1, stagger, ease: 'power3.out', overwrite: true }),
+    onEnter: (batch) => gsap.to(batch, {
+      autoAlpha: 1, y: 0, duration: DUR.standard, ease: EASE.enter, overwrite: true,
+      // Whatever the batch size, the last item starts within 0.4s.
+      stagger: { each: stagger, amount: Math.min(stagger * (batch.length - 1), 0.4) },
+    }),
   });
 }
 
@@ -181,15 +207,16 @@ export function wipeIn(frames, { inner, stagger = 0.12, start = 'top 88%', from 
     left: 'inset(0% 100% 0% 0%)',
   }[from];
   gsap.set(els, { clipPath: hidden });
-  if (inner) gsap.set(els.map((el) => el.querySelector(inner)).filter(Boolean), { scale: 1.25 });
+  if (inner) gsap.set(els.map((el) => el.querySelector(inner)).filter(Boolean), { scale: 1.08 });
   ScrollTrigger.batch(els, {
     start,
     once: true,
     onEnter: (batch) => {
-      gsap.to(batch, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger, clearProps: 'clipPath' });
+      const each = { each: stagger, amount: Math.min(stagger * (batch.length - 1), 0.4) };
+      gsap.to(batch, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: EASE.move, stagger: each, clearProps: 'clipPath' });
       if (inner) {
         gsap.to(batch.map((el) => el.querySelector(inner)).filter(Boolean), {
-          scale: 1, duration: 1.8, ease: 'expo.out', stagger,
+          scale: 1, duration: 1.4, ease: EASE.enter, stagger: each,
         });
       }
     },
@@ -210,9 +237,9 @@ export function parallax(el, { trigger, yPercent = 15, start = 'top bottom', end
 // curtain clears (no scroll trigger — it's already on screen).
 export function introHeadline(el, { delay = 0.1, stagger = 0.08 } = {}) {
   if (!el || !el.textContent.trim()) return null;
-  const split = SplitText.create(el, { type: 'lines,words', mask: 'lines' });
+  const split = padMasks(SplitText.create(el, { type: 'lines,words', mask: 'lines' }));
   const tween = gsap.from(split.words, {
-    yPercent: 120, duration: 1.2, ease: 'expo.out', stagger, delay, paused: true,
+    yPercent: 120, duration: DUR.slow, ease: EASE.enter, stagger, delay, paused: true,
     onComplete: () => split.revert(),
   });
   whenIntroDone().then(() => tween.play());

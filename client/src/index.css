@@ -4,9 +4,9 @@
      ivory. The original token names (--navy, --gold…) are kept because the
      CMS reads them too; the CMS's live-preview frame (.wysiwyg-frame) gets
      these public values so it shows the site as it really looks. */
-  --navy: #16130F;          /* espresso black — the logo's ground */
+  --navy: #1C130F;          /* warm espresso — measured from the reference photography */
   --navy-2: #221E19;
-  --gold: #C9A66B;          /* champagne gold — the logo's metal (8:1 on black) */
+  --gold: #CCA57D;          /* soft camel gold — measured from the reference photography (8:1 on espresso) */
   --gold-deep: #7D5C34;     /* gold dark enough for text on ivory (5.4:1) */
   --gold-sheen: linear-gradient(120deg, #E8CC97 0%, #B98A4F 48%, #E3C285 100%);
   --bg: #F5F0E8;            /* ivory — page background */
@@ -30,8 +30,8 @@
   --tone-ochre: #8A5E26;
   --tone-olive: #5A5833;
 
-  --shadow-sm: 0 1px 2px rgba(22, 19, 15, 0.06);
-  --shadow-md: 0 10px 30px rgba(22, 19, 15, 0.10), 0 2px 6px rgba(22, 19, 15, 0.05);
+  --shadow-sm: 0 1px 2px rgba(28, 19, 15, 0.06);
+  --shadow-md: 0 10px 30px rgba(28, 19, 15, 0.10), 0 2px 6px rgba(28, 19, 15, 0.05);
   --shadow-lg: 0 30px 80px rgba(10, 8, 6, 0.32), 0 8px 20px rgba(10, 8, 6, 0.14);
 
   --radius: 4px;
@@ -58,7 +58,8 @@
   --display-lg: clamp(52px, 8.4vw, 124px);
 
   /* Motion */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Same signature curve as lib/motion.js (bc-enter). */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-ui: 200ms;
   --dur-hero: 900ms;
 }
@@ -106,7 +107,7 @@ body.is-locked {
 }
 
 ::selection {
-  background: rgba(201, 166, 107, 0.45);
+  background: rgba(204, 165, 125, 0.45);
 }
 
 #root {
