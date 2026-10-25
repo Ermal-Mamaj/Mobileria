@@ -157,30 +157,69 @@
   gap: 16px 32px;
 }
 
+/* The next room as a real button: outlined and square like the contact button
+   beside it, with the arrow in a filled box. */
 .room-cta__next {
-  display: grid;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 54px;
+  padding: 8px 10px 8px 22px;
+  border: 1.5px solid var(--text);
+  border-radius: 0;
+  color: var(--text);
   text-decoration: none;
+  transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.room-cta__text-block {
+  display: grid;
+  line-height: 1.15;
 }
 
 .room-cta__next small {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  opacity: 0.7;
 }
 
-.room-cta__next span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.room-cta__name {
   font-family: var(--font-serif);
   font-size: 22px;
-  transition: gap var(--dur-ui) var(--ease-out);
+  font-weight: 500;
 }
 
-.room-cta__next:hover span {
-  gap: 12px;
+.room-cta__go {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  display: grid;
+  place-items: center;
+  background: var(--text);
+  color: var(--bg);
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.room-cta__go .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.room-cta__next:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.room-cta__next:hover .room-cta__go {
+  background: var(--bg);
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+.room-cta__next:active {
+  transform: scale(0.98);
 }
 
 @media (min-width: 900px) {

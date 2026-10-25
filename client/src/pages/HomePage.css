@@ -304,6 +304,8 @@
   /* Same Chrome quirk as the product rail: positioned photos in off-screen
      cards would otherwise widen the page on phones. */
   contain: paint;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
 }
 
 .home-gallery__track::-webkit-scrollbar {
@@ -383,6 +385,10 @@
   /* Without this Chrome counts the off-screen cards' positioned photos
      towards the page width, and phones get a sideways scroll. */
   contain: paint;
+  /* Sideways swipes move the strip; up/down swipes always scroll the page,
+     and reaching the strip's end doesn't drag the page sideways. */
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
 }
 
 .product-rail::-webkit-scrollbar {

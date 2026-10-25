@@ -178,8 +178,11 @@ export default function RoomPage() {
             </Magnet>
             {next && next.slug !== slug && (
               <Link to={`/rooms/${next.slug}`} className="room-cta__next">
-                <small>Ambienti tjetër</small>
-                <span>{next.name} <Icon name="arrow" /></span>
+                <span className="room-cta__text-block">
+                  <small>Ambienti tjetër</small>
+                  <span className="room-cta__name">{next.name}</span>
+                </span>
+                <span className="room-cta__go"><Icon name="arrow" /></span>
               </Link>
             )}
           </div>
