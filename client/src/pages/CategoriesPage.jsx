@@ -1,48 +1,48 @@
 ﻿import { useRef } from 'react';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
+import PageBanner from '../components/PageBanner.jsx';
 import RoomArch from '../components/RoomArch.jsx';
 import { useApiGet } from '../lib/hooks.js';
-import { gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, useGSAP, wipeIn } from '../lib/motion.js';
+import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP, wipeIn } from '../lib/motion.js';
 import './CategoriesPage.css';
 
 export default function CategoriesPage() {
   const { data: categories } = useApiGet('/categories', []);
+  const { data: home } = useApiGet('/content/home', {});
   const ref = useRef(null);
 
   useGSAP(() => {
+    if (!categories.length) return;
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(ref);
-      introHeadline(q('.page-intro__title')[0]);
-      gsap.from(q('.page-intro__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
-      gsap.fromTo(q('.page-intro'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
-      if (categories.length) {
-        wipeIn(q('.room-arch__frame'), { stagger: 0.12 });
-        riseIn(q('.room-arch__caption'), { y: 24, stagger: 0.12 });
-      }
+      wipeIn(q('.room-arch__frame'), { stagger: 0.12 });
+      riseIn(q('.room-arch__caption'), { y: 24, stagger: 0.12 });
       refreshTriggers();
     });
     return () => mm.revert();
   }, { scope: ref, dependencies: [categories.length], revertOnUpdate: true });
 
+  // The banner shows the Home hero photo, so it changes with what the owner
+  // sets there; the first room's photo stands in until one is uploaded.
+  const bannerImage = home.hero_image_url || categories[0]?.hero_image_url;
+
   return (
     <div className="app-shell">
       <NavHeader />
-      <div className="page-body" ref={ref}>
-        <header className="page-intro">
-          <h1 className="page-intro__title">Ambientet</h1>
-          <p className="page-intro__text">
-            Shfletoni mobiliet sipas ambientit — çdo dhomë e shtëpisë, me foto, materiale dhe çmime.
-          </p>
-        </header>
-
+      <PageBanner
+        title="Ambientet"
+        text="Shfletoni mobiliet sipas ambientit — çdo dhomë e shtëpisë, me foto, materiale dhe çmime."
+        image={bannerImage}
+      />
+      <section className="band-latte rooms-band" ref={ref} aria-label="Ambientet">
         <div className="rooms-grid">
           {categories.map((cat, i) => (
             <RoomArch key={cat.id} category={cat} index={i} />
           ))}
         </div>
-      </div>
+      </section>
       <Footer />
     </div>
   );

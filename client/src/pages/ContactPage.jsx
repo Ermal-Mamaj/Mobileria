@@ -2,25 +2,25 @@ import { useRef } from 'react';
 import NavHeader from '../components/NavHeader.jsx';
 import Footer from '../components/Footer.jsx';
 import ContactForm from '../components/ContactForm.jsx';
+import PageBanner from '../components/PageBanner.jsx';
 import Icon from '../components/Icon.jsx';
 import { useApiGet } from '../lib/hooks.js';
 import { mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
-import { gsap, introHeadline, MOTION_OK, refreshTriggers, riseIn, useGSAP } from '../lib/motion.js';
+import { gsap, MOTION_OK, refreshTriggers, riseIn, useGSAP } from '../lib/motion.js';
 import './ContactPage.css';
 
 export default function ContactPage() {
   const { data: settings } = useApiGet('/site-settings', {});
+  const { data: about } = useApiGet('/content/about', {});
+  const { data: home } = useApiGet('/content/home', {});
   const ref = useRef(null);
 
-  // Title after the curtain; contact rows slide in from the left one by one,
-  // the form panel rises beside them.
+  // Contact rows slide in from the left one by one, the form panel rises
+  // beside them.
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add(MOTION_OK, () => {
       const q = gsap.utils.selector(ref);
-      introHeadline(q('.page-intro__title')[0]);
-      gsap.from(q('.page-intro__text'), { autoAlpha: 0, y: 20, duration: 1, delay: 0.5 });
-      gsap.fromTo(q('.page-intro'), { '--rule': 0 }, { '--rule': 1, duration: 1.4, ease: 'expo.inOut', delay: 0.3 });
       if (!settings.id) return;
       gsap.from(q('.contact-channel'), { autoAlpha: 0, x: -40, duration: 1, stagger: 0.1, delay: 0.6 });
       gsap.from(q('.contact-form-panel'), { autoAlpha: 0, y: 60, duration: 1.2, ease: 'expo.out', delay: 0.7 });
@@ -54,82 +54,85 @@ export default function ContactPage() {
   return (
     <div className="app-shell">
       <NavHeader />
-      <div className="page-body" ref={ref}>
-        <header className="page-intro">
-          <h1 className="page-intro__title">Na Kontaktoni</h1>
-          <p className="page-intro__text">Do të gëzoheshim t'ju dëgjonim — për një pyetje, një çmim, apo një mobilie me porosi.</p>
-        </header>
-
-        <div className="contact-layout">
-          <div className="contact-info">
-            {channels.length > 0 && (
-              <ul className="contact-channels">
-                {channels.map((c) => (
-                  <li key={c.key}>
-                    <a
-                      href={c.href}
-                      className="contact-channel"
-                      {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    >
-                      <Icon name={c.icon} />
-                      <span className="contact-channel__text">
-                        <small>{c.label}</small>
-                        <span>{c.value}</span>
-                      </span>
-                      <Icon name="arrowUpRight" className="contact-channel__go" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {(locations.length > 0 || settings.business_hours) && (
-              <div className="contact-visit">
-                <h2 className="contact-visit__title">Vizitoni sallonin</h2>
-                {settings.business_hours && (
-                  <p className="contact-hours">
-                    <Icon name="clock" />
-                    <span><small>Orari i Punës</small>{settings.business_hours}</span>
-                  </p>
-                )}
-                {locations.length > 0 && (
-                  <div className="contact-locations">
-                    {locations.map((loc) => (
+      {/* The showroom photo from Rreth Nesh; the Home photo until one is set. */}
+      <PageBanner
+        title="Na Kontaktoni"
+        text="Do të gëzoheshim t'ju dëgjonim — për një pyetje, një çmim, apo një mobilie me porosi."
+        image={about.hero_image_url || home.hero_image_url}
+      />
+      <section className="band-latte contact-band">
+        <div className="page-body" ref={ref}>
+          <div className="contact-layout">
+            <div className="contact-info">
+              {channels.length > 0 && (
+                <ul className="contact-channels">
+                  {channels.map((c) => (
+                    <li key={c.key}>
                       <a
-                        key={loc.label}
-                        className="contact-location-card"
-                        href={mapsUrl(loc.address)}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={c.href}
+                        className="contact-channel"
+                        {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                       >
-                        <Icon name="pin" />
-                        <span className="contact-location-card__label">{loc.label}</span>
-                        <span className="contact-location-card__cta">Merr drejtimin <Icon name="arrow" /></span>
+                        <Icon name={c.icon} />
+                        <span className="contact-channel__text">
+                          <small>{c.label}</small>
+                          <span>{c.value}</span>
+                        </span>
+                        <Icon name="arrowUpRight" className="contact-channel__go" />
                       </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-            {socials.length > 0 && (
-              <div className="contact-socials">
-                {socials.map((s) => (
-                  <a key={s.key} href={s.href} className="contact-social" target="_blank" rel="noopener noreferrer">
-                    <Icon name={s.key} /> {s.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
+              {(locations.length > 0 || settings.business_hours) && (
+                <div className="contact-visit">
+                  <h2 className="contact-visit__title">Vizitoni sallonin</h2>
+                  {settings.business_hours && (
+                    <p className="contact-hours">
+                      <Icon name="clock" />
+                      <span><small>Orari i Punës</small>{settings.business_hours}</span>
+                    </p>
+                  )}
+                  {locations.length > 0 && (
+                    <div className="contact-locations">
+                      {locations.map((loc) => (
+                        <a
+                          key={loc.label}
+                          className="contact-location-card"
+                          href={mapsUrl(loc.address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Icon name="pin" />
+                          <span className="contact-location-card__label">{loc.label}</span>
+                          <span className="contact-location-card__cta">Merr drejtimin <Icon name="arrow" /></span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
-          <div className="contact-form-panel">
-            <h2 className="contact-form-panel__heading">Dërgo një Mesazh</h2>
-            <p className="contact-form-panel__intro">Keni pyetje? Do t'ju përgjigjemi së shpejti.</p>
-            <ContactForm dark />
+              {socials.length > 0 && (
+                <div className="contact-socials">
+                  {socials.map((s) => (
+                    <a key={s.key} href={s.href} className="contact-social" target="_blank" rel="noopener noreferrer">
+                      <Icon name={s.key} /> {s.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="contact-form-panel">
+              <h2 className="contact-form-panel__heading">Dërgo një Mesazh</h2>
+              <p className="contact-form-panel__intro">Keni pyetje? Do t'ju përgjigjemi së shpejti.</p>
+              <ContactForm dark />
+            </div>
           </div>
         </div>
-      </div>
+      </section>
       <Footer />
     </div>
   );

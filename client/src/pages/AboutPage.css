@@ -204,3 +204,33 @@
     align-items: center;
   }
 }
+
+/* ── Bands: values and quote on black, the visit line on latte. ────────── */
+.about-values-band .page-body {
+  padding-top: var(--section-y);
+}
+
+.about-values-band .about-subheading {
+  margin-top: 0;
+}
+
+.about-values-band .value-item__icon {
+  border-color: rgba(201, 166, 107, 0.6);
+}
+
+.about-values-band .about-quote {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.page-body.about-visit {
+  margin-top: 0;
+  padding-top: clamp(48px, 6vw, 80px);
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+
+@media (min-width: 900px) {
+  .about-values-band .value-item {
+    border-top-color: var(--gold);
+  }
+}

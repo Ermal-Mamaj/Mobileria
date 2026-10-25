@@ -260,7 +260,7 @@
 .home-gallery__track {
   display: flex;
   gap: clamp(24px, 3vw, 48px);
-  padding: 0 var(--gutter) 8px;
+  padding: 4px var(--gutter) 8px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-padding-left: var(--gutter);
@@ -328,12 +328,6 @@
 /* ── New designs and sale: a warm latte band between the black gallery and
    the black quote, so the products sit on colour, not blank paper. ──── */
 .home-products {
-  --muted: #544D44;
-  --muted-2: #544D44;
-  --gold-deep: #6B4C28;
-  --clay: #8E3A24;
-  --hairline: rgba(26, 23, 20, 0.2);
-  background: #DDCFBA;
   padding-bottom: var(--section-y);
 }
 
@@ -384,25 +378,29 @@
 @media (min-width: 1000px) {
   .product-rail {
     grid-auto-flow: row;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
     gap: 48px 24px;
     overflow: visible;
     margin: 0;
     padding: 0;
     contain: none;
   }
-  /* The lead piece takes a 2 x 2 block; its photo fills the height. */
+  /* The lead piece spans two columns at the same height as its row, so a
+     wide piece (a sofa, a table) shows whole instead of cropped tall. */
   .product-rail.is-featured > :first-child {
     grid-column: span 2;
-    grid-row: span 2;
   }
   .product-rail.is-featured > :first-child .product-card__image {
     aspect-ratio: auto;
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-height: 0;
   }
+  /* Studio shots stand the piece on the floor: keep the lower half in view. */
+  .product-rail.is-featured > :first-child .image-slot {
+    object-position: 50% 62%;
+  }
   .product-rail.is-featured > :first-child .product-card__name {
-    font-size: 32px;
+    font-size: 28px;
   }
 }
 

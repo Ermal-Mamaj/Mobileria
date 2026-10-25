@@ -31,11 +31,11 @@ export default function HomePage() {
 
   const headlineLines = (home.hero_headline || '').split('\n');
   const showSale = settings.sale_section_enabled && saleProducts.length > 0;
-  // New designs open with one piece shown large beside four smaller ones
-  // (or eight); the count is trimmed so the grid always closes neatly.
-  const featuredLead = featured.length >= 5;
+  // New designs open with one piece shown wide (two columns) beside two
+  // more, then rows of four; the count is trimmed so the grid closes neatly.
+  const featuredLead = featured.length >= 3;
   const featuredShown = featuredLead
-    ? featured.slice(0, 1 + 4 * Math.floor((Math.min(featured.length, 9) - 1) / 4))
+    ? featured.slice(0, 3 + 4 * Math.floor((Math.min(featured.length, 11) - 3) / 4))
     : featured;
 
   // Hero: once the curtain lifts, the photo settles from a slow zoom, the
@@ -112,7 +112,7 @@ export default function HomePage() {
         });
       }
       gsap.from(q('.room-arch__frame'), {
-        clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', stagger: 0.1,
+        clipPath: 'inset(100% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', stagger: 0.1, clearProps: 'clipPath',
         scrollTrigger: { trigger: galleryRef.current, start: 'top 70%', once: true },
       });
       gsap.from(q('.room-arch__caption'), {
@@ -268,7 +268,7 @@ export default function HomePage() {
         </section>
       )}
 
-      <div className="home-products" ref={productsRef}>
+      <div className="home-products band-latte" ref={productsRef}>
         {featured.length > 0 && (
           <section className="home-page__section" aria-labelledby="home-new-title">
             <div className="section-heading-row">
@@ -290,7 +290,7 @@ export default function HomePage() {
             <div className="section-heading-row">
               <h2 className="section-heading" id="home-sale-title">Në Zbritje</h2>
             </div>
-            <div className="product-rail">
+            <div className="product-rail" style={{ '--cols': Math.min(saleProducts.length, 4) }}>
               {saleProducts.map((p) => (
                 <ProductCard key={p.id} product={p} to={`/rooms/${p.category_slug}`} showRoom />
               ))}

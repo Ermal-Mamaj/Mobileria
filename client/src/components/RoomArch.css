@@ -11,29 +11,31 @@
 .room-arch__frame {
   position: relative;
   aspect-ratio: 3 / 4;
-  /* Room for the wall arch that stands out behind the photo. */
-  margin: 0 14px 14px 0;
+  /* Room for the gold line drawn just outside the photo. */
+  margin: 10px 10px 0;
 }
 
 /* 999px top corners collapse to a perfect semicircle on any width. */
-.room-arch__wall,
 .room-arch__photo {
   position: absolute;
   inset: 0;
   border-radius: 999px 999px 0 0;
-}
-
-.room-arch__wall {
-  background: var(--tone, var(--tone-ink));
-  transform: translate(14px, 14px);
-  transition: transform 600ms var(--ease-out);
-}
-
-.room-arch__photo {
   overflow: hidden;
-  background: #2A2520;
+  background: var(--tone, var(--tone-ink));
   /* Keeps the rounded clip crisp while the photo scales inside it. */
   isolation: isolate;
+}
+
+/* The gold arch: open at the foot, like the ring around the logo's sofa. */
+.room-arch__line {
+  position: absolute;
+  inset: -9px -9px 0;
+  border: 1px solid var(--gold);
+  border-bottom: none;
+  border-radius: 999px 999px 0 0;
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-out), inset 500ms var(--ease-out);
 }
 
 .room-arch__photo .image-slot {
@@ -42,12 +44,17 @@
   transition: transform 900ms var(--ease-out);
 }
 
-.room-arch:hover .room-arch__wall {
-  transform: translate(20px, 20px);
+.room-arch:hover .room-arch__line {
+  opacity: 1;
+  inset: -6px -6px 0;
 }
 
 .room-arch:hover .room-arch__photo .image-slot {
   transform: scale(1.05);
+}
+
+.band-latte .room-arch__line {
+  border-color: var(--gold-deep);
 }
 
 .room-arch__caption {

@@ -18,54 +18,6 @@
   padding: clamp(40px, 6vw, 88px) var(--gutter) var(--section-y);
 }
 
-/* ── Page title block for the plain pages (Ambientet, Na Kontaktoni). ─── */
-.page-intro {
-  position: relative;
-  display: grid;
-  gap: 18px;
-  padding-bottom: clamp(32px, 4vw, 48px);
-  margin-bottom: clamp(32px, 4vw, 56px);
-}
-
-/* The hairline under the title; --rule lets it draw in from the left. */
-.page-intro::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--hairline);
-  transform: scaleX(var(--rule, 1));
-  transform-origin: left;
-}
-
-.page-intro__title {
-  font-family: var(--font-serif);
-  font-size: clamp(48px, 8vw, 112px);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.016em;
-}
-
-.page-intro__text {
-  font-size: var(--text-lg);
-  line-height: 1.6;
-  color: var(--muted);
-  max-width: 46ch;
-}
-
-@media (min-width: 900px) {
-  .page-intro {
-    grid-template-columns: 1fr auto;
-    align-items: end;
-    gap: 48px;
-  }
-  .page-intro__text {
-    max-width: 38ch;
-  }
-}
-
 /* ── Eyebrow: a short line + small caps label. Used sparingly — the hero
    and the quote band, where the owner writes it in the CMS. ───────────── */
 .eyebrow {
@@ -268,3 +220,31 @@ button:hover > .btn-arrow {
 .tone-ink    { --tone: var(--tone-ink); }
 .tone-ochre  { --tone: var(--tone-ochre); }
 .tone-olive  { --tone: var(--tone-olive); }
+
+/* ── Colour bands. A band swaps the text tones for ones that stay AA on its
+   background, so anything placed inside reads correctly. ──────────────── */
+.band-latte {
+  --muted: #544D44;
+  --muted-2: #544D44;
+  --gold-deep: #6B4C28;
+  --clay: #8E3A24;
+  --hairline: rgba(26, 23, 20, 0.2);
+  --paper: #F3EBDD;
+  --border: #CDBEA6;
+  background: #DDCFBA;
+  color: var(--text);
+}
+
+.band-dark {
+  --text: var(--cream);
+  --muted: rgba(241, 233, 219, 0.74);
+  --muted-2: rgba(241, 233, 219, 0.82);
+  --gold-deep: var(--gold);
+  --hairline: rgba(241, 233, 219, 0.18);
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.band-dark :focus-visible {
+  outline-color: var(--gold);
+}

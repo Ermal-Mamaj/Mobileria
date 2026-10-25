@@ -3047,3 +3047,10 @@ textarea.wysiwyg-field {
   text-decoration: none;
   white-space: nowrap;
 }
+
+/* On the live-preview's dark band the light button would vanish. */
+.band-dark .admin-btn-secondary {
+  background: transparent;
+  color: var(--cream);
+  border-color: rgba(241, 233, 219, 0.45);
+}

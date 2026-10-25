@@ -63,41 +63,53 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="page-body about-body" ref={bodyRef}>
-        <p className="about-paragraph">{about.paragraph_1}</p>
-        <p className="about-paragraph">{about.paragraph_2}</p>
-
-        <h2 className="about-subheading">Vlerat Tona</h2>
-        <div className="value-list">
-          {values.map((v, i) => (
-            <div className="value-item" key={i}>
-              <div className="value-item__icon">
-                <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
-                  {VALUE_ICONS[i % VALUE_ICONS.length]}
-                </svg>
-              </div>
-              <div>
-                <h3 className="value-item__title">{v.title}</h3>
-                <p className="value-item__description">{v.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="about-quote">
-          <p className="about-quote__text">&ldquo;{about.quote_text}&rdquo;</p>
-          <p className="about-quote__author">— {about.quote_author}</p>
-        </div>
-
-        <div className="about-visit">
-          <p>Mobiliet duken më mirë nga afër. Ejani në sallon, ose na shkruani se çfarë po kërkoni.</p>
-          <div className="about-visit__actions">
-            <Magnet padding={32} magnetStrength={12} maxOffset={5}>
-              <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
-            </Magnet>
-            <Link to="/categories" className="btn-outline">Shiko ambientet</Link>
+      {/* Story on latte, values and the quote on black, the visit on latte:
+          the same bands the CMS editor shows. */}
+      <div ref={bodyRef}>
+        <section className="band-latte">
+          <div className="page-body about-body">
+            <p className="about-paragraph">{about.paragraph_1}</p>
+            <p className="about-paragraph">{about.paragraph_2}</p>
           </div>
-        </div>
+        </section>
+
+        <section className="band-dark about-values-band">
+          <div className="page-body">
+            <h2 className="about-subheading">Vlerat Tona</h2>
+            <div className="value-list">
+              {values.map((v, i) => (
+                <div className="value-item" key={i}>
+                  <div className="value-item__icon">
+                    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
+                      {VALUE_ICONS[i % VALUE_ICONS.length]}
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="value-item__title">{v.title}</h3>
+                    <p className="value-item__description">{v.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="about-quote">
+              <p className="about-quote__text">&ldquo;{about.quote_text}&rdquo;</p>
+              <p className="about-quote__author">— {about.quote_author}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="band-latte">
+          <div className="page-body about-visit">
+            <p>Mobiliet duken më mirë nga afër. Ejani në sallon, ose na shkruani se çfarë po kërkoni.</p>
+            <div className="about-visit__actions">
+              <Magnet padding={32} magnetStrength={12} maxOffset={5}>
+                <Link to="/contact" className="btn-navy">Na kontaktoni <Icon name="arrow" className="btn-arrow" /></Link>
+              </Magnet>
+              <Link to="/categories" className="btn-outline">Shiko ambientet</Link>
+            </div>
+          </div>
+        </section>
       </div>
 
       <Footer />

@@ -1,4 +1,11 @@
+.rooms-band {
+  padding: clamp(56px, 8vw, 112px) 0 var(--section-y);
+}
+
 .rooms-grid {
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
   display: grid;
   gap: 64px 32px;
 }

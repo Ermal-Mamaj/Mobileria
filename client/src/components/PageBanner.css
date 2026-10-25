@@ -1,0 +1,70 @@
+.page-banner {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(380px, 56vh, 600px);
+  display: flex;
+  align-items: flex-end;
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.page-banner__media {
+  position: absolute;
+  inset: -2% 0 -18%;
+}
+
+.page-banner__media .image-slot {
+  position: absolute;
+  inset: 0;
+}
+
+.page-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to right, rgba(14, 12, 9, 0.78) 0%, rgba(14, 12, 9, 0.45) 45%, rgba(14, 12, 9, 0.1) 75%),
+    linear-gradient(to top, rgba(14, 12, 9, 0.75) 0%, rgba(14, 12, 9, 0) 55%);
+}
+
+.page-banner__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 64px var(--gutter) clamp(40px, 6vw, 72px);
+}
+
+.page-banner__title {
+  font-family: var(--font-serif);
+  font-size: clamp(52px, 8vw, 120px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* A gold rule under the title; --rule lets it draw in from the left. */
+.page-banner__text {
+  position: relative;
+  max-width: 46ch;
+  margin-top: 22px;
+  padding-top: 22px;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: rgba(241, 233, 219, 0.88);
+}
+
+.page-banner__text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(var(--rule, 1));
+  transform-origin: left center;
+}
