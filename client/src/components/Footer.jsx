@@ -28,10 +28,7 @@ export default function Footer() {
     return () => mm.revert();
   }, { scope: ref, dependencies: [categories.length, settings?.id, settings?.logo_url], revertOnUpdate: true });
 
-  const locations = [
-    settings?.address && { label: 'Lokacioni 1', address: settings.address },
-    settings?.address_2 && { label: 'Lokacioni 2', address: settings.address_2 },
-  ].filter(Boolean);
+  const locations = [settings?.address && { label: 'Sallon', address: settings.address }].filter(Boolean);
   const hasContact = settings?.phone || settings?.whatsapp || settings?.email;
   const hasVisit = locations.length > 0 || settings?.business_hours;
   const hasSocial = settings?.facebook || settings?.instagram;

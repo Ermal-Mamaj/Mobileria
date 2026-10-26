@@ -12,7 +12,7 @@ export default function ProductCard({ product, to, onOpen, showRoom = false, pho
   const badge = isOnSale(product) ? 'Zbritje' : product.badge;
   const body = (
     <>
-      <div className="product-card__image" data-cursor="Shiko">
+      <div className="product-card__image">
         <ImageSlot src={product.image_url} placeholder="Foto" alt={product.name} />
         {badge && <span className={`product-card__badge ${isOnSale(product) ? 'is-sale' : ''}`}>{badge}</span>}
         {photoCount > 1 && (
