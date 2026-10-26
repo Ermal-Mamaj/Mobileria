@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
 import { BRAND, BRAND_LINE, LOGO_FULL, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
+import InstallApp from './InstallApp.jsx';
 import { gsap, MOTION_OK, riseIn, useGSAP, EASE } from '../lib/motion.js';
 import './Footer.css';
 
@@ -136,6 +137,8 @@ export default function Footer() {
               </ul>
             </div>
           )}
+
+          <InstallApp />
         </div>
       </div>
 
