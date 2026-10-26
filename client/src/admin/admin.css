@@ -3142,3 +3142,77 @@ textarea.wysiwyg-field {
   height: 22px;
   color: #F1E9DB;
 }
+
+/* ============================================================
+   OVERVIEW PRODUCT SEARCH
+   ============================================================ */
+
+.dash-search {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-search__box {
+  position: relative;
+}
+
+.dash-search__box .dash-search__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.dash-search__input {
+  width: 100%;
+  padding: 13px 14px 13px 40px;
+  font-size: 14px;
+}
+
+.dash-search__results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.dash-search__result {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dash-search__result:hover,
+.dash-search__result:focus-visible {
+  border-color: var(--gold-deep);
+  background: var(--paper);
+  outline: none;
+}
+
+.dash-search__note {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted-2);
+}
+
+.dash-stock--ok {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+/* The product a search result opened, flagged briefly in its collection. */
+.prod-card {
+  scroll-margin-top: 90px;
+}
+
+.prod-card--found {
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 3px rgba(204, 165, 125, 0.45);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
