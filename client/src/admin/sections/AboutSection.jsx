@@ -72,8 +72,8 @@ export default function AboutSection() {
         </div>
       </div>
       <p className="admin-panel__description">
-        Kjo është pikërisht siç do të duket faqja. Klikoni mbi çdo tekst ose foto për ta ndryshuar,
-        pastaj shtypni "Ruaj Ndryshimet".
+        Kjo është pikërisht siç do të duket faqja. Klikoni mbi çdo tekst për ta ndryshuar. Për një foto,
+        shtypni ikonën e kamerës në cep të saj. Pastaj shtypni "Ruaj Ndryshimet".
       </p>
 
       <div className="wysiwyg-frame">

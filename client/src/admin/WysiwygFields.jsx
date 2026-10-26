@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { uploadImage } from '../lib/blobUpload.js';
+import Icon from '../components/Icon.jsx';
 
 // Inline-editable text that visually matches whatever heading/paragraph
 // style it sits inside — no border or background until you interact with
@@ -58,20 +59,24 @@ export function EditableText({ value, onSave, placeholder, className = '', as = 
   );
 }
 
-// Click-to-replace image, shown exactly as it'll appear on the site (same
-// object-fit/sizing via the passed className) with a hover overlay
-// prompting the edit, instead of a separate boxy uploader UI off to the side.
-export function EditableImage({ value, onSave, className = '', dark = false, placeholder = 'Kliko për të ngarkuar foto' }) {
+// A picture shown the way it will look on the site, with a small camera button
+// in its corner to replace it. Only that button is clickable: nothing covers the
+// picture, so it can never sit on top of (and block) text next to it.
+export function EditableImage({ value, onSave, className = '', dark = false, placeholder = 'Nuk ka foto ende' }) {
   const inputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
 
   async function handleFile(e) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setError('');
     try {
       const url = await uploadImage(file);
       onSave(url);
+    } catch (err) {
+      setError(err.message || 'Fotoja nuk u ngarkua.');
     } finally {
       setUploading(false);
       e.target.value = '';
@@ -79,15 +84,22 @@ export function EditableImage({ value, onSave, className = '', dark = false, pla
   }
 
   return (
-    <div className={`wysiwyg-image ${className} ${dark ? 'wysiwyg-image--dark' : ''}`} onClick={() => inputRef.current?.click()}>
+    <div className={`wysiwyg-image ${className} ${dark ? 'wysiwyg-image--dark' : ''}`}>
       {value
         ? <img src={value} alt="" className="wysiwyg-image__img" />
         : <div className="wysiwyg-image__empty">{placeholder}</div>
       }
-      <div className="wysiwyg-image__overlay">
-        {uploading ? 'Po ngarkohet...' : '📷 Ndrysho Foton'}
-      </div>
-      {!uploading && <div className="wysiwyg-image__badge">✏️ Editabël</div>}
+      <button
+        type="button"
+        className="wysiwyg-image__edit"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        aria-label={value ? 'Ndrysho foton' : 'Ngarko foto'}
+        title={value ? 'Ndrysho foton' : 'Ngarko foto'}
+      >
+        {uploading ? <span className="wysiwyg-image__spinner" aria-hidden="true" /> : <Icon name="camera" />}
+      </button>
+      {error && <p className="wysiwyg-image__error" role="alert">{error}</p>}
       <input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={handleFile} />
     </div>
   );
