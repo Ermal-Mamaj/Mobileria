@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "Bella Casa",
+  "short_name": "Bella Casa",
+  "description": "Mobilie për çdo dhomë të shtëpisë. Shfletoni sipas ambientit, me çmime, dhe na kontaktoni.",
+  "lang": "sq",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#232A20",
+  "theme_color": "#232A20",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ambientet",
+      "url": "/categories?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Kontakti",
+      "url": "/contact?source=shortcut",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

@@ -70,6 +70,15 @@
   text-decoration-color: rgba(204, 165, 125, 0.6);
 }
 
+.footer__button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .footer__link--icon {
   display: inline-flex;
   align-items: flex-start;
