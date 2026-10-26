@@ -1827,10 +1827,13 @@ textarea.wysiwyg-field {
   background: var(--bg);
 }
 
-/* --- Editable image --- */
+/* --- Editable image ---
+   Nothing sits over the picture except one small camera button in its corner,
+   so a picture can never block the text beside or below it. `isolation` keeps
+   the button's z-index from leaking out and competing with page content. */
 .wysiwyg-image {
   position: relative;
-  cursor: pointer;
+  isolation: isolate;
   width: 100%;
   height: 100%;
   display: block;
@@ -1863,44 +1866,94 @@ textarea.wysiwyg-field {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.wysiwyg-image__overlay {
+.wysiwyg-image__edit {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(28, 19, 15, 0.55);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  z-index: 3;
-}
-
-.wysiwyg-image:hover .wysiwyg-image__overlay {
-  opacity: 1;
-}
-
-/* Always-visible badge (not just on hover) — same discoverability problem
-   as text fields: nothing on mobile ever hovers, so the full overlay alone
-   would never be seen there. */
-.wysiwyg-image__badge {
-  position: absolute;
-  bottom: 10%;
-  right: 6%;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(204, 165, 125, 0.6);
   background: rgba(28, 19, 15, 0.82);
   color: var(--gold);
-  border: 1px solid rgba(204, 165, 125, 0.5);
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  z-index: 4;
-  pointer-events: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.wysiwyg-image__edit:hover,
+.wysiwyg-image__edit:focus-visible {
+  background: var(--gold);
+  color: var(--navy);
+  outline: none;
+  transform: scale(1.06);
+}
+
+.wysiwyg-image__edit:disabled {
+  cursor: progress;
+  transform: none;
+}
+
+.wysiwyg-image__edit .icon {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+
+.wysiwyg-image__spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(204, 165, 125, 0.35);
+  border-top-color: var(--gold);
+  animation: wysiwyg-spin 0.7s linear infinite;
+}
+
+@keyframes wysiwyg-spin {
+  to { transform: rotate(360deg); }
+}
+
+.wysiwyg-image__error {
+  position: absolute;
+  left: 12px;
+  right: 60px;
+  bottom: 12px;
+  z-index: 1;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(251, 234, 234, 0.96);
+  color: #B3261E;
+  font-size: 12px;
+}
+
+/* --- Home hero: photo block on top, text block underneath --- */
+.wysiwyg-hero--split {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  flex-direction: column;
+}
+
+.wysiwyg-hero__photo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 420px;
+  width: 100%;
+  background: #221E19;
+}
+
+.wysiwyg-hero__photo .wysiwyg-image {
+  position: absolute;
+  inset: 0;
+}
+
+.wysiwyg-hero__text {
+  padding: 28px clamp(20px, 4vw, 40px) 32px;
+  background: var(--navy);
 }
 
 /* --- About page value items get a remove button in edit mode --- */

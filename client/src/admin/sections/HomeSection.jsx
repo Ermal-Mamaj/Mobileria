@@ -54,14 +54,16 @@ export default function HomeSection() {
         </div>
       </div>
       <p className="admin-panel__description">
-        Kjo është pikërisht siç do të duket faqja. Klikoni mbi çdo tekst ose foto për ta ndryshuar,
-        pastaj shtypni "Ruaj Ndryshimet".
+        Kjo është pikërisht siç do të duket faqja. Klikoni mbi çdo tekst për ta ndryshuar. Për një foto,
+        shtypni ikonën e kamerës në cep të saj. Pastaj shtypni "Ruaj Ndryshimet".
       </p>
 
       <div className="wysiwyg-frame">
-        {/* Hero */}
-        <div className="home-page__hero wysiwyg-hero">
-          <div className="home-page__hero-media">
+        {/* Hero: the photo and its text are two separate blocks, so neither
+            can cover the other. The photo is on top (camera icon to change it);
+            the text sits below on the hero's dark background. */}
+        <div className="home-page__hero wysiwyg-hero wysiwyg-hero--split">
+          <div className="wysiwyg-hero__photo">
             <EditableImage
               value={form.hero_image_url}
               onSave={(url) => edit('hero_image_url', url)}
@@ -69,8 +71,7 @@ export default function HomeSection() {
               dark
             />
           </div>
-          <div className="home-page__hero-gradient" />
-          <div className="home-page__hero-inner">
+          <div className="wysiwyg-hero__text">
             <div className="home-page__hero-copy">
               <div className="eyebrow eyebrow--gold">
                 <span className="eyebrow__rule" />
