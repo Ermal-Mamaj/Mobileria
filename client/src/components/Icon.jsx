@@ -84,6 +84,12 @@ const PATHS = {
       <circle cx="7.6" cy="7.6" r="1.4" />
     </>
   ),
+  search: (
+    <>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4.5 4.5" />
+    </>
+  ),
   photos: (
     <>
       <rect x="3" y="6" width="14" height="14" rx="1.5" />

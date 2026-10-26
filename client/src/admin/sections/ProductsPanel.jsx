@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { formatPrice, isOnSale, discountPercent } from '../../lib/price.js';
 import { useConfirm } from '../useConfirm.jsx';
@@ -8,7 +9,7 @@ import StockModal from '../StockModal.jsx';
 
 const BADGES = ['', 'E RE', 'ME POROSI'];
 
-function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDelete, onAddPhoto, onRemovePhoto, onStockChange, onMove }) {
+function ProductCard({ product: p, highlight, canReorder, isFirst, isLast, onUpdate, onDelete, onAddPhoto, onRemovePhoto, onStockChange, onMove }) {
   const [local, setLocal] = useState(p);
   const [stockOpen, setStockOpen] = useState(false);
   const [saveError, setSaveError] = useState('');
@@ -46,7 +47,7 @@ function ProductCard({ product: p, canReorder, isFirst, isLast, onUpdate, onDele
       : 'prod-stock--ok';
 
   return (
-    <div className="prod-card">
+    <div className={`prod-card ${highlight ? 'prod-card--found' : ''}`} id={`product-${p.id}`}>
       <div className="prod-card__header">
         {canReorder && (
           <div className="prod-reorder">
@@ -189,6 +190,11 @@ export default function ProductsPanel({ category, showTopAddButton = false }) {
   const [search, setSearch] = useState('');
   const [stockFilter, setStockFilter] = useState('all');
   const { confirm, modal } = useConfirm();
+  // Arriving from the overview's product search (?product=ID): scroll to that
+  // product and mark it for a few seconds so it's easy to spot.
+  const [searchParams] = useSearchParams();
+  const targetId = Number(searchParams.get('product')) || null;
+  const [foundId, setFoundId] = useState(null);
 
   function reload() {
     api.get(`/products?category=${category.slug}`).then(setProducts);
@@ -200,6 +206,19 @@ export default function ProductsPanel({ category, showTopAddButton = false }) {
     setStockFilter('all');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category.slug]);
+
+  useEffect(() => {
+    if (!targetId || !products) return;
+    const el = document.getElementById(`product-${targetId}`);
+    if (!el) return;
+    setFoundId(targetId);
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    const timer = setTimeout(() => setFoundId(null), 3000);
+    return () => clearTimeout(timer);
+    // Only when the list first arrives or the target changes, not on every edit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetId, products === null]);
 
   async function addProduct() {
     await api.post('/products', { category_id: category.id, name: 'Produkt i Ri', material: '' });
@@ -327,6 +346,7 @@ export default function ProductsPanel({ category, showTopAddButton = false }) {
             <ProductCard
               key={p.id}
               product={p}
+              highlight={p.id === foundId}
               canReorder={canReorder}
               isFirst={i === 0}
               isLast={i === filtered.length - 1}
