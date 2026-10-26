@@ -193,7 +193,7 @@ export default function HomePage() {
     return () => mm.revert();
   }, { scope: contactRef, dependencies: [home.contact_heading, settings.id], revertOnUpdate: true });
 
-  const directions = settings.address || settings.address_2;
+  const directions = settings.address;
   const productTotal = categories.reduce((sum, c) => sum + (Number(c.product_count) || 0), 0);
 
   return (
@@ -365,7 +365,7 @@ export default function HomePage() {
           </div>
 
           <div className="home-contact__form">
-            <ContactForm />
+            <ContactForm dark />
           </div>
         </div>
       </section>

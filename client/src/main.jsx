@@ -7,6 +7,9 @@ import '@fontsource-variable/instrument-sans/wdth.css'
 import './index.css'
 import './styles/common.css'
 import App from './App.jsx'
+import { initPwa } from './lib/pwa.js'
+
+initPwa()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

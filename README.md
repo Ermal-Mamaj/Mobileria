@@ -17,6 +17,7 @@ changes or developer involvement needed for day-to-day updates.
 - [Project structure](#project-structure)
 - [How it fits together](#how-it-fits-together)
 - [Environment variables](#environment-variables)
+- [Installable app (PWA)](#installable-app-pwa)
 - [Deploying](#deploying)
 - [Known limitations / next steps](#known-limitations--next-steps)
 
@@ -191,6 +192,29 @@ This is a standard two-process Node app — there's no framework lock-in:
    (via a reverse proxy, or by setting the API's `CLIENT_ORIGIN` and adjusting the
    client's fetch base URL if they're not served from the same origin).
 5. Set real values for `JWT_SECRET`, `ADMIN_PASSWORD`, and `NODE_ENV=production`.
+
+## Installable app (PWA)
+
+The site can be installed on a phone or desktop like an app (own icon, full-screen,
+no browser bar) and keeps working for pages already visited when the connection drops.
+
+- `client/public/manifest.webmanifest` — name, colours, icons and the Ambientet / Kontakti
+  home-screen shortcuts. Icons are in `client/public/icons/` (the maskable one is padded
+  for Android's circular crop).
+- `client/public/sw.js` — a small hand-written service worker (no build plugin). Pages
+  are network-first, so visitors always get the newest site when online; `/assets/*` is
+  cache-first; the public content API (site settings, categories, products, page content)
+  falls back to the last good copy offline. The admin API, sales, messages and uploads
+  are never cached, and the CMS (`/bellacasa-cms`) never shows stale data.
+  Bump `VERSION` in that file to clear every cache after changing the strategy.
+- `client/src/lib/pwa.js` registers the worker (production builds only) and handles the
+  install prompt. The footer shows an **Instalo aplikacionin** button on Android/desktop
+  Chrome, and the Share → Add to Home Screen steps on iPhone/iPad. It disappears once
+  the site is open as an installed app.
+- `vercel.json` serves `sw.js` uncached so updates reach people straight away.
+
+To check it: build, serve over HTTPS (or localhost), open Chrome DevTools → Application →
+Manifest / Service Workers, and use Lighthouse's PWA audit.
 
 ## Known limitations / next steps
 

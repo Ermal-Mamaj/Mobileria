@@ -283,6 +283,15 @@
   gap: 24px;
 }
 
+/* Phones: the title on one line, "all rooms" under it (like the other rows). */
+@media (max-width: 599px) {
+  .home-gallery__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
 .home-gallery .section-heading {
   color: var(--cream);
   margin: 0;
@@ -601,11 +610,26 @@
 }
 
 .home-contact__form {
-  background: var(--bg);
-  color: var(--text);
-  border-radius: var(--radius);
+  position: relative;
+  background: rgba(28, 19, 15, 0.74);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  color: var(--cream);
+  border: 1px solid rgba(204, 165, 125, 0.3);
+  border-radius: 14px;
   padding: clamp(24px, 4vw, 48px);
   box-shadow: var(--shadow-lg);
+}
+
+/* A short gold line on the card's top edge, like the one under the headings. */
+.home-contact__form::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: clamp(24px, 4vw, 48px);
+  width: 64px;
+  height: 2px;
+  background: var(--gold);
 }
 
 .home-contact :focus-visible {
@@ -613,7 +637,7 @@
 }
 
 .home-contact__form :focus-visible {
-  outline-color: var(--gold-deep);
+  outline-color: var(--gold);
 }
 
 @media (min-width: 900px) {

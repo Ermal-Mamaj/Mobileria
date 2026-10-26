@@ -42,10 +42,7 @@ export default function ContactPage() {
   // API key needed, and it works the same as a plain link on desktop (opens
   // Google Maps in the browser) or on mobile (opens the Maps/Waze app if
   // installed). The address itself isn't shown: it may be coordinates.
-  const locations = [
-    settings.address && { label: 'Lokacioni 1', address: settings.address },
-    settings.address_2 && { label: 'Lokacioni 2', address: settings.address_2 },
-  ].filter(Boolean);
+  const locations = [settings.address && { label: 'Sallon', address: settings.address }].filter(Boolean);
 
   const socials = [
     settings.facebook && { key: 'facebook', label: 'Facebook', href: socialUrl('facebook', settings.facebook) },

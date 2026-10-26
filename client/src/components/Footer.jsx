@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useApiGet } from '../lib/hooks.js';
 import { BRAND, BRAND_LINE, LOGO_FULL, mapsUrl, socialUrl, telUrl, whatsappUrl } from '../lib/brand.js';
 import Icon from './Icon.jsx';
+import InstallApp from './InstallApp.jsx';
 import { gsap, MOTION_OK, riseIn, useGSAP, EASE } from '../lib/motion.js';
 import './Footer.css';
 
@@ -28,10 +29,7 @@ export default function Footer() {
     return () => mm.revert();
   }, { scope: ref, dependencies: [categories.length, settings?.id, settings?.logo_url], revertOnUpdate: true });
 
-  const locations = [
-    settings?.address && { label: 'Lokacioni 1', address: settings.address },
-    settings?.address_2 && { label: 'Lokacioni 2', address: settings.address_2 },
-  ].filter(Boolean);
+  const locations = [settings?.address && { label: 'Sallon', address: settings.address }].filter(Boolean);
   const hasContact = settings?.phone || settings?.whatsapp || settings?.email;
   const hasVisit = locations.length > 0 || settings?.business_hours;
   const hasSocial = settings?.facebook || settings?.instagram;
@@ -136,6 +134,8 @@ export default function Footer() {
               </ul>
             </div>
           )}
+
+          <InstallApp />
         </div>
       </div>
 
