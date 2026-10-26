@@ -25,8 +25,7 @@ const SOCIAL_FIELDS = [
 ];
 
 const LOCATION_FIELDS = [
-  ['address', 'Adresa (Lokacioni 1) — koordinatat ose adresa; nuk shfaqet te vizitorët, përdoret vetëm për butonin e drejtimit'],
-  ['address_2', 'Adresa (Lokacioni 2) — lëreni bosh nëse keni vetëm një sallon'],
+  ['address', 'Adresa e sallonit — koordinatat ose adresa; nuk shfaqet te vizitorët, përdoret vetëm për butonin e drejtimit'],
 ];
 
 function FieldGroup({ title, fields, form, onChange }) {

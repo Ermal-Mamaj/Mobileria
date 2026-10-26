@@ -12,7 +12,7 @@ export default function RoomArch({ category, index, className = '' }) {
   const count = Number(category.product_count) || 0;
   return (
     <Link to={`/rooms/${category.slug}`} className={`room-arch tone-${roomTone(index)} ${className}`}>
-      <div className="room-arch__frame" data-cursor="Hap">
+      <div className="room-arch__frame">
         <span className="room-arch__line" aria-hidden="true" />
         <div className="room-arch__photo">
           <ImageSlot src={category.hero_image_url} placeholder="Foto" alt="" />

@@ -90,6 +90,7 @@ const PATHS = {
       <circle cx="12" cy="13" r="3.4" />
     </>
   ),
+  download: <path d="M12 4v11m-5-5 5 5 5-5M5 20h14" />,
   photos: (
     <>
       <rect x="3" y="6" width="14" height="14" rx="1.5" />
